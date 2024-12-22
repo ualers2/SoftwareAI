@@ -12,7 +12,7 @@
 - [🚀 Starting SoftwareAI Editor](#-start-softwareai-editor-with-ui)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
 
-- [👥 Index-Team](#-index-team)
+- [👥 Index-Team](#-indexteam)
 
 - [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
@@ -418,20 +418,16 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
 └── 🐍 Youscript.py
 
 ```
-
-## 🤝 Contributing
-While SoftwareAI is primarily AI-driven, we welcome contributions from the community:
-- 🐛 Bug Reports
-- 💡 Feature Suggestions
-- 📝 Documentation Improvements
-- 🔧 Code Contributions
-
-## 📖 IndexDocs
-
-- [doc-tools](CoreApp/Docs/doc-tools.md)
-- [doc-tools](CoreApp/Docs/doc-tools.md)
 #
-## 👥 Index Team
+## 📖 IndexDocs
+- [Core](Docs/Core)
+- [Destilation](Docs/Destilation/DestilationAgents.md)
+- [Moderation](Docs/Moderation/RemoveWords.md)
+- [Roadmaps](Docs/Roadmaps)
+- [ToolsAndFunctions](Docs/ToolsAndFunctions/doc-tools.md)
+- [Update](Docs/Update)
+#
+## 👥 IndexTeam
 - [AI-Team-Company-Owners](#AI-Team-Company-Owners)
 - [AI Team Company Managers](#AI-Team-Company-Managers)
 - [AI Team Company Accounting](#AI-Team-Company-Accounting)
@@ -1402,5 +1398,12 @@ Send sales/profit reports via email
 
 
 
+
+## 🤝 Contributing
+While SoftwareAI is primarily AI-driven, we welcome contributions from the community:
+- 🐛 Bug Reports
+- 💡 Feature Suggestions
+- 📝 Documentation Improvements
+- 🔧 Code Contributions
 
 
