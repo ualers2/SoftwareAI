@@ -13,7 +13,7 @@
 - [📁 Index Docs](#-index-docs)
 - [👥 Index-Team](#-index-team)
 - [🔄 Info-Update](#Docs/Update.md)
-- [🗺️ Roadmaps](Roadmaps)
+- [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
 - [📁 Project Structure](#-softwareai-structure)
 - [🤝 Contributing](#-contributing)
@@ -76,10 +76,6 @@ pip install -r requirements.txt
 SoftwareAIChat.py
 ```
 **Note**: (pending for 12/23/2024)
-
-
-#
-#
 #
 #
 ## 🚀 Get started SoftwareAI without UI
