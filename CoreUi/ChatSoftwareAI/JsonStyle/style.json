@@ -30,7 +30,7 @@
 						{	
 							"buttonName": "restore_window_button",
 							"normalIcon": ":/feather/icons/feather/maximize-2.png",
-							"maximizedIcon": ":/feather/icons/feather/minimize-2.png"
+							"maximizedIcon": ":/material_design/icons/material_design/minimize.png"
 						}
 					]
 				}
@@ -50,66 +50,6 @@
 			]
 		}
 	],
-    "QCustomCheckBox":[
-        {
-			"name":"checkBox_2",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-		{
-			"name":"checkBox",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-        {
-			"name":"checkBox_3",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-        {
-			"name":"checkBox_4",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-        {
-			"name":"checkBox_5",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-        {
-			"name":"checkBox_6",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		},
-        {
-			"name":"checkBox_7",
-			"bgColor":"#2e3739",
-			"circleColor":"#1dbf73",
-			"activeColor":"#7b7b7b",
-			"animationEasingCurve":"InOutCubic",
-			"animationDuration":500
-		}
-
-        
-	],
     "QCustomQStackedWidget":[
 		{
 			"name":"stackedWidget_2",
@@ -126,23 +66,46 @@
     "QCustomSlideMenu": [{
             "name": "widget",
             "defaultSize": [{
-                "width": 110,
-                "height": 711
+                "width": 50,
+                "height": 698
             }],
             "collapsedSize": [{
                 "width": 0,
-                "height": 711
+                "height": 698
             }],
             "expandedSize": [{
-                "width": 108,
-                "height": 711
+                "width": 50,
+                "height": 698
             }],
 
             "toggleButton": [{
                 "buttonName": "pushButton_16",
                 "icons": [{
-                    "whenMenuIsCollapsed": ":/feather/icons/feather/align-center.png",
-                    "whenMenuIsExpanded": ":/feather/icons/feather/chevrons-left.png"
+                    "whenMenuIsCollapsed": ":/icons/font_awesome/solid/chevron-right.png",
+                    "whenMenuIsExpanded": ":/icons/font_awesome/solid/keyboard_backspace.png"
+                }]
+
+            }]
+        },
+        {
+            "name": "sliddemenulousa",
+            "defaultSize": [{
+                "width": "parent",
+                "height": "parent"
+            }],
+            "collapsedSize": [{
+                "width": 0,
+                "height": "parent"
+            }],
+            "expandedSize": [{
+                "width": "parent",
+                "height": "parent"
+            }],
+            "toggleButton": [{
+                "buttonName": "openLousa",
+                "icons": [{
+                    "whenMenuIsCollapsed": ":/font_awesome_solid/icons/font_awesome/solid/code.png",
+                    "whenMenuIsExpanded": ":/material_design/icons/material_design/code_off.png"
                 }]
 
             }]
