@@ -149,13 +149,27 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
 ## 📚 SoftwareAI Structure
 ```
 📁 Docs/
-    └── 📖 doc-tools.md
+│    ├── 📁 Core/
+│    │    ├── 📖 Core.md
+│    │    ├── 📖 CoreCompany.md
+│    ├── 📁 Destilation/
+│    │    ├── 📖 DestilationAgents.md
+│    ├── 📁 Moderation/
+│    │    ├── 📖 RemoveWords.md
+│    ├── 📁 Roadmaps/
+│    │    ├── 📖 SoftwareAI-Roadmap.md
+│    │    ├── 📖 Chat-Roadmap.md
+│    │    ├── 📖 Editor-Roadmap.md
+│    ├── 📁 ToolsAndFunctions/
+│    │    ├── 📖 doc-tools.md
+│    ├── 📁 Update/
+│    │    ├── 📖 Update.md
+
 📁 Examples/
     └── 🐍 exemple_1.py
 📁 Flowchart/
     └── 🗺️ Fluxogram beta v 0.1.8.pdf
-📁 Roadmaps/
-    └── 📖 SoftwareAI-Roadmap.md
+
 📁 CoreUi/
 │    ├── 📁 ChatSoftwareAI/
 │    │       ├── 📁 Chat/
@@ -208,8 +222,43 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
 │    │       └── 🐍 main.py
 │    │    
 │    ├── 📁 Editor/
-
-
+│    │       ├── 📁 generated-files/
+│    │       │      ├── 📁 css/
+│    │       │      │    └── 🎨 main.css
+│    │       │      ├── 📁 json/
+│    │       │      │    └── 🛠️ cliente_and_chat.json
+│    │       │      │    └── 🛠️ interface.json
+│    │       │      ├── 📁 ui/
+│    │       │      │    └── ✨ new_cliente_and_chat.ui
+│    │       │      │    └── ✨ new_interface.ui
+│    │       ├── 📁 JsonStyle/
+│    │       │      └── 🛠️ style.json
+│    │       ├── 📁 logs/
+│    │       │      └── 🔍 custom_widgets.log
+│    │       ├── 📁 Qss/
+│    │       │      ├── 📁 icons/
+│    │       │      │    └── 📦 _icons.qrc
+│    │       │      │    ├── 📁 icons/
+│    │       │      │    │   ├── 📁 feather/
+│    │       │      │    │   │   └── 🖼️ icons.png
+│    │       │      │    │   ├── 📁 font_awesome/
+│    │       │      │    │   │      └── 🖼️ icons.png
+│    │       │      │    │   ├── 📁 material_design/
+│    │       │      │    │   │      └── 🖼️ icons.png
+│    │       │      ├── 📁 scss/
+│    │       │      │    └── ✂️ _styles.scss
+│    │       │      │    └── ✂️ _variables.scss
+│    │       │      │    └── ✂️ defaultStyle.scss
+│    │       │      │    └── ✂️ main.scss
+│    │       ├── 📁 src_/
+│    │       │    └── 🐍 icons_interpreter.py
+│    │       │    └── 🐍 ui_interface.py
+│    │       ├── 📁 ui/
+│    │       │    └── 🎨 interface.ui
+│    │       │
+│    │       ├── 🐍 Convert.py
+│    │       ├── 🐍 main.py
+│    │       ├── 🐍 Process.py 
 📁 CoreApp/
 │    ├── 📁Agents/
 │    │       ├── 📁 Company_CEO/
