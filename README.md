@@ -61,16 +61,17 @@ git clone https://github.com/ualers/SoftwareAI
 ```bash
 pip install -r requirements.txt
 ```
-### Configuring keys
-```bash
-Editor.py
-```
-**1**: click on the key icon in the menu
-**2**: put the name for the key and the key
-**3**: Click on Create Key and your open key has been created and you can start the chat
-**4**: (pending for 12/23/2024)
+### **Configuring keys** 
+- **Editor**  
+    ```bash
+    Editor.py
+    ```
+- **1 - Click on the key icon in the menu**  
+- **2 - Put the name for the key and the key**  
+- **3 - Click on Create Key and your open key has been created and you can start the chat**  
+- **4 - (pending for 12/23/2024)**  
 
-### Basic Usage
+### Usage
 ```bash
 SoftwareAIChat.py
 ```
