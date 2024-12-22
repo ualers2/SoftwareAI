@@ -49,8 +49,9 @@ Editor.py
 #
 
 ## 🚀 Start SoftwareAI with UI
-⚠️ **Note**: This is just the first version of the example, there are no teams yet and it is only possible to talk to "MatrixAI"
-![UI](Gifs/2024-11-28-12-21-01.gif)
+
+⚠️ **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
+![UI](Gifs/1221.gif)
 
 ### Installation SoftwareAI
 ```bash
@@ -60,10 +61,22 @@ git clone https://github.com/ualers/SoftwareAI
 ```bash
 pip install -r requirements.txt
 ```
+### Configuring keys
+```bash
+Editor.py
+```
+**1**: click on the key icon in the menu
+**2**: put the name for the key and the key
+**3**: Click on Create Key and your open key has been created and you can start the chat
+**4**: (pending for 12/23/2024)
+
 ### Basic Usage
 ```bash
 SoftwareAIChat.py
 ```
+**Note**: (pending for 12/23/2024)
+
+
 #
 #
 #
