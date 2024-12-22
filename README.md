@@ -15,7 +15,7 @@
 - [👥 Index-Team](#-indexteam)
 
 - [🗺️ Roadmaps](Docs/Roadmaps)
-- [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
+- [📊 Flowchart](Flowchart/Fluxogram beta v 0.1.8.pdf)
 - [📁 Project Structure](#-softwareai-structure)
 - [🤝 Contributing](#-contributing)
 #
