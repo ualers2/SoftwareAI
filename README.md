@@ -1,4 +1,4 @@
-# 🤖 SoftwareAI Documentation
+![UI](Gifs/logo.gif)
 
 ![Version](https://img.shields.io/badge/version-0.1.8-blue)
 ![Status](https://img.shields.io/badge/status-beta-yellow)
@@ -53,6 +53,7 @@ Editor.py
 
 ⚠️ **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
 ![UI](Gifs/1221.gif)
+
 
 ### Installation SoftwareAI
 ```bash
