@@ -6,13 +6,14 @@
 
 # 📜 Table of Contents
 - [📖 About](#-about)
-- [🚀 Starting With Ui](#-start-softwareai-with-ui)
+- [📖 Index Docs](#-indexdocs)
+- [🔄 Info-Update](#Docs/Update.md)
+- [🚀 Starting SoftwareAI Chat](#-start-softwareai-with-ui)
 - [🚀 Starting SoftwareAI Editor](#-start-softwareai-editor-with-ui)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
-- [💡 Features](#-features)
-- [📁 Index Docs](#-index-docs)
+
 - [👥 Index-Team](#-index-team)
-- [🔄 Info-Update](#Docs/Update.md)
+
 - [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
 - [📁 Project Structure](#-softwareai-structure)
@@ -141,13 +142,6 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
     - [💱 ConversorMoedasAPI](https://github.com/A-I-O-R-G/ConversorMoedasAPI)
 
 
-## 📚 SoftwareAI UI Structure
-```
-📁 CoreUi/
-│    ├── 📁 ChatSoftwareAI/
-│    ├── 📁 Editor/
-📁 CoreCompany/ 
-
 
 
 
@@ -212,7 +206,10 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
 │    │       │
 │    │       └── 🐍 Convert.py
 │    │       └── 🐍 main.py
-│    │
+│    │    
+│    ├── 📁 Editor/
+
+
 📁 CoreApp/
 │    ├── 📁Agents/
 │    │       ├── 📁 Company_CEO/
@@ -380,8 +377,9 @@ While SoftwareAI is primarily AI-driven, we welcome contributions from the commu
 - 📝 Documentation Improvements
 - 🔧 Code Contributions
 
-#
-## 📁 Index Docs
+## 📖 IndexDocs
+
+- [doc-tools](CoreApp/Docs/doc-tools.md)
 - [doc-tools](CoreApp/Docs/doc-tools.md)
 #
 ## 👥 Index Team
