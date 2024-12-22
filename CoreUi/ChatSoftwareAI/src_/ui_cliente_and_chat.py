@@ -15,7 +15,6 @@ from PySide2.QtWidgets import *
 from Custom_Widgets.QCustomQStackedWidget import QCustomQStackedWidget
 from Custom_Widgets.QCustomSlideMenu import QCustomSlideMenu
 from Custom_Widgets.QCustomQPushButton import QCustomQPushButton
-from Custom_Widgets.QCustomCheckBox import QCustomCheckBox
 from Custom_Widgets.Theme import QPushButton
 from Custom_Widgets.Theme import QLabel
 
@@ -23,16 +22,17 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(803, 818)
-        MainWindow.setMinimumSize(QSize(0, 784))
-        MainWindow.setMaximumSize(QSize(16777215, 818))
+        MainWindow.resize(754, 788)
+        MainWindow.setMinimumSize(QSize(718, 500))
+        MainWindow.setMaximumSize(QSize(838, 971))
+        MainWindow.setStyleSheet(u"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_9 = QGridLayout(self.centralwidget)
         self.gridLayout_9.setObjectName(u"gridLayout_9")
         self.stackedWidget_2 = QCustomQStackedWidget(self.centralwidget)
         self.stackedWidget_2.setObjectName(u"stackedWidget_2")
-        self.stackedWidget_2.setMinimumSize(QSize(0, 800))
+        self.stackedWidget_2.setMinimumSize(QSize(0, 0))
         self.stackedWidget_2.setStyleSheet(u"*{\n"
 "	border: none;\n"
 "}")
@@ -46,11 +46,214 @@ class Ui_MainWindow(object):
         self.frame_4.setStyleSheet(u"background-color: white;")
         self.frame_4.setFrameShape(QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QFrame.Raised)
-        self.gridLayout_4 = QGridLayout(self.frame_4)
+        self.gridLayout_15 = QGridLayout(self.frame_4)
+        self.gridLayout_15.setObjectName(u"gridLayout_15")
+        self.pushButton_16 = QCustomQPushButton(self.frame_4)
+        self.pushButton_16.setObjectName(u"pushButton_16")
+        icon = QIcon()
+        icon.addFile(u":/font_awesome_solid/icons/font_awesome/solid/list.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_16.setIcon(icon)
+
+        self.gridLayout_15.addWidget(self.pushButton_16, 0, 1, 1, 1)
+
+        self.gridLayout_14 = QGridLayout()
+        self.gridLayout_14.setObjectName(u"gridLayout_14")
+        self.close_window_button = QPushButton(self.frame_4)
+        self.close_window_button.setObjectName(u"close_window_button")
+        icon1 = QIcon()
+        icon1.addFile(u":/feather/icons/feather/window_close.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.close_window_button.setIcon(icon1)
+
+        self.gridLayout_14.addWidget(self.close_window_button, 0, 1, 1, 1)
+
+        self.minimize_window_button = QPushButton(self.frame_4)
+        self.minimize_window_button.setObjectName(u"minimize_window_button")
+        icon2 = QIcon()
+        icon2.addFile(u":/feather/icons/feather/window_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimize_window_button.setIcon(icon2)
+
+        self.gridLayout_14.addWidget(self.minimize_window_button, 0, 2, 1, 1)
+
+        self.restore_window_button = QPushButton(self.frame_4)
+        self.restore_window_button.setObjectName(u"restore_window_button")
+        icon3 = QIcon()
+        icon3.addFile(u":/feather/icons/feather/maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.restore_window_button.setIcon(icon3)
+        self.restore_window_button.setIconSize(QSize(16, 16))
+
+        self.gridLayout_14.addWidget(self.restore_window_button, 0, 3, 1, 1)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_14.addItem(self.horizontalSpacer_4, 0, 0, 1, 1)
+
+
+        self.gridLayout_15.addLayout(self.gridLayout_14, 0, 3, 1, 1)
+
+        self.line_2 = QFrame(self.frame_4)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.VLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_15.addWidget(self.line_2, 1, 0, 2, 2)
+
+        self.line_6 = QFrame(self.frame_4)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setMinimumSize(QSize(0, 0))
+        self.line_6.setFrameShape(QFrame.VLine)
+        self.line_6.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_15.addWidget(self.line_6, 1, 2, 2, 1)
+
+        self.gridLayout_4 = QGridLayout()
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.html_chat = QTextEdit(self.frame_4)
+        self.gridLayout_4.setHorizontalSpacing(1)
+        self.gridLayout_4.setVerticalSpacing(0)
+        self.gridLayout_4.setContentsMargins(1, 0, 1, 1)
+        self.send_mensage = QCustomQPushButton(self.frame_4)
+        self.send_mensage.setObjectName(u"send_mensage")
+        self.send_mensage.setStyleSheet(u"            QPushButton {\n"
+"                background-color: white;\n"
+"\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 13px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        icon4 = QIcon()
+        icon4.addFile(u":/feather/icons/feather/send.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.send_mensage.setIcon(icon4)
+        self.send_mensage.setIconSize(QSize(27, 47))
+
+        self.gridLayout_4.addWidget(self.send_mensage, 5, 5, 1, 1)
+
+        self.atach_file = QCustomQPushButton(self.frame_4)
+        self.atach_file.setObjectName(u"atach_file")
+        self.atach_file.setStyleSheet(u"            QPushButton {\n"
+"                background-color: white;\n"
+"\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 13px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        icon5 = QIcon()
+        icon5.addFile(u":/font_awesome_solid/icons/font_awesome/solid/file-arrow-down.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.atach_file.setIcon(icon5)
+        self.atach_file.setIconSize(QSize(22, 47))
+
+        self.gridLayout_4.addWidget(self.atach_file, 5, 7, 1, 1)
+
+        self.pushButton_6 = QCustomQPushButton(self.frame_4)
+        self.pushButton_6.setObjectName(u"pushButton_6")
+        self.pushButton_6.setStyleSheet(u"            QPushButton {\n"
+"                background-color: white;\n"
+"\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 13px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        icon6 = QIcon()
+        icon6.addFile(u":/feather/icons/feather/mic.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_6.setIcon(icon6)
+        self.pushButton_6.setIconSize(QSize(27, 47))
+
+        self.gridLayout_4.addWidget(self.pushButton_6, 5, 6, 1, 1)
+
+        self.openLousa = QPushButton(self.frame_4)
+        self.openLousa.setObjectName(u"openLousa")
+        icon7 = QIcon()
+        icon7.addFile(u":/font_awesome_solid/icons/font_awesome/solid/code.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.openLousa.setIcon(icon7)
+        self.openLousa.setIconSize(QSize(27, 47))
+
+        self.gridLayout_4.addWidget(self.openLousa, 5, 4, 1, 1)
+
+        self.mensage_input = QTextEdit(self.frame_4)
+        self.mensage_input.setObjectName(u"mensage_input")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.mensage_input.sizePolicy().hasHeightForWidth())
+        self.mensage_input.setSizePolicy(sizePolicy)
+        self.mensage_input.setMinimumSize(QSize(0, 48))
+        self.mensage_input.setMaximumSize(QSize(16777215, 48))
+        self.mensage_input.setStyleSheet(u"            QTextEdit {\n"
+"                border: 1px solid #E0E0E0;\n"
+"                padding: 10px;\n"
+"                border-radius: 10px;\n"
+"                background-color: #F7F7F7;\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"            }")
+        self.mensage_input.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.mensage_input.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        self.gridLayout_4.addWidget(self.mensage_input, 5, 0, 1, 4)
+
+        self.gridLayout_33 = QGridLayout()
+        self.gridLayout_33.setObjectName(u"gridLayout_33")
+        self.gridLayout_33.setContentsMargins(8, 0, 7, -1)
+        self.label_19 = QLabel(self.frame_4)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setMinimumSize(QSize(612, 0))
+        self.label_19.setMaximumSize(QSize(609, 16777215))
+
+        self.gridLayout_33.addWidget(self.label_19, 0, 0, 1, 1)
+
+        self.label_20 = QLabel(self.frame_4)
+        self.label_20.setObjectName(u"label_20")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
+        self.label_20.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_33.addWidget(self.label_20, 0, 1, 1, 1)
+
+        self.AtachFilesToThread_Benchmark = QCustomQPushButton(self.frame_4)
+        self.AtachFilesToThread_Benchmark.setObjectName(u"AtachFilesToThread_Benchmark")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.AtachFilesToThread_Benchmark.sizePolicy().hasHeightForWidth())
+        self.AtachFilesToThread_Benchmark.setSizePolicy(sizePolicy2)
+        self.AtachFilesToThread_Benchmark.setStyleSheet(u"            QPushButton {\n"
+"                background-color: white;\n"
+"\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 16px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"\n"
+"")
+        icon8 = QIcon()
+        icon8.addFile(u":/font_awesome_solid/icons/font_awesome/solid/database.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.AtachFilesToThread_Benchmark.setIcon(icon8)
+        self.AtachFilesToThread_Benchmark.setIconSize(QSize(19, 18))
+
+        self.gridLayout_33.addWidget(self.AtachFilesToThread_Benchmark, 0, 3, 1, 1)
+
+
+        self.gridLayout_4.addLayout(self.gridLayout_33, 2, 0, 1, 8)
+
+        self.label_5 = QLabel(self.frame_4)
+        self.label_5.setObjectName(u"label_5")
+        sizePolicy1.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy1)
+        self.label_5.setMinimumSize(QSize(92, 0))
+        self.label_5.setMaximumSize(QSize(100, 16777215))
+
+        self.gridLayout_4.addWidget(self.label_5, 0, 0, 1, 1)
+
+        self.widget_2 = QWidget(self.frame_4)
+        self.widget_2.setObjectName(u"widget_2")
+        self.widget_2.setMinimumSize(QSize(0, 180))
+        self.gridLayout_13 = QGridLayout(self.widget_2)
+        self.gridLayout_13.setObjectName(u"gridLayout_13")
+        self.html_chat = QTextEdit(self.widget_2)
         self.html_chat.setObjectName(u"html_chat")
-        self.html_chat.setMinimumSize(QSize(0, 547))
+        self.html_chat.setMinimumSize(QSize(200, 0))
         self.html_chat.setMaximumSize(QSize(16777215, 16777215))
         self.html_chat.setStyleSheet(u"            QTextEdit {\n"
 "          \n"
@@ -63,69 +266,80 @@ class Ui_MainWindow(object):
 "                font-size: 14px;\n"
 "            }")
 
-        self.gridLayout_4.addWidget(self.html_chat, 1, 4, 3, 6)
+        self.gridLayout_13.addWidget(self.html_chat, 0, 0, 1, 1)
 
-        self.gridLayout_14 = QGridLayout()
-        self.gridLayout_14.setObjectName(u"gridLayout_14")
-        self.close_window_button = QPushButton(self.frame_4)
-        self.close_window_button.setObjectName(u"close_window_button")
-        icon = QIcon()
-        icon.addFile(u":/feather/icons/feather/window_close.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.close_window_button.setIcon(icon)
+        self.sliddemenulousa = QCustomSlideMenu(self.widget_2)
+        self.sliddemenulousa.setObjectName(u"sliddemenulousa")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.sliddemenulousa.sizePolicy().hasHeightForWidth())
+        self.sliddemenulousa.setSizePolicy(sizePolicy3)
+        self.sliddemenulousa.setMinimumSize(QSize(0, 0))
+        self.sliddemenulousa.setMaximumSize(QSize(16777215, 16777215))
+        self.gridLayout_8 = QGridLayout(self.sliddemenulousa)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.widget_lousa = QFrame(self.sliddemenulousa)
+        self.widget_lousa.setObjectName(u"widget_lousa")
+        self.widget_lousa.setMinimumSize(QSize(0, 0))
+        self.widget_lousa.setMaximumSize(QSize(16777215, 16777215))
+        self.widget_lousa.setStyleSheet(u"")
+        self.widget_lousa.setFrameShape(QFrame.StyledPanel)
+        self.widget_lousa.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout_14.addWidget(self.close_window_button, 0, 0, 1, 1)
-
-        self.minimize_window_button = QPushButton(self.frame_4)
-        self.minimize_window_button.setObjectName(u"minimize_window_button")
-        icon1 = QIcon()
-        icon1.addFile(u":/feather/icons/feather/window_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimize_window_button.setIcon(icon1)
-
-        self.gridLayout_14.addWidget(self.minimize_window_button, 0, 1, 1, 1)
-
-        self.restore_window_button = QPushButton(self.frame_4)
-        self.restore_window_button.setObjectName(u"restore_window_button")
-        icon2 = QIcon()
-        icon2.addFile(u":/feather/icons/feather/maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.restore_window_button.setIcon(icon2)
-        self.restore_window_button.setIconSize(QSize(16, 16))
-
-        self.gridLayout_14.addWidget(self.restore_window_button, 0, 2, 1, 1)
+        self.gridLayout_8.addWidget(self.widget_lousa, 0, 0, 1, 1)
 
 
-        self.gridLayout_4.addLayout(self.gridLayout_14, 0, 9, 1, 1)
+        self.gridLayout_13.addWidget(self.sliddemenulousa, 0, 1, 1, 1)
 
-        self.pushButton_16 = QCustomQPushButton(self.frame_4)
-        self.pushButton_16.setObjectName(u"pushButton_16")
 
-        self.gridLayout_4.addWidget(self.pushButton_16, 0, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.widget_2, 3, 0, 1, 8)
 
-        self.atach_file = QCustomQPushButton(self.frame_4)
-        self.atach_file.setObjectName(u"atach_file")
-        self.atach_file.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 13px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        icon3 = QIcon()
-        icon3.addFile(u":/font_awesome_solid/icons/font_awesome/solid/file-arrow-down.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.atach_file.setIcon(icon3)
-        self.atach_file.setIconSize(QSize(22, 26))
+        self.SoftwareAIAgentsChat = QComboBox(self.frame_4)
+        self.SoftwareAIAgentsChat.setObjectName(u"SoftwareAIAgentsChat")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.SoftwareAIAgentsChat.sizePolicy().hasHeightForWidth())
+        self.SoftwareAIAgentsChat.setSizePolicy(sizePolicy4)
+        self.SoftwareAIAgentsChat.setMinimumSize(QSize(0, 0))
+        self.SoftwareAIAgentsChat.setMaximumSize(QSize(16777215, 16777215))
+        self.SoftwareAIAgentsChat.setStyleSheet(u"QComboBox {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    border-radius: 13px;  /* Borda arredondada */\n"
+"    color: black;  /* Cor do texto */\n"
+"    font-size: 13px;  /* Tamanho da fonte */\n"
+"    padding: 5px 10px;  /* Espa\u00e7amento interno */\n"
+"}\n"
+"\n"
+"QComboBox:hover {\n"
+"    background-color: #EDEDED; /* Fundo ao passar o mouse */\n"
+"}\n"
+"\n"
+"QComboBox:pressed {\n"
+"    background-color: #DCDCDC; /* Fundo ao pressionar */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    selection-background-color: #EDEDED;\n"
+"    selection-color: black;\n"
+"    border-radius: 10px;  /* Borda arredondada para a lista */\n"
+"    font-size: 16px; /* Ajuste de fonte para itens */\n"
+"}\n"
+"")
 
-        self.gridLayout_4.addWidget(self.atach_file, 5, 5, 1, 1)
+        self.gridLayout_4.addWidget(self.SoftwareAIAgentsChat, 0, 2, 1, 6)
+
+
+        self.gridLayout_15.addLayout(self.gridLayout_4, 1, 3, 4, 1)
 
         self.widget = QCustomSlideMenu(self.frame_4)
         self.widget.setObjectName(u"widget")
-        self.widget.setMinimumSize(QSize(0, 711))
-        self.widget.setMaximumSize(QSize(16777215, 546))
+        self.widget.setMinimumSize(QSize(50, 698))
+        self.widget.setMaximumSize(QSize(50, 698))
         self.gridLayout_10 = QGridLayout(self.widget)
         self.gridLayout_10.setObjectName(u"gridLayout_10")
         self.gridLayout_11 = QGridLayout()
@@ -134,8 +348,8 @@ class Ui_MainWindow(object):
         self.view_threads.setObjectName(u"view_threads")
         self.view_threads.setMaximumSize(QSize(90, 30))
         self.view_threads.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
+"                background-color: white;\n"
+"\n"
 "                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
 "                color: black;  /* Cor do texto alterada para preto */\n"
 "                font-size: 16px;  /* Ajuste do tamanho do \u00edcone */\n"
@@ -146,9 +360,9 @@ class Ui_MainWindow(object):
 "            QPushButton:pressed {\n"
 "                background-color: #DCDCDC;\n"
 "            }")
-        icon4 = QIcon()
-        icon4.addFile(u":/feather/icons/feather/activity.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.view_threads.setIcon(icon4)
+        icon9 = QIcon()
+        icon9.addFile(u":/feather/icons/feather/activity.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.view_threads.setIcon(icon9)
         self.view_threads.setIconSize(QSize(24, 24))
 
         self.gridLayout_11.addWidget(self.view_threads, 1, 0, 1, 1)
@@ -159,11 +373,11 @@ class Ui_MainWindow(object):
 
         self.settings_agent = QCustomQPushButton(self.widget)
         self.settings_agent.setObjectName(u"settings_agent")
-        self.settings_agent.setMinimumSize(QSize(90, 0))
+        self.settings_agent.setMinimumSize(QSize(0, 0))
         self.settings_agent.setMaximumSize(QSize(90, 30))
         self.settings_agent.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
+"                background-color: white;\n"
+"\n"
 "                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
 "                color: black;  /* Cor do texto alterada para preto */\n"
 "                font-size: 16px;  /* Ajuste do tamanho do \u00edcone */\n"
@@ -174,9 +388,9 @@ class Ui_MainWindow(object):
 "            QPushButton:pressed {\n"
 "                background-color: #DCDCDC;\n"
 "            }")
-        icon5 = QIcon()
-        icon5.addFile(u":/feather/icons/feather/settings.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.settings_agent.setIcon(icon5)
+        icon10 = QIcon()
+        icon10.addFile(u":/feather/icons/feather/settings.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.settings_agent.setIcon(icon10)
         self.settings_agent.setIconSize(QSize(24, 24))
 
         self.gridLayout_11.addWidget(self.settings_agent, 0, 0, 1, 1)
@@ -185,506 +399,123 @@ class Ui_MainWindow(object):
         self.gridLayout_10.addLayout(self.gridLayout_11, 1, 0, 1, 1)
 
 
-        self.gridLayout_4.addWidget(self.widget, 1, 2, 1, 1)
+        self.gridLayout_15.addWidget(self.widget, 2, 1, 1, 1)
 
         self.line_3 = QFrame(self.frame_4)
         self.line_3.setObjectName(u"line_3")
         self.line_3.setFrameShape(QFrame.HLine)
         self.line_3.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout_4.addWidget(self.line_3, 2, 1, 1, 2)
+        self.gridLayout_15.addWidget(self.line_3, 3, 1, 1, 2)
 
-        self.line_2 = QFrame(self.frame_4)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.VLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_4.addWidget(self.line_2, 1, 0, 5, 2)
-
-        self.line_6 = QFrame(self.frame_4)
-        self.line_6.setObjectName(u"line_6")
-        self.line_6.setMinimumSize(QSize(0, 0))
-        self.line_6.setFrameShape(QFrame.VLine)
-        self.line_6.setFrameShadow(QFrame.Sunken)
-
-        self.gridLayout_4.addWidget(self.line_6, 1, 3, 5, 1)
-
-        self.send_mensage = QCustomQPushButton(self.frame_4)
-        self.send_mensage.setObjectName(u"send_mensage")
-        self.send_mensage.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 16px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        icon6 = QIcon()
-        icon6.addFile(u":/feather/icons/feather/send.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.send_mensage.setIcon(icon6)
-        self.send_mensage.setIconSize(QSize(27, 27))
-
-        self.gridLayout_4.addWidget(self.send_mensage, 5, 8, 1, 1)
-
-        self.pushButton_6 = QCustomQPushButton(self.frame_4)
-        self.pushButton_6.setObjectName(u"pushButton_6")
-        self.pushButton_6.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 16px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        icon7 = QIcon()
-        icon7.addFile(u":/feather/icons/feather/mic.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_6.setIcon(icon7)
-        self.pushButton_6.setIconSize(QSize(27, 27))
-
-        self.gridLayout_4.addWidget(self.pushButton_6, 5, 9, 1, 1)
-
-        self.mensage_input = QTextEdit(self.frame_4)
-        self.mensage_input.setObjectName(u"mensage_input")
-        self.mensage_input.setMinimumSize(QSize(0, 50))
-        self.mensage_input.setMaximumSize(QSize(16777215, 16777215))
-        self.mensage_input.setStyleSheet(u"            QTextEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_4.addWidget(self.mensage_input, 5, 6, 1, 1)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
-
-        self.gridLayout_4.addItem(self.verticalSpacer_2, 4, 6, 1, 1)
-
-        self.verticalSpacer_4 = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
-
-        self.gridLayout_4.addItem(self.verticalSpacer_4, 6, 6, 1, 1)
-
-        self.html_chat.raise_()
         self.line_6.raise_()
         self.line_2.raise_()
         self.line_3.raise_()
-        self.send_mensage.raise_()
-        self.pushButton_6.raise_()
-        self.widget.raise_()
         self.pushButton_16.raise_()
-        self.atach_file.raise_()
-        self.mensage_input.raise_()
+        self.widget.raise_()
 
         self.gridLayout_3.addWidget(self.frame_4, 1, 0, 1, 1)
 
         self.stackedWidget_2.addWidget(self.page_4)
         self.page_5 = QWidget()
         self.page_5.setObjectName(u"page_5")
-        self.gridLayout = QGridLayout(self.page_5)
-        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout_7 = QGridLayout(self.page_5)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.frame_5 = QFrame(self.page_5)
         self.frame_5.setObjectName(u"frame_5")
         self.frame_5.setStyleSheet(u"background-color: white;")
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
-        self.gridLayout_16 = QGridLayout(self.frame_5)
-        self.gridLayout_16.setObjectName(u"gridLayout_16")
+        self.gridLayout = QGridLayout(self.frame_5)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.verticalSpacer_4 = QSpacerItem(20, 181, QSizePolicy.Minimum, QSizePolicy.Preferred)
+
+        self.gridLayout.addItem(self.verticalSpacer_4, 2, 2, 1, 1)
+
+        self.gridLayout_47 = QGridLayout()
+        self.gridLayout_47.setObjectName(u"gridLayout_47")
+        self.gridLayout_47.setContentsMargins(-1, -1, 158, -1)
+        self.StorageAgentOutput_ = QCheckBox(self.frame_5)
+        self.StorageAgentOutput_.setObjectName(u"StorageAgentOutput_")
+        self.StorageAgentOutput_.setChecked(True)
+
+        self.gridLayout_47.addWidget(self.StorageAgentOutput_, 2, 0, 1, 2)
+
+        self.label_34 = QLabel(self.frame_5)
+        self.label_34.setObjectName(u"label_34")
+
+        self.gridLayout_47.addWidget(self.label_34, 0, 0, 1, 1)
+
+        self.radioButton = QRadioButton(self.frame_5)
+        self.radioButton.setObjectName(u"radioButton")
+
+        self.gridLayout_47.addWidget(self.radioButton, 4, 0, 1, 1)
+
+        self.StoreFormatJsonAndJsonl = QRadioButton(self.frame_5)
+        self.StoreFormatJsonAndJsonl.setObjectName(u"StoreFormatJsonAndJsonl")
+        self.StoreFormatJsonAndJsonl.setChecked(True)
+
+        self.gridLayout_47.addWidget(self.StoreFormatJsonAndJsonl, 3, 0, 1, 1)
+
+        self.StorageAgentCompletions = QCheckBox(self.frame_5)
+        self.StorageAgentCompletions.setObjectName(u"StorageAgentCompletions")
+        self.StorageAgentCompletions.setChecked(True)
+
+        self.gridLayout_47.addWidget(self.StorageAgentCompletions, 1, 0, 1, 2)
+
+        self.verticalSpacer_14 = QSpacerItem(20, 202, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout_47.addItem(self.verticalSpacer_14, 6, 0, 1, 2)
+
+        self.radioButton_2 = QRadioButton(self.frame_5)
+        self.radioButton_2.setObjectName(u"radioButton_2")
+
+        self.gridLayout_47.addWidget(self.radioButton_2, 5, 0, 1, 1)
+
+        self.AgentKeysOpenAI = QComboBox(self.frame_5)
+        self.AgentKeysOpenAI.setObjectName(u"AgentKeysOpenAI")
+        sizePolicy.setHeightForWidth(self.AgentKeysOpenAI.sizePolicy().hasHeightForWidth())
+        self.AgentKeysOpenAI.setSizePolicy(sizePolicy)
+        self.AgentKeysOpenAI.setMinimumSize(QSize(310, 0))
+        self.AgentKeysOpenAI.setStyleSheet(u"QComboBox {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    border-radius: 5px;  /* Borda arredondada */\n"
+"    color: black;  /* Cor do texto */\n"
+"    font-size: 12px;  /* Tamanho da fonte */\n"
+"    padding: 5px 10px;  /* Espa\u00e7amento interno */\n"
+"}\n"
+"\n"
+"QComboBox:hover {\n"
+"    background-color: #EDEDED; /* Fundo ao passar o mouse */\n"
+"}\n"
+"\n"
+"QComboBox:pressed {\n"
+"    background-color: #DCDCDC; /* Fundo ao pressionar */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    selection-background-color: #EDEDED;\n"
+"    selection-color: black;\n"
+"    border-radius: 10px;  /* Borda arredondada para a lista */\n"
+"    font-size: 16px; /* Ajuste de fonte para itens */\n"
+"}\n"
+"")
+
+        self.gridLayout_47.addWidget(self.AgentKeysOpenAI, 0, 1, 1, 1)
+
+
+        self.gridLayout.addLayout(self.gridLayout_47, 1, 0, 1, 3)
+
         self.pushButton_5 = QPushButton(self.frame_5)
         self.pushButton_5.setObjectName(u"pushButton_5")
 
-        self.gridLayout_16.addWidget(self.pushButton_5, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_5, 0, 1, 1, 1)
 
-        self.scrollArea_2 = QScrollArea(self.frame_5)
-        self.scrollArea_2.setObjectName(u"scrollArea_2")
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.scrollArea_2.sizePolicy().hasHeightForWidth())
-        self.scrollArea_2.setSizePolicy(sizePolicy)
-        self.scrollArea_2.setFrameShape(QFrame.VLine)
-        self.scrollArea_2.setFrameShadow(QFrame.Plain)
-        self.scrollArea_2.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_2 = QWidget()
-        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 749, 745))
-        self.gridLayout_7 = QGridLayout(self.scrollAreaWidgetContents_2)
-        self.gridLayout_7.setObjectName(u"gridLayout_7")
-        self.gridLayout_8 = QGridLayout()
-        self.gridLayout_8.setSpacing(0)
-        self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.label_295 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_295.setObjectName(u"label_295")
-        self.label_295.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
 
-        self.gridLayout_8.addWidget(self.label_295, 7, 0, 1, 1)
-
-        self.vectorstore_in_agent = QTextEdit(self.scrollAreaWidgetContents_2)
-        self.vectorstore_in_agent.setObjectName(u"vectorstore_in_agent")
-        self.vectorstore_in_agent.setMinimumSize(QSize(0, 37))
-        self.vectorstore_in_agent.setMaximumSize(QSize(16777215, 80))
-        self.vectorstore_in_agent.setBaseSize(QSize(0, 0))
-        self.vectorstore_in_agent.setStyleSheet(u"            QTextEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.vectorstore_in_agent, 6, 2, 1, 1)
-
-        self.label_289 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_289.setObjectName(u"label_289")
-        self.label_289.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_289, 3, 0, 1, 1)
-
-        self.instruct_agent = QTextEdit(self.scrollAreaWidgetContents_2)
-        self.instruct_agent.setObjectName(u"instruct_agent")
-        self.instruct_agent.setMinimumSize(QSize(0, 0))
-        self.instruct_agent.setMaximumSize(QSize(16777215, 80))
-        self.instruct_agent.setStyleSheet(u"            QTextEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.instruct_agent, 0, 2, 1, 1)
-
-        self.label_290 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_290.setObjectName(u"label_290")
-        self.label_290.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_290, 5, 0, 1, 1)
-
-        self.label_293 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_293.setObjectName(u"label_293")
-        sizePolicy.setHeightForWidth(self.label_293.sizePolicy().hasHeightForWidth())
-        self.label_293.setSizePolicy(sizePolicy)
-        self.label_293.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_293, 4, 0, 1, 1)
-
-        self.label_291 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_291.setObjectName(u"label_291")
-        self.label_291.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_291, 1, 0, 1, 1)
-
-        self.label_292 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_292.setObjectName(u"label_292")
-        self.label_292.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_292, 2, 0, 1, 1)
-
-        self.vectorstore_in_thread = QTextEdit(self.scrollAreaWidgetContents_2)
-        self.vectorstore_in_thread.setObjectName(u"vectorstore_in_thread")
-        self.vectorstore_in_thread.setMinimumSize(QSize(0, 37))
-        self.vectorstore_in_thread.setMaximumSize(QSize(16777215, 80))
-        self.vectorstore_in_thread.setStyleSheet(u"            QTextEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.vectorstore_in_thread, 7, 2, 1, 1)
-
-        self.label_294 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_294.setObjectName(u"label_294")
-        self.label_294.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_294, 6, 0, 1, 1)
-
-        self.label_296 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_296.setObjectName(u"label_296")
-        self.label_296.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_296, 0, 0, 1, 1)
-
-        self.tools_agent = QTextEdit(self.scrollAreaWidgetContents_2)
-        self.tools_agent.setObjectName(u"tools_agent")
-        self.tools_agent.setMinimumSize(QSize(0, 37))
-        self.tools_agent.setMaximumSize(QSize(16777215, 80))
-        self.tools_agent.setStyleSheet(u"            QTextEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.tools_agent, 5, 2, 1, 1)
-
-        self.name_agent = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.name_agent.setObjectName(u"name_agent")
-        self.name_agent.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.name_agent, 2, 2, 1, 1)
-
-        self.key_firebase_agent = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.key_firebase_agent.setObjectName(u"key_firebase_agent")
-        self.key_firebase_agent.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.key_firebase_agent, 1, 2, 1, 1)
-
-        self.model_agent = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.model_agent.setObjectName(u"model_agent")
-        self.model_agent.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.model_agent, 3, 2, 1, 1)
-
-        self.Upload_1file_in_message = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.Upload_1file_in_message.setObjectName(u"Upload_1file_in_message")
-        self.Upload_1file_in_message.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 4px;\n"
-"                border-radius: 4px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.Upload_1file_in_message, 9, 2, 1, 1)
-
-        self.addition_instruct = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.addition_instruct.setObjectName(u"addition_instruct")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.addition_instruct.sizePolicy().hasHeightForWidth())
-        self.addition_instruct.setSizePolicy(sizePolicy1)
-        self.addition_instruct.setMinimumSize(QSize(0, 117))
-        self.addition_instruct.setMaximumSize(QSize(16777215, 16777215))
-        self.addition_instruct.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.addition_instruct, 4, 2, 1, 1)
-
-        self.Upload_1file_in_thread = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.Upload_1file_in_thread.setObjectName(u"Upload_1file_in_thread")
-        self.Upload_1file_in_thread.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 4px;\n"
-"                border-radius: 4px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.Upload_1file_in_thread, 8, 2, 1, 1)
-
-        self.Upload_1image_for_vision_in_thread = QLineEdit(self.scrollAreaWidgetContents_2)
-        self.Upload_1image_for_vision_in_thread.setObjectName(u"Upload_1image_for_vision_in_thread")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.Upload_1image_for_vision_in_thread.sizePolicy().hasHeightForWidth())
-        self.Upload_1image_for_vision_in_thread.setSizePolicy(sizePolicy2)
-        self.Upload_1image_for_vision_in_thread.setStyleSheet(u"            QLineEdit {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 4px;\n"
-"                border-radius: 4px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.Upload_1image_for_vision_in_thread, 10, 2, 1, 1)
-
-        self.label_297 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_297.setObjectName(u"label_297")
-        self.label_297.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_297, 8, 0, 1, 1)
-
-        self.label_299 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_299.setObjectName(u"label_299")
-        self.label_299.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_299, 10, 0, 1, 1)
-
-        self.label_298 = QLabel(self.scrollAreaWidgetContents_2)
-        self.label_298.setObjectName(u"label_298")
-        self.label_298.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_8.addWidget(self.label_298, 9, 0, 1, 1)
-
-
-        self.gridLayout_7.addLayout(self.gridLayout_8, 0, 0, 1, 1)
-
-        self.gridLayout_15 = QGridLayout()
-        self.gridLayout_15.setObjectName(u"gridLayout_15")
-        self.gridLayout_15.setHorizontalSpacing(0)
-        self.checkBox_6 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_6.setObjectName(u"checkBox_6")
-
-        self.gridLayout_15.addWidget(self.checkBox_6, 0, 6, 1, 1)
-
-        self.checkBox_2 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_2.setObjectName(u"checkBox_2")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.checkBox_2.sizePolicy().hasHeightForWidth())
-        self.checkBox_2.setSizePolicy(sizePolicy3)
-        self.checkBox_2.setMinimumSize(QSize(170, 0))
-        self.checkBox_2.setMaximumSize(QSize(170, 16777215))
-
-        self.gridLayout_15.addWidget(self.checkBox_2, 2, 0, 1, 1)
-
-        self.checkBox_4 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_4.setObjectName(u"checkBox_4")
-
-        self.gridLayout_15.addWidget(self.checkBox_4, 0, 4, 1, 1)
-
-        self.checkBox = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox.setObjectName(u"checkBox")
-
-        self.gridLayout_15.addWidget(self.checkBox, 0, 0, 1, 1)
-
-        self.horizontalSpacer_2 = QSpacerItem(11, 20, QSizePolicy.Maximum, QSizePolicy.Minimum)
-
-        self.gridLayout_15.addItem(self.horizontalSpacer_2, 0, 1, 1, 1)
-
-        self.checkBox_3 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_3.setObjectName(u"checkBox_3")
-        sizePolicy2.setHeightForWidth(self.checkBox_3.sizePolicy().hasHeightForWidth())
-        self.checkBox_3.setSizePolicy(sizePolicy2)
-
-        self.gridLayout_15.addWidget(self.checkBox_3, 0, 2, 1, 1)
-
-        self.checkBox_7 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_7.setObjectName(u"checkBox_7")
-
-        self.gridLayout_15.addWidget(self.checkBox_7, 0, 7, 1, 1)
-
-        self.checkBox_5 = QCustomCheckBox(self.scrollAreaWidgetContents_2)
-        self.checkBox_5.setObjectName(u"checkBox_5")
-
-        self.gridLayout_15.addWidget(self.checkBox_5, 0, 5, 1, 1)
-
-        self.horizontalSpacer = QSpacerItem(11, 20, QSizePolicy.Maximum, QSizePolicy.Minimum)
-
-        self.gridLayout_15.addItem(self.horizontalSpacer, 0, 3, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.gridLayout_15.addItem(self.verticalSpacer, 1, 0, 1, 1)
-
-        self.horizontalSpacer_3 = QSpacerItem(20, 20, QSizePolicy.Maximum, QSizePolicy.Minimum)
-
-        self.gridLayout_15.addItem(self.horizontalSpacer_3, 0, 8, 1, 1)
-
-
-        self.gridLayout_7.addLayout(self.gridLayout_15, 1, 0, 1, 1)
-
-        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
-
-        self.gridLayout_16.addWidget(self.scrollArea_2, 1, 0, 1, 1)
-
-
-        self.gridLayout.addWidget(self.frame_5, 0, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.frame_5, 0, 0, 1, 1)
 
         self.stackedWidget_2.addWidget(self.page_5)
         self.page = QWidget()
@@ -696,329 +527,11 @@ class Ui_MainWindow(object):
         self.frame_6.setStyleSheet(u"background-color: white;")
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
-        self.pushButton_15 = QPushButton(self.frame_6)
-        self.pushButton_15.setObjectName(u"pushButton_15")
-        self.pushButton_15.setGeometry(QRect(0, 0, 721, 41))
-        self.frame_2 = QFrame(self.frame_6)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setGeometry(QRect(20, 340, 233, 163))
-        self.frame_2.setMinimumSize(QSize(233, 0))
-        self.frame_2.setStyleSheet(u"QWidget {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"}")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.gridLayout_6 = QGridLayout(self.frame_2)
-        self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.gridLayout_6.setHorizontalSpacing(11)
-        self.gridLayout_6.setVerticalSpacing(0)
-        self.gridLayout_6.setContentsMargins(0, 0, 0, 5)
-        self.pushButton_11 = QPushButton(self.frame_2)
-        self.pushButton_11.setObjectName(u"pushButton_11")
-        self.pushButton_11.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_11.setIconSize(QSize(19, 39))
-
-        self.gridLayout_6.addWidget(self.pushButton_11, 1, 0, 1, 1)
-
-        self.pushButton_12 = QPushButton(self.frame_2)
-        self.pushButton_12.setObjectName(u"pushButton_12")
-        self.pushButton_12.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 5px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_12.setIconSize(QSize(19, 39))
-
-        self.gridLayout_6.addWidget(self.pushButton_12, 0, 0, 1, 1)
-
-        self.pushButton_13 = QPushButton(self.frame_2)
-        self.pushButton_13.setObjectName(u"pushButton_13")
-        self.pushButton_13.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_13.setIconSize(QSize(19, 39))
-
-        self.gridLayout_6.addWidget(self.pushButton_13, 3, 0, 1, 1)
-
-        self.pushButton_14 = QPushButton(self.frame_2)
-        self.pushButton_14.setObjectName(u"pushButton_14")
-        self.pushButton_14.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_14.setIconSize(QSize(19, 39))
-
-        self.gridLayout_6.addWidget(self.pushButton_14, 2, 0, 1, 1)
-
-        self.label_3 = QLabel(self.frame_6)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setGeometry(QRect(20, 300, 233, 13))
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy4)
-        self.label_3.setStyleSheet(u"QPushButton {\n"
-"    background-color: #D8DEE9;\n"
-"\n"
-"    color: #111111;\n"
-"\n"
-"}")
-        self.frame = QFrame(self.frame_6)
-        self.frame.setObjectName(u"frame")
-        self.frame.setGeometry(QRect(10, 120, 233, 163))
-        self.frame.setMinimumSize(QSize(226, 0))
-        self.frame.setMaximumSize(QSize(16777215, 16777215))
-        self.frame.setStyleSheet(u"QWidget {\n"
-"                border: 1px solid #E0E0E0;\n"
-"                padding: 10px;\n"
-"                border-radius: 10px;\n"
-"                background-color: #F7F7F7;\n"
-"                color: black;  /* Cor do texto preto */\n"
-"}")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.gridLayout_5 = QGridLayout(self.frame)
-        self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.gridLayout_5.setHorizontalSpacing(11)
-        self.gridLayout_5.setVerticalSpacing(0)
-        self.gridLayout_5.setContentsMargins(0, 0, 0, 5)
-        self.pushButton_8 = QPushButton(self.frame)
-        self.pushButton_8.setObjectName(u"pushButton_8")
-        self.pushButton_8.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_8.setIconSize(QSize(19, 39))
-
-        self.gridLayout_5.addWidget(self.pushButton_8, 1, 0, 1, 1)
-
-        self.pushButton_7 = QPushButton(self.frame)
-        self.pushButton_7.setObjectName(u"pushButton_7")
-        self.pushButton_7.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 5px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_7.setIconSize(QSize(19, 39))
-
-        self.gridLayout_5.addWidget(self.pushButton_7, 0, 0, 1, 1)
-
-        self.pushButton_10 = QPushButton(self.frame)
-        self.pushButton_10.setObjectName(u"pushButton_10")
-        self.pushButton_10.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_10.setIconSize(QSize(19, 39))
-
-        self.gridLayout_5.addWidget(self.pushButton_10, 3, 0, 1, 1)
-
-        self.pushButton_9 = QPushButton(self.frame)
-        self.pushButton_9.setObjectName(u"pushButton_9")
-        self.pushButton_9.setStyleSheet(u"            QPushButton {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 10px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 10px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }\n"
-"            QPushButton:hover {\n"
-"                background-color: #EDEDED;\n"
-"            }\n"
-"            QPushButton:pressed {\n"
-"                background-color: #DCDCDC;\n"
-"            }")
-        self.pushButton_9.setIconSize(QSize(19, 39))
-
-        self.gridLayout_5.addWidget(self.pushButton_9, 2, 0, 1, 1)
-
-        self.label = QLabel(self.frame_6)
-        self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(30, 80, 233, 13))
-        sizePolicy4.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy4)
-        self.label.setStyleSheet(u"QPushButton {\n"
-"    background-color: #D8DEE9;\n"
-"\n"
-"    color: #111111;\n"
-"\n"
-"}")
         self.line_5 = QFrame(self.frame_6)
         self.line_5.setObjectName(u"line_5")
         self.line_5.setGeometry(QRect(20, 320, 233, 3))
         self.line_5.setFrameShape(QFrame.HLine)
         self.line_5.setFrameShadow(QFrame.Sunken)
-        self.label_2 = QLabel(self.frame_6)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(20, 50, 233, 13))
-        sizePolicy4.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy4)
-        self.label_2.setStyleSheet(u"QPushButton {\n"
-"    background-color: #D8DEE9;\n"
-"\n"
-"    color: #111111;\n"
-"\n"
-"}")
-        self.layoutWidget = QWidget(self.frame_6)
-        self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(300, 60, 442, 71))
-        self.gridLayout_2 = QGridLayout(self.layoutWidget)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.label_279 = QLabel(self.layoutWidget)
-        self.label_279.setObjectName(u"label_279")
-        self.label_279.setMinimumSize(QSize(217, 0))
-        self.label_279.setMaximumSize(QSize(217, 16777215))
-        self.label_279.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_279, 3, 0, 1, 1)
-
-        self.label_280 = QLabel(self.layoutWidget)
-        self.label_280.setObjectName(u"label_280")
-        self.label_280.setMinimumSize(QSize(217, 0))
-        self.label_280.setMaximumSize(QSize(217, 16777215))
-        self.label_280.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_280, 2, 0, 1, 1)
-
-        self.label_282 = QLabel(self.layoutWidget)
-        self.label_282.setObjectName(u"label_282")
-        self.label_282.setMinimumSize(QSize(217, 0))
-        self.label_282.setMaximumSize(QSize(217, 16777215))
-        self.label_282.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_282, 7, 0, 1, 1)
-
-        self.label_283 = QLabel(self.layoutWidget)
-        self.label_283.setObjectName(u"label_283")
-        self.label_283.setMinimumSize(QSize(217, 0))
-        self.label_283.setMaximumSize(QSize(217, 16777215))
-        self.label_283.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_283, 2, 1, 1, 1)
-
-        self.label_281 = QLabel(self.layoutWidget)
-        self.label_281.setObjectName(u"label_281")
-        self.label_281.setMinimumSize(QSize(217, 0))
-        self.label_281.setMaximumSize(QSize(217, 16777215))
-        self.label_281.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_281, 3, 1, 1, 1)
-
-        self.label_278 = QLabel(self.layoutWidget)
-        self.label_278.setObjectName(u"label_278")
-        self.label_278.setMinimumSize(QSize(217, 0))
-        self.label_278.setMaximumSize(QSize(217, 16777215))
-        self.label_278.setStyleSheet(u"            QLabel {\n"
-"                background-color: #F7F7F7;\n"
-"                border: 1px solid #E0E0E0;\n"
-"                border-radius: 9px;  /* Borda arredondada (c\u00edrculo) */\n"
-"                color: black;  /* Cor do texto alterada para preto */\n"
-"                font-size: 9px;  /* Ajuste do tamanho do \u00edcone */\n"
-"            }")
-
-        self.gridLayout_2.addWidget(self.label_278, 7, 1, 1, 1)
-
         self.line_7 = QFrame(self.frame_6)
         self.line_7.setObjectName(u"line_7")
         self.line_7.setGeometry(QRect(300, 220, 79, 3))
@@ -1035,6 +548,270 @@ class Ui_MainWindow(object):
         self.line.setMinimumSize(QSize(0, 0))
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
+        self.widget_3 = QWidget(self.frame_6)
+        self.widget_3.setObjectName(u"widget_3")
+        self.widget_3.setGeometry(QRect(20, 20, 271, 231))
+        self.gridLayout_35 = QGridLayout(self.widget_3)
+        self.gridLayout_35.setObjectName(u"gridLayout_35")
+        self.frame = QFrame(self.widget_3)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(226, 0))
+        self.frame.setMaximumSize(QSize(16777215, 16777215))
+        self.frame.setStyleSheet(u"")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.gridLayout_5 = QGridLayout(self.frame)
+        self.gridLayout_5.setObjectName(u"gridLayout_5")
+        self.gridLayout_2 = QGridLayout()
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.verticalSpacer = QSpacerItem(20, 8, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
+
+        self.label = QLabel(self.frame)
+        self.label.setObjectName(u"label")
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        font = QFont()
+        font.setFamily(u"Microsoft Sans Serif")
+        self.label.setFont(font)
+        self.label.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                color: #7a7978;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 2)
+
+        self.line_15 = QFrame(self.frame)
+        self.line_15.setObjectName(u"line_15")
+        self.line_15.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                background: #dee0df;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+        self.line_15.setFrameShape(QFrame.HLine)
+        self.line_15.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_2.addWidget(self.line_15, 3, 0, 1, 2)
+
+        self.line_16 = QFrame(self.frame)
+        self.line_16.setObjectName(u"line_16")
+        self.line_16.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                background: #dee0df;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+        self.line_16.setFrameShape(QFrame.HLine)
+        self.line_16.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_2.addWidget(self.line_16, 5, 0, 1, 2)
+
+        self.pushButton_3 = QPushButton(self.frame)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+        sizePolicy2.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
+        self.pushButton_3.setSizePolicy(sizePolicy2)
+        self.pushButton_3.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #dbd9d9;\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 11px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        icon11 = QIcon()
+        icon11.addFile(u":/material_design/icons/material_design/add.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_3.setIcon(icon11)
+        self.pushButton_3.setIconSize(QSize(38, 28))
+
+        self.gridLayout_2.addWidget(self.pushButton_3, 4, 1, 1, 1)
+
+        self.label_3 = QLabel(self.frame)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setStyleSheet(u"")
+
+        self.gridLayout_2.addWidget(self.label_3, 4, 0, 1, 1)
+
+
+        self.gridLayout_5.addLayout(self.gridLayout_2, 0, 0, 1, 1)
+
+
+        self.gridLayout_35.addWidget(self.frame, 0, 0, 1, 1)
+
+        self.widget_4 = QWidget(self.frame_6)
+        self.widget_4.setObjectName(u"widget_4")
+        self.widget_4.setGeometry(QRect(60, 300, 271, 231))
+        self.gridLayout_36 = QGridLayout(self.widget_4)
+        self.gridLayout_36.setObjectName(u"gridLayout_36")
+        self.frame_2 = QFrame(self.widget_4)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMinimumSize(QSize(226, 0))
+        self.frame_2.setMaximumSize(QSize(16777215, 16777215))
+        self.frame_2.setStyleSheet(u"")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.gridLayout_6 = QGridLayout(self.frame_2)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.gridLayout_37 = QGridLayout()
+        self.gridLayout_37.setObjectName(u"gridLayout_37")
+        self.label_12 = QLabel(self.frame_2)
+        self.label_12.setObjectName(u"label_12")
+        sizePolicy.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
+        self.label_12.setSizePolicy(sizePolicy)
+        self.label_12.setStyleSheet(u"")
+
+        self.gridLayout_37.addWidget(self.label_12, 8, 0, 1, 1)
+
+        self.line_17 = QFrame(self.frame_2)
+        self.line_17.setObjectName(u"line_17")
+        self.line_17.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                background: #dee0df;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+        self.line_17.setFrameShape(QFrame.HLine)
+        self.line_17.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_37.addWidget(self.line_17, 5, 0, 1, 2)
+
+        self.label_9 = QLabel(self.frame_2)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setStyleSheet(u"")
+
+        self.gridLayout_37.addWidget(self.label_9, 6, 0, 1, 1)
+
+        self.pushButton_7 = QPushButton(self.frame_2)
+        self.pushButton_7.setObjectName(u"pushButton_7")
+        sizePolicy2.setHeightForWidth(self.pushButton_7.sizePolicy().hasHeightForWidth())
+        self.pushButton_7.setSizePolicy(sizePolicy2)
+        self.pushButton_7.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #dbd9d9;\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 11px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        self.pushButton_7.setIcon(icon11)
+        self.pushButton_7.setIconSize(QSize(38, 28))
+
+        self.gridLayout_37.addWidget(self.pushButton_7, 4, 1, 1, 1)
+
+        self.pushButton_8 = QPushButton(self.frame_2)
+        self.pushButton_8.setObjectName(u"pushButton_8")
+        sizePolicy2.setHeightForWidth(self.pushButton_8.sizePolicy().hasHeightForWidth())
+        self.pushButton_8.setSizePolicy(sizePolicy2)
+        self.pushButton_8.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #dbd9d9;\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 11px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        self.pushButton_8.setIcon(icon11)
+        self.pushButton_8.setIconSize(QSize(38, 28))
+
+        self.gridLayout_37.addWidget(self.pushButton_8, 6, 1, 1, 1)
+
+        self.label_10 = QLabel(self.frame_2)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setStyleSheet(u"")
+
+        self.gridLayout_37.addWidget(self.label_10, 4, 0, 1, 1)
+
+        self.label_11 = QLabel(self.frame_2)
+        self.label_11.setObjectName(u"label_11")
+        sizePolicy.setHeightForWidth(self.label_11.sizePolicy().hasHeightForWidth())
+        self.label_11.setSizePolicy(sizePolicy)
+        self.label_11.setFont(font)
+        self.label_11.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                color: #7a7978;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+
+        self.gridLayout_37.addWidget(self.label_11, 0, 0, 1, 2)
+
+        self.line_18 = QFrame(self.frame_2)
+        self.line_18.setObjectName(u"line_18")
+        self.line_18.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                background: #dee0df;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+        self.line_18.setFrameShape(QFrame.HLine)
+        self.line_18.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_37.addWidget(self.line_18, 3, 0, 1, 2)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 8, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout_37.addItem(self.verticalSpacer_2, 1, 0, 1, 1)
+
+        self.line_19 = QFrame(self.frame_2)
+        self.line_19.setObjectName(u"line_19")
+        self.line_19.setStyleSheet(u"\n"
+"QWidget {\n"
+"\n"
+"                background: #dee0df;  /* Cor do texto preto */\n"
+"}\n"
+"\n"
+"")
+        self.line_19.setFrameShape(QFrame.HLine)
+        self.line_19.setFrameShadow(QFrame.Sunken)
+
+        self.gridLayout_37.addWidget(self.line_19, 7, 0, 1, 2)
+
+        self.pushButton = QPushButton(self.frame_2)
+        self.pushButton.setObjectName(u"pushButton")
+        sizePolicy2.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy2)
+        self.pushButton.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #dbd9d9;\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 11px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        self.pushButton.setIcon(icon11)
+        self.pushButton.setIconSize(QSize(38, 28))
+
+        self.gridLayout_37.addWidget(self.pushButton, 8, 1, 1, 1)
+
+
+        self.gridLayout_6.addLayout(self.gridLayout_37, 0, 0, 1, 1)
+
+
+        self.gridLayout_36.addWidget(self.frame_2, 0, 0, 1, 1)
+
+        self.label_2 = QLabel(self.frame_6)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setGeometry(QRect(290, 240, 185, 28))
+        self.label_2.setStyleSheet(u"")
+        self.pushButton_4 = QPushButton(self.frame_6)
+        self.pushButton_4.setObjectName(u"pushButton_4")
+        self.pushButton_4.setGeometry(QRect(400, 240, 42, 28))
+        sizePolicy2.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
+        self.pushButton_4.setSizePolicy(sizePolicy2)
+        self.pushButton_4.setStyleSheet(u"            QPushButton {\n"
+"                background-color: #dbd9d9;\n"
+"                border-radius: 13px;  /* Borda arredondada (c\u00edrculo) */\n"
+"                color: black;  /* Cor do texto alterada para preto */\n"
+"                font-size: 11px;  /* Ajuste do tamanho do \u00edcone */\n"
+"            }\n"
+"")
+        self.pushButton_4.setIcon(icon11)
+        self.pushButton_4.setIconSize(QSize(38, 28))
 
         self.gridLayout_12.addWidget(self.frame_6, 0, 0, 1, 1)
 
@@ -1054,78 +831,53 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.pushButton_16.setText(QCoreApplication.translate("MainWindow", u"Menu", None))
         self.close_window_button.setText("")
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
-        self.pushButton_16.setText(QCoreApplication.translate("MainWindow", u"Menu", None))
+#if QT_CONFIG(tooltip)
+        self.send_mensage.setToolTip(QCoreApplication.translate("MainWindow", u"Send message to agent", None))
+#endif // QT_CONFIG(tooltip)
+        self.send_mensage.setText("")
+#if QT_CONFIG(tooltip)
+        self.atach_file.setToolTip(QCoreApplication.translate("MainWindow", u"Send files to the agent", None))
+#endif // QT_CONFIG(tooltip)
         self.atach_file.setText("")
+#if QT_CONFIG(tooltip)
+        self.pushButton_6.setToolTip(QCoreApplication.translate("MainWindow", u"Chat via voice chat with an agent", None))
+#endif // QT_CONFIG(tooltip)
+        self.pushButton_6.setText("")
+        self.openLousa.setText("")
+        self.mensage_input.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Message...", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Thread: ", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"0 tokens", None))
+        self.AtachFilesToThread_Benchmark.setText("")
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"SoftwareAI Agent:", None))
+        self.html_chat.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Arial'; font-size:14px; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.view_threads.setText("")
         self.settings_agent.setText("")
-        self.send_mensage.setText("")
-        self.pushButton_6.setText("")
-        self.mensage_input.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Mensagem...", None))
+        self.StorageAgentOutput_.setText(QCoreApplication.translate("MainWindow", u"Store agent output and entries", None))
+        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Agent Keys OpenAI:", None))
+        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"Store Format json", None))
+        self.StoreFormatJsonAndJsonl.setText(QCoreApplication.translate("MainWindow", u"Store Format json and jsonl", None))
+        self.StorageAgentCompletions.setText(QCoreApplication.translate("MainWindow", u"Store Completions", None))
+        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Store Format jsonl", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Back to home", None))
-        self.label_295.setText(QCoreApplication.translate("MainWindow", u"Vectorstore in Thread:", None))
-        self.vectorstore_in_agent.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">None</span></p></body></html>", None))
-        self.label_289.setText(QCoreApplication.translate("MainWindow", u"Model select:", None))
-        self.label_290.setText(QCoreApplication.translate("MainWindow", u"tools:", None))
-        self.label_293.setText(QCoreApplication.translate("MainWindow", u"Aditional instructions:", None))
-        self.label_291.setText(QCoreApplication.translate("MainWindow", u"Key:", None))
-        self.label_292.setText(QCoreApplication.translate("MainWindow", u"Nameassistant:", None))
-        self.vectorstore_in_thread.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">None</span></p></body></html>", None))
-        self.label_294.setText(QCoreApplication.translate("MainWindow", u"Vectorstore in assistant:", None))
-        self.label_296.setText(QCoreApplication.translate("MainWindow", u"Instruction:", None))
-        self.tools_agent.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">None</span></p></body></html>", None))
-        self.name_agent.setPlaceholderText(QCoreApplication.translate("MainWindow", u"AI ByteManager Donos da Empresa Urobotsoftware", None))
-        self.key_firebase_agent.setPlaceholderText(QCoreApplication.translate("MainWindow", u"AI_ByteManager_Company_Owners", None))
-        self.model_agent.setPlaceholderText(QCoreApplication.translate("MainWindow", u"gpt-4o-mini-2024-07-18", None))
-        self.Upload_1file_in_message.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.Upload_1file_in_message.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Local Path", None))
-        self.addition_instruct.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.addition_instruct.setPlaceholderText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.Upload_1file_in_thread.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.Upload_1file_in_thread.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Local Path", None))
-        self.Upload_1image_for_vision_in_thread.setText(QCoreApplication.translate("MainWindow", u"None", None))
-        self.Upload_1image_for_vision_in_thread.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Local Path", None))
-        self.label_297.setText(QCoreApplication.translate("MainWindow", u"Upload 1 file in thread:", None))
-        self.label_299.setText(QCoreApplication.translate("MainWindow", u"Upload 1 image for vision in thread:", None))
-        self.label_298.setText(QCoreApplication.translate("MainWindow", u"Upload 1 file  in message:", None))
-        self.checkBox_6.setText(QCoreApplication.translate("MainWindow", u"Voice onyx", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"Voice Engine PC Voice", None))
-        self.checkBox_4.setText(QCoreApplication.translate("MainWindow", u"Voice echo", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"Voice Engine tts-1", None))
-        self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"Voice alloy", None))
-        self.checkBox_7.setText(QCoreApplication.translate("MainWindow", u"Voice nova", None))
-        self.checkBox_5.setText(QCoreApplication.translate("MainWindow", u"Voice fable", None))
-        self.pushButton_15.setText(QCoreApplication.translate("MainWindow", u"Back to home", None))
-        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_12.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_13.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_14.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Ontem:", None))
-        self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"Thread: ...", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Hoje:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Threads:", None))
-        self.label_279.setText(QCoreApplication.translate("MainWindow", u"Model:", None))
-        self.label_280.setText(QCoreApplication.translate("MainWindow", u"Assistant Name: ", None))
-        self.label_282.setText(QCoreApplication.translate("MainWindow", u"Tools: ", None))
-        self.label_283.setText(QCoreApplication.translate("MainWindow", u"File search:", None))
-        self.label_281.setText(QCoreApplication.translate("MainWindow", u"Code interpreter:", None))
-        self.label_278.setText(QCoreApplication.translate("MainWindow", u"Vector storage:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Thread's files", None))
+        self.pushButton_3.setText("")
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"File search", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"image for vision", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Code interpreter", None))
+        self.pushButton_7.setText("")
+        self.pushButton_8.setText("")
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"File search", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Mensage files", None))
+        self.pushButton.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Code interpreter", None))
+        self.pushButton_4.setText("")
     # retranslateUi
 
