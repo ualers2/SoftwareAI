@@ -9,7 +9,7 @@
 - [📖 Index Docs](#-indexdocs)
 - [🔄 Info-Update](#Docs/Update.md)
 - [🚀 Starting SoftwareAI Chat](#-start-softwareai-with-ui)
-- [🚀 Starting SoftwareAI Editor](#-start-softwareai-editor-with-ui)
+- [🚀 Starting SoftwareAI Editor](#-softwareai-editor)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
 - [👥 Index-Team](#-indexteam)
 - [🗺️ Roadmaps](Docs/Roadmaps)
@@ -21,27 +21,17 @@
 #
 
 
-## 🚀 Start SoftwareAI-Editor
+## 🚀 SoftwareAI-Editor 
+**Build Agents**: Edit, Build and Bring your Agent to life
 ![UI](Gifs/1222.gif)
-### Installation SoftwareAI
-```bash
-git clone https://github.com/ualers/SoftwareAI
-```
-### Installation requirements
-```bash
-pip install -r requirements.txt
-```
-### Basic Usage
-```bash
-Editor.py
-```
-#
-#
-#
+📖 **SoftwareAI-Editor**: is the most important part when thinking about creating a company 100% governed by AI, here we will build and modify each agent for its specific use
+## 📖 [Editor Installation](Docs/Installation/Editor.md)
+## 📖 [Editor RoadMap](Docs/Roadmaps/Editor-Roadmap.md)
+
+
 #
 
-## 🚀 Start SoftwareAI with UI
-
+## 🚀 Start SoftwareAI with UI 
 ⚠️ **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
 ![UI](Gifs/1221.gif)
 
