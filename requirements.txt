@@ -1,35 +1,11 @@
-# https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets
-QT-PyQt-PySide-Custom-Widgets
-
-# https://github.com/anjalp/PySide2extn
-PySide2extn
-
-# Firebase Admin SDK
+git+https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets.git
+git+https://github.com/anjalp/PySide2extn.git
 firebase-admin
-
-# Concurrent processing
-futures
-
-# Asynchronous programming
 asyncio
-
-# Pandas library
 pandas
-
-# TikToken library for text processing
 tiktoken
-
-# GitHub API client
 PyGithub
-
-# Requests library for HTTP requests
 requests
-
-# Python environment variables handling
 python-dotenv
-
-# GitPython for interacting with Git repositories
 gitpython
-
-# OpenAI API client
 openai
