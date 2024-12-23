@@ -10,4 +10,5 @@ from .Software_Planning.Bob_tools import *
 from .Software_Planning.Dallas_tools import *
 from .Software_Requirements_Analysis.SynthOperator_tools import *
 
- 
+from .Software_Requirements_Analysis.Dallas2_tools import *
+                
