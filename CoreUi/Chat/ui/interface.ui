@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>716</width>
+    <height>457</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background:white</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="2">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="close_window_button">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../Qss/icons/_icons.qrc">
+          <normaloff>:/feather/icons/feather/window_close.png</normaloff>:/feather/icons/feather/window_close.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="restore_window_button">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../Qss/icons/_icons.qrc">
+          <normaloff>:/feather/icons/feather/maximize-2.png</normaloff>:/feather/icons/feather/maximize-2.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="minimize_window_button">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../Qss/icons/_icons.qrc">
+          <normaloff>:/feather/icons/feather/window_minimize.png</normaloff>:/feather/icons/feather/window_minimize.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCustomQPushButton" name="open_close_side_bar_btn">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>35</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>35</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../Qss/icons/_icons.qrc">
+          <normaloff>:/feather/icons/feather/chevrons-left.png</normaloff>:/feather/icons/feather/chevrons-left.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCustomSlideMenu" name="menu_widget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>42</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>42</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="page1ss">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../Qss/icons/_icons.qrc">
+           <normaloff>:/material_design/icons/material_design/chat.png</normaloff>:/material_design/icons/material_design/chat.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="page2ssss">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../Qss/icons/_icons.qrc">
+           <normaloff>:/feather/icons/feather/edit-2.png</normaloff>:/feather/icons/feather/edit-2.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Maximum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>300</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QCustomQStackedWidget" name="myStackedWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>650</width>
+        <height>400</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QWidget {
+    background-color: white;
+}
+</string>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="page_2"/>
+      <widget class="QWidget" name="page">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0" colspan="4">
+         <widget class="QTextEdit" name="html_chat">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>547</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">            QTextEdit {
+          
+                border: 1px solid #E0E0E0;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #F7F7F7;
+                color: black;  /* Cor do texto preto */
+                font-family: Arial;
+                font-size: 14px;
+            }</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCustomQPushButton" name="atach_file">
+          <property name="styleSheet">
+           <string notr="true">            QPushButton {
+                background-color: #F7F7F7;
+                border: 1px solid #E0E0E0;
+                border-radius: 13px;  /* Borda arredondada (círculo) */
+                color: black;  /* Cor do texto alterada para preto */
+                font-size: 13px;  /* Ajuste do tamanho do ícone */
+            }
+            QPushButton:hover {
+                background-color: #EDEDED;
+            }
+            QPushButton:pressed {
+                background-color: #DCDCDC;
+            }</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../Qss/icons/_icons.qrc">
+            <normaloff>:/font_awesome_solid/icons/font_awesome/solid/file-arrow-down.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/file-arrow-down.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>22</width>
+            <height>26</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QTextEdit" name="mensage_input">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">            QTextEdit {
+                border: 1px solid #E0E0E0;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #F7F7F7;
+                color: black;  /* Cor do texto alterada para preto */
+            }</string>
+          </property>
+          <property name="placeholderText">
+           <string>Mensagem...</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QCustomQPushButton" name="send_mensage">
+          <property name="styleSheet">
+           <string notr="true">            QPushButton {
+                background-color: #F7F7F7;
+                border: 1px solid #E0E0E0;
+                border-radius: 13px;  /* Borda arredondada (círculo) */
+                color: black;  /* Cor do texto alterada para preto */
+                font-size: 16px;  /* Ajuste do tamanho do ícone */
+            }
+            QPushButton:hover {
+                background-color: #EDEDED;
+            }
+            QPushButton:pressed {
+                background-color: #DCDCDC;
+            }</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../Qss/icons/_icons.qrc">
+            <normaloff>:/feather/icons/feather/send.png</normaloff>:/feather/icons/feather/send.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QCustomQPushButton" name="pushButton_6">
+          <property name="styleSheet">
+           <string notr="true">            QPushButton {
+                background-color: #F7F7F7;
+                border: 1px solid #E0E0E0;
+                border-radius: 13px;  /* Borda arredondada (círculo) */
+                color: black;  /* Cor do texto alterada para preto */
+                font-size: 16px;  /* Ajuste do tamanho do ícone */
+            }
+            QPushButton:hover {
+                background-color: #EDEDED;
+            }
+            QPushButton:pressed {
+                background-color: #DCDCDC;
+            }</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../Qss/icons/_icons.qrc">
+            <normaloff>:/feather/icons/feather/mic.png</normaloff>:/feather/icons/feather/mic.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>27</width>
+            <height>27</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Maximum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>580</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomQStackedWidget</class>
+   <extends>QStackedWidget</extends>
+   <header location="global">Custom_Widgets.QCustomQStackedWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QCustomSlideMenu</class>
+   <extends>QWidget</extends>
+   <header location="global">Custom_Widgets.QCustomSlideMenu.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QCustomQPushButton</class>
+   <extends>QPushButton</extends>
+   <header location="global">Custom_Widgets.QCustomQPushButton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../Qss/icons/_icons.qrc"/>
+  <include location="../Qss/icons/_icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
