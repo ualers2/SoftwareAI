@@ -1,0 +1,2 @@
+
+{'status': 'Em andamento', 'secoes': ['📖 Introdução', '🛠️ Instalação', '🔧 Uso', '📁 Estrutura do Projeto', '⚙️ API', '🤝 Contribuição', '📜 Licença'], 'observacoes': 'A documentação abrange todos os aspectos relevantes do projeto. É recomendável revisar periodicamente as seções e garantir que as informações estejam sempre atualizadas.'}
