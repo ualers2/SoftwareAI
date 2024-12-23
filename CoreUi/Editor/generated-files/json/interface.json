@@ -34,7 +34,7 @@
     },
     {
       "name": "pushButton_3",
-      "icon": "Qss/icons/icons/material_design/image.png"
+      "icon": "d:\\Save disk C\\Saas do site\\Projetos de codigo aberto\\SoftwareAI\\softwareai\\CoreUi\\Editor\\ui\\:\\material_design\\icons\\material_design\\image.png"
     },
     {
       "name": "PromptSettings",
@@ -120,7 +120,7 @@
     },
     {
       "name": "CleanThread_Benchmark",
-      "icon": "Qss/icons/icons/material_design/cleaning_services.png"
+      "icon": "d:\\Save disk C\\Saas do site\\Projetos de codigo aberto\\SoftwareAI\\softwareai\\CoreUi\\Editor\\ui\\:\\material_design\\icons\\material_design\\cleaning_services.png"
     },
     {
       "name": "AtachFilesToThread_Benchmark",
@@ -132,7 +132,7 @@
     },
     {
       "name": "send_mensage__Benchmark",
-      "icon": "Qss/icons/icons/material_design/send.png"
+      "icon": "d:\\Save disk C\\Saas do site\\Projetos de codigo aberto\\SoftwareAI\\softwareai\\CoreUi\\Editor\\ui\\:\\material_design\\icons\\material_design\\send.png"
     },
     {
       "name": "Add_new_instructions_button_edit",
