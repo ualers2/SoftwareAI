@@ -1,13 +1,22 @@
-
+![UI](Gifs/1222.gif)
 ## 📖 Editor Roadmap
 - [X] `Editor keys github` create a section for editing agent keys on github
 - [X] `Editor open ai` create a section for editing open ai keys
 - [X] `Editor Firebase` create a section for editing firebase app keys
+- [] `Editor Categoria` Criar seção de criação de categoria
+- []  Criar codigo para adicionar agente buildado em `_init_agents_`
+- []  Criar codigo para Armazenar os chat completions com store
+- []  Criar Opcao para adicionar mais de uma function ao buildar agente
+- []  Criar Opcao para selecionar argumentos para chamada do agente ja conhecidos e consolidados
+- []  Criar Opcao para buildar agentes especificos ja consolidados com 1 click como por exemplo `CloudArchitect` que cria documentos .md de alta qualidade ou `QuantumCore` que é capaz de criar um software e upalo no github
+
+
 
 ## **Editor**  
-- **21/12/2024**  
+- **22/12/2024**  
   - [] `22:30:00` QCustomCodeEditor so that modifications can be made directly to the agent code
-  
+
+
 - **Editor instructions**  
   - [X] Functional Instruction Editor 
   - [X] Functional Instruction Creator 
