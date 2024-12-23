@@ -5,16 +5,16 @@
 ![License](https://img.shields.io/badge/license-Apache-green)
 
 # 📜 Table of Contents
-- [📖 About](#-about)
+- [📖 About](Docs/About/SoftwareAI.md)
 - [📖 Index Docs](#-indexdocs)
 - [🔄 Info-Update](Docs/Update/Update.md)
 - [🚀 Starting SoftwareAI Chat](#-start-softwareai-chat)
 - [🚀 Starting SoftwareAI Editor](#-softwareai-editor)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
-- [👥 Index-Team](#-index-team)
+- [👥 Index-Team](Docs/IndexTeam/IndexTeam.md)
 - [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
-- [📁 Project Structure](#-softwareai-structure)
+- [📁 SoftwareAI Structure](Docs/Structure/SoftwareAIStructure.md)
 - [🤝 Contributing](#-contributing)
 #
 
@@ -34,14 +34,35 @@
 ![UI](Gifs/1221.gif)
 
 ## 📚 [SoftwareAI-Chat Installation](Docs/Installation/Chat.md)
+## 📚 [SoftwareAI-Chat RoadMap](Docs/Roadmaps/Chat-Roadmap.md)
+#
 ## 🚀 Get started SoftwareAI without UI
-🔧 [SoftwareAI Installation](Docs/Installation/SoftwareAI.md)
-## 📖 About: 
-- [SoftwareAI About](Docs/About/SoftwareAI.md)
-## 📁 SoftwareAI Structure: 
-- [SoftwareAI Structure](Docs/Structure/SoftwareAIStructure.md)
-## 👥 Index Team 
-- [Teams Docs](Docs/IndexTeam/IndexTeam.md)
+- 🔧 [SoftwareAI Installation](Docs/Installation/SoftwareAI.md)
+- 🔧 Basic Usage:
+    ```python
+    # Importing SoftwareAI Agents
+    from CoreApp._init_agents_ import AgentInitializer
+
+    # Importing SoftwareAI Libraries
+    from CoreApp._init_libs_ import *
+
+    # Initializing Agent
+    byte_manager = AgentInitializer.get_agent('ByteManager') 
+
+    # Usage Example
+    message = "I request a script for technical analysis of Solana cryptocurrency"
+    owner_response = byte_manager.AI_1_ByteManager_Company_Owners(message)
+    print(owner_response)
+    ```
+## 💡 SoftwareAI without UI Features
+- 📊 Creation of pre-project documentation
+- 🗺️ Roadmap generation
+- 📅 Automatic schedules
+- 📝 Requirements analysis
+- 🔄 GitHub repository management
+- ⚡ Loop of 5 automatic improvements
+- 📚 Repository on github generated with the example above: https://github.com/A-I-O-R-G/solana-analyzer
+
 
 ## 📖 IndexDocs
 - [About](Docs/About)
