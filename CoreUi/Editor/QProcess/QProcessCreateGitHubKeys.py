@@ -25,7 +25,7 @@ from CoreApp._init_keys_ import *
 class QProcessCreateGitHubKeys(QThread):
     ModalSucess = Signal(str)
     ModalInfo = Signal(str)
-
+    finish = Signal()
     def __init__(self,
                 githuusername_AgentKeys,
                 githubtoken_AgentKeys
@@ -57,4 +57,4 @@ class GithubKeys{self.githuusername_AgentKeys.replace(" ", "_")}:
 
 
         self.ModalSucess.emit(f"Your Key has been created")
-
+        self.finish.emit()
