@@ -1,3 +1,5 @@
+from .pegar_hora_submit_outputs import submit_output_pegar_hora
+
 from .create_github_repo_and_upload_submit_outputs import submit_output_create_github_repo_and_upload
 from .get_current_datetime_submit_outputs import submit_output_get_current_datetime
 from .improve_code_and_create_pull_request_submit_outputs import submit_output_improve_code_and_create_pull_request
@@ -16,8 +18,8 @@ def _init_output_(function_name,
                 client,
                 run):
     
-    # Lista das funções `submit_output_*` que serão chamadas com os mesmos argumentos
     functions_to_call = [
+        submit_output_pegar_hora,
         submit_output_get_current_datetime,
         submit_output_create_github_repo_and_upload,
         submit_output_improve_code_and_create_pull_request,
@@ -30,7 +32,6 @@ def _init_output_(function_name,
         submit_output_update_readme
     ]
     
-    # Iterar sobre a lista de funções e chamá-las com os argumentos fornecidos
     for func in functions_to_call:
         if func == submit_output_get_current_datetime:
             flag = func(function_name, function_arguments, tool_call, threead_id, client, run)
