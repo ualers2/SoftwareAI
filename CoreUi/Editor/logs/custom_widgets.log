@@ -2327,3 +2327,27 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2024-12-22 21:48:37,353 - DEBUG - response_closed.complete
 2024-12-22 21:48:37,353 - DEBUG - HTTP Response: POST https://api.openai.com/v1/assistants/asst_GWE8aazw0iois0ms91TszBUA "200 OK" Headers([('date', 'Mon, 23 Dec 2024 00:48:27 GMT'), ('content-type', 'application/json'), ('transfer-encoding', 'chunked'), ('connection', 'keep-alive'), ('openai-version', '2020-10-01'), ('openai-organization', 'user-rwaavzhx8ve8ladw790gu4dr'), ('x-request-id', 'req_bb8882314937dfa8602e99ce9f24c0da'), ('openai-processing-ms', '266'), ('strict-transport-security', 'max-age=31536000; includeSubDomains; preload'), ('cf-cache-status', 'DYNAMIC'), ('set-cookie', '__cf_bm=Zz8U3Te98CMIF3scZgtdJJJMLifPj0gcMZp8iQsPSLc-1734914907-1.0.1.1-O.4UBqw7_tWmb2Zw4lBr9CMqz1g1BS3_l_btOHBaM6ZsHm7kSr6MDO0xoFJkOI8lXPkXLCIUmbXJA.ve6zhbGg; path=/; expires=Mon, 23-Dec-24 01:18:27 GMT; domain=.api.openai.com; HttpOnly; Secure; SameSite=None'), ('x-content-type-options', 'nosniff'), ('set-cookie', '_cfuvid=ELZYDLzNxhQWG1hwj0YzQAQK3HIQAGUMp.pAJDDQnKo-1734914907059-0.0.1.1-604800000; path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None'), ('server', 'cloudflare'), ('cf-ray', '8f6458941f872697-CNF'), ('content-encoding', 'br'), ('alt-svc', 'h3=":443"; ma=86400')])
 2024-12-22 21:48:37,353 - DEBUG - request_id: req_bb8882314937dfa8602e99ce9f24c0da
+2024-12-22 23:02:15,615 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-22 23:02:15,616 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:06:29,730 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:06:29,731 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:08:16,737 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:08:16,738 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:10:30,806 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:10:30,807 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:43:54,519 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:43:54,520 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:53:19,826 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:53:19,827 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:55:06,978 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:55:06,979 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 12:59:17,707 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 12:59:17,708 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 13:06:12,064 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 13:06:12,064 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 13:09:02,871 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 13:09:02,871 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 13:28:29,393 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 13:28:29,394 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
+2024-12-23 13:34:34,862 - DEBUG - load_ssl_context verify=True cert=None trust_env=True http2=False
+2024-12-23 13:34:34,862 - DEBUG - load_verify_locations cafile='C:\\Users\\ualer\\AppData\\Local\\Programs\\Python\\Python39\\lib\\site-packages\\certifi\\cacert.pem'
