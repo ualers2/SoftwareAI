@@ -9,3 +9,6 @@ from .save_TXT_function import *
 from .save_code_function import *
 from .execute_python_code_function import *
 from .update_readme_function import *
+            
+from .pegar_hora_function import *
+                
