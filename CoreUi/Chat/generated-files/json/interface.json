@@ -1,0 +1,42 @@
+{
+  "QPushButton": [
+    {
+      "name": "close_window_button",
+      "icon": "Qss/icons/icons/feather/window_close.png"
+    },
+    {
+      "name": "restore_window_button",
+      "icon": "Qss/icons/icons/feather/maximize-2.png"
+    },
+    {
+      "name": "minimize_window_button",
+      "icon": "Qss/icons/icons/feather/window_minimize.png"
+    },
+    {
+      "name": "page1ss",
+      "icon": "Qss/icons/icons/material_design/chat.png"
+    },
+    {
+      "name": "page2ssss",
+      "icon": "Qss/icons/icons/feather/edit-2.png"
+    }
+  ],
+  "QCustomQPushButton": [
+    {
+      "name": "open_close_side_bar_btn",
+      "icon": "Qss/icons/icons/feather/chevrons-left.png"
+    },
+    {
+      "name": "atach_file",
+      "icon": "Qss/icons/icons/font_awesome/solid/file-arrow-down.png"
+    },
+    {
+      "name": "send_mensage",
+      "icon": "Qss/icons/icons/feather/send.png"
+    },
+    {
+      "name": "pushButton_6",
+      "icon": "Qss/icons/icons/feather/mic.png"
+    }
+  ]
+}
