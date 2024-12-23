@@ -1,0 +1,70 @@
+{
+  "QCustomQPushButton": [
+    {
+      "name": "pushButton_16",
+      "icon": "Qss/icons/icons/font_awesome/solid/list.png"
+    },
+    {
+      "name": "send_mensage",
+      "icon": "Qss/icons/icons/feather/send.png"
+    },
+    {
+      "name": "atach_file",
+      "icon": "Qss/icons/icons/font_awesome/solid/file-arrow-down.png"
+    },
+    {
+      "name": "pushButton_6",
+      "icon": "Qss/icons/icons/feather/mic.png"
+    },
+    {
+      "name": "AtachFilesToThread_Benchmark",
+      "icon": "Qss/icons/icons/font_awesome/solid/database.png"
+    },
+    {
+      "name": "view_threads",
+      "icon": "Qss/icons/icons/feather/activity.png"
+    },
+    {
+      "name": "settings_agent",
+      "icon": "Qss/icons/icons/feather/settings.png"
+    }
+  ],
+  "QPushButton": [
+    {
+      "name": "close_window_button",
+      "icon": "Qss/icons/icons/feather/window_close.png"
+    },
+    {
+      "name": "minimize_window_button",
+      "icon": "Qss/icons/icons/feather/window_minimize.png"
+    },
+    {
+      "name": "restore_window_button",
+      "icon": "Qss/icons/icons/feather/maximize-2.png"
+    },
+    {
+      "name": "openLousa",
+      "icon": "Qss/icons/icons/font_awesome/solid/code.png"
+    },
+    {
+      "name": "pushButton_3",
+      "icon": "Qss/icons/icons/material_design/add.png"
+    },
+    {
+      "name": "pushButton_7",
+      "icon": "Qss/icons/icons/material_design/add.png"
+    },
+    {
+      "name": "pushButton_8",
+      "icon": "Qss/icons/icons/material_design/add.png"
+    },
+    {
+      "name": "pushButton",
+      "icon": "Qss/icons/icons/material_design/add.png"
+    },
+    {
+      "name": "pushButton_4",
+      "icon": "Qss/icons/icons/material_design/add.png"
+    }
+  ]
+}
