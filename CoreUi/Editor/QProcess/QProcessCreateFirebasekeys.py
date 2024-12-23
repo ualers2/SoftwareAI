@@ -28,7 +28,7 @@ class QProcessCreateFirebasekeys(QThread):
     ModalSucess = Signal(str)
     ModalInfo = Signal(str)
     uploadcredentials = Signal(str)
-
+    finish = Signal()
     def __init__(self,
                 appname_AgentKeys,
                 Databaseurl_AgentKeys,
@@ -55,18 +55,18 @@ class QProcessCreateFirebasekeys(QThread):
 def keys_{self.appname_AgentKeys.replace(" ", "_")}():
     cred1 = {self.credentialsapp_AgentKeys}
     credt1 = credentials.Certificate(cred1)
-    {self.appname_AgentKeys.replace(" ", "_")} = initialize_app(credt1, {{
+    app{self.appname_AgentKeys.replace(" ", "_")} = initialize_app(credt1, {{
             'storageBucket': '{self.Storagebucket_AgentKeys}',
             'databaseURL': '{self.Databaseurl_AgentKeys}'
     }}, name='{self.appname_AgentKeys.replace(" ", "_")}')
-    return {self.appname_AgentKeys.replace(" ", "_")}
+    return app{self.appname_AgentKeys.replace(" ", "_")}
     
             ''')
             file.close()
 
 
         self.ModalSucess.emit(f"Your Key has been created")
-
+        self.finish.emit()
 
 
 
