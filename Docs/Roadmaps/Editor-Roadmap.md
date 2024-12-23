@@ -1,4 +1,3 @@
-![UI](Gifs/1222.gif)
 ## 📖 Editor Roadmap
 - [X] `Editor keys github` create a section for editing agent keys on github
 - [X] `Editor open ai` create a section for editing open ai keys
