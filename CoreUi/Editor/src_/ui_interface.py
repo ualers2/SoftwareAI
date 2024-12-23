@@ -524,13 +524,13 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.comboBox_list_instruction_edit = QComboBox(self.page_3)
         self.comboBox_list_instruction_edit.setObjectName(u"comboBox_list_instruction_edit")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy7.setHorizontalStretch(0)
         sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.comboBox_list_instruction_edit.sizePolicy().hasHeightForWidth())
         self.comboBox_list_instruction_edit.setSizePolicy(sizePolicy7)
         self.comboBox_list_instruction_edit.setMinimumSize(QSize(571, 0))
-        self.comboBox_list_instruction_edit.setMaximumSize(QSize(571, 16777215))
+        self.comboBox_list_instruction_edit.setMaximumSize(QSize(16777215, 16777215))
         self.comboBox_list_instruction_edit.setStyleSheet(u"QComboBox {\n"
 "    background-color: #F7F7F7;\n"
 "    border: 1px solid #E0E0E0;\n"
@@ -1021,11 +1021,6 @@ class Ui_MainWindow(object):
         self.gridLayout_15.setHorizontalSpacing(5)
         self.gridLayout_15.setVerticalSpacing(15)
         self.gridLayout_15.setContentsMargins(6, 1, 8, 1)
-        self.label_7 = QLabel(self.groupBox_3)
-        self.label_7.setObjectName(u"label_7")
-
-        self.gridLayout_15.addWidget(self.label_7, 1, 0, 1, 1)
-
         self.AgentCategory = QComboBox(self.groupBox_3)
         self.AgentCategory.setObjectName(u"AgentCategory")
         sizePolicy.setHeightForWidth(self.AgentCategory.sizePolicy().hasHeightForWidth())
@@ -1061,6 +1056,21 @@ class Ui_MainWindow(object):
 
         self.gridLayout_15.addWidget(self.AgentCategory, 5, 1, 1, 1)
 
+        self.label_7 = QLabel(self.groupBox_3)
+        self.label_7.setObjectName(u"label_7")
+
+        self.gridLayout_15.addWidget(self.label_7, 1, 0, 1, 1)
+
+        self.label_6 = QLabel(self.groupBox_3)
+        self.label_6.setObjectName(u"label_6")
+
+        self.gridLayout_15.addWidget(self.label_6, 0, 0, 1, 1)
+
+        self.label_15 = QLabel(self.groupBox_3)
+        self.label_15.setObjectName(u"label_15")
+
+        self.gridLayout_15.addWidget(self.label_15, 5, 0, 1, 1)
+
         self.KeyInFirebase = QTextEdit(self.groupBox_3)
         self.KeyInFirebase.setObjectName(u"KeyInFirebase")
         sizePolicy.setHeightForWidth(self.KeyInFirebase.sizePolicy().hasHeightForWidth())
@@ -1076,16 +1086,6 @@ class Ui_MainWindow(object):
 "            }")
 
         self.gridLayout_15.addWidget(self.KeyInFirebase, 0, 1, 1, 1)
-
-        self.label_6 = QLabel(self.groupBox_3)
-        self.label_6.setObjectName(u"label_6")
-
-        self.gridLayout_15.addWidget(self.label_6, 0, 0, 1, 1)
-
-        self.label_15 = QLabel(self.groupBox_3)
-        self.label_15.setObjectName(u"label_15")
-
-        self.gridLayout_15.addWidget(self.label_15, 5, 0, 1, 1)
 
         self.NameAgent = QTextEdit(self.groupBox_3)
         self.NameAgent.setObjectName(u"NameAgent")
@@ -1107,6 +1107,11 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName(u"label_8")
 
         self.gridLayout_15.addWidget(self.label_8, 4, 0, 1, 1)
+
+        self.label_28 = QLabel(self.groupBox_3)
+        self.label_28.setObjectName(u"label_28")
+
+        self.gridLayout_15.addWidget(self.label_28, 6, 0, 1, 1)
 
         self.AgentKeysGithub = QComboBox(self.groupBox_3)
         self.AgentKeysGithub.setObjectName(u"AgentKeysGithub")
@@ -1138,11 +1143,6 @@ class Ui_MainWindow(object):
 "")
 
         self.gridLayout_15.addWidget(self.AgentKeysGithub, 6, 1, 1, 1)
-
-        self.label_28 = QLabel(self.groupBox_3)
-        self.label_28.setObjectName(u"label_28")
-
-        self.gridLayout_15.addWidget(self.label_28, 6, 0, 1, 1)
 
         self.label_34 = QLabel(self.groupBox_3)
         self.label_34.setObjectName(u"label_34")
@@ -1212,6 +1212,42 @@ class Ui_MainWindow(object):
 "")
 
         self.gridLayout_15.addWidget(self.ModelSelect, 4, 1, 1, 1)
+
+        self.AgentKeysFirebase = QComboBox(self.groupBox_3)
+        self.AgentKeysFirebase.setObjectName(u"AgentKeysFirebase")
+        self.AgentKeysFirebase.setStyleSheet(u"QComboBox {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    border-radius: 5px;  /* Borda arredondada */\n"
+"    color: black;  /* Cor do texto */\n"
+"    font-size: 12px;  /* Tamanho da fonte */\n"
+"    padding: 5px 10px;  /* Espa\u00e7amento interno */\n"
+"}\n"
+"\n"
+"QComboBox:hover {\n"
+"    background-color: #EDEDED; /* Fundo ao passar o mouse */\n"
+"}\n"
+"\n"
+"QComboBox:pressed {\n"
+"    background-color: #DCDCDC; /* Fundo ao pressionar */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    selection-background-color: #EDEDED;\n"
+"    selection-color: black;\n"
+"    border-radius: 10px;  /* Borda arredondada para a lista */\n"
+"    font-size: 16px; /* Ajuste de fonte para itens */\n"
+"}\n"
+"")
+
+        self.gridLayout_15.addWidget(self.AgentKeysFirebase, 8, 1, 1, 1)
+
+        self.label_37 = QLabel(self.groupBox_3)
+        self.label_37.setObjectName(u"label_37")
+
+        self.gridLayout_15.addWidget(self.label_37, 8, 0, 1, 1)
 
 
         self.gridLayout_16.addLayout(self.gridLayout_15, 0, 0, 1, 1)
@@ -1371,8 +1407,8 @@ class Ui_MainWindow(object):
         self.VectorstoreinThread.setObjectName(u"VectorstoreinThread")
         sizePolicy.setHeightForWidth(self.VectorstoreinThread.sizePolicy().hasHeightForWidth())
         self.VectorstoreinThread.setSizePolicy(sizePolicy)
-        self.VectorstoreinThread.setMinimumSize(QSize(136, 40))
-        self.VectorstoreinThread.setMaximumSize(QSize(136, 40))
+        self.VectorstoreinThread.setMinimumSize(QSize(201, 40))
+        self.VectorstoreinThread.setMaximumSize(QSize(201, 40))
         self.VectorstoreinThread.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1387,8 +1423,8 @@ class Ui_MainWindow(object):
         self.Vectorstoreinassistant.setObjectName(u"Vectorstoreinassistant")
         sizePolicy.setHeightForWidth(self.Vectorstoreinassistant.sizePolicy().hasHeightForWidth())
         self.Vectorstoreinassistant.setSizePolicy(sizePolicy)
-        self.Vectorstoreinassistant.setMinimumSize(QSize(136, 40))
-        self.Vectorstoreinassistant.setMaximumSize(QSize(136, 40))
+        self.Vectorstoreinassistant.setMinimumSize(QSize(201, 40))
+        self.Vectorstoreinassistant.setMaximumSize(QSize(201, 40))
         self.Vectorstoreinassistant.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1467,7 +1503,7 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setObjectName(u"gridLayout_14")
         self.gridLayout_13 = QGridLayout()
         self.gridLayout_13.setObjectName(u"gridLayout_13")
-        self.gridLayout_13.setHorizontalSpacing(61)
+        self.gridLayout_13.setHorizontalSpacing(78)
         self.gridLayout_13.setVerticalSpacing(8)
         self.gridLayout_13.setContentsMargins(1, 6, 5, 5)
         self.label_26 = QLabel(self.groupBox_2)
@@ -1480,8 +1516,8 @@ class Ui_MainWindow(object):
         self.textEdit_2.setObjectName(u"textEdit_2")
         sizePolicy.setHeightForWidth(self.textEdit_2.sizePolicy().hasHeightForWidth())
         self.textEdit_2.setSizePolicy(sizePolicy)
-        self.textEdit_2.setMinimumSize(QSize(375, 40))
-        self.textEdit_2.setMaximumSize(QSize(388, 40))
+        self.textEdit_2.setMinimumSize(QSize(230, 40))
+        self.textEdit_2.setMaximumSize(QSize(230, 40))
         self.textEdit_2.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1513,8 +1549,8 @@ class Ui_MainWindow(object):
         self.Uploadlistfileforcodeinterpreterinthread.setObjectName(u"Uploadlistfileforcodeinterpreterinthread")
         sizePolicy.setHeightForWidth(self.Uploadlistfileforcodeinterpreterinthread.sizePolicy().hasHeightForWidth())
         self.Uploadlistfileforcodeinterpreterinthread.setSizePolicy(sizePolicy)
-        self.Uploadlistfileforcodeinterpreterinthread.setMinimumSize(QSize(388, 40))
-        self.Uploadlistfileforcodeinterpreterinthread.setMaximumSize(QSize(388, 40))
+        self.Uploadlistfileforcodeinterpreterinthread.setMinimumSize(QSize(230, 40))
+        self.Uploadlistfileforcodeinterpreterinthread.setMaximumSize(QSize(230, 40))
         self.Uploadlistfileforcodeinterpreterinthread.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1545,8 +1581,8 @@ class Ui_MainWindow(object):
         self.Upload1imageforvisioninThread.setObjectName(u"Upload1imageforvisioninThread")
         sizePolicy.setHeightForWidth(self.Upload1imageforvisioninThread.sizePolicy().hasHeightForWidth())
         self.Upload1imageforvisioninThread.setSizePolicy(sizePolicy)
-        self.Upload1imageforvisioninThread.setMinimumSize(QSize(388, 40))
-        self.Upload1imageforvisioninThread.setMaximumSize(QSize(388, 40))
+        self.Upload1imageforvisioninThread.setMinimumSize(QSize(230, 40))
+        self.Upload1imageforvisioninThread.setMaximumSize(QSize(230, 40))
         self.Upload1imageforvisioninThread.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1591,8 +1627,8 @@ class Ui_MainWindow(object):
         self.Upload1fileinmessage.setObjectName(u"Upload1fileinmessage")
         sizePolicy.setHeightForWidth(self.Upload1fileinmessage.sizePolicy().hasHeightForWidth())
         self.Upload1fileinmessage.setSizePolicy(sizePolicy)
-        self.Upload1fileinmessage.setMinimumSize(QSize(388, 40))
-        self.Upload1fileinmessage.setMaximumSize(QSize(388, 40))
+        self.Upload1fileinmessage.setMinimumSize(QSize(230, 40))
+        self.Upload1fileinmessage.setMaximumSize(QSize(230, 40))
         self.Upload1fileinmessage.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -1607,7 +1643,7 @@ class Ui_MainWindow(object):
         self.label_13.setObjectName(u"label_13")
         sizePolicy4.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy4)
-        self.label_13.setMinimumSize(QSize(129, 0))
+        self.label_13.setMinimumSize(QSize(113, 0))
 
         self.gridLayout_13.addWidget(self.label_13, 3, 0, 1, 1)
 
@@ -1615,8 +1651,8 @@ class Ui_MainWindow(object):
         self.Upload1fileinThread.setObjectName(u"Upload1fileinThread")
         sizePolicy.setHeightForWidth(self.Upload1fileinThread.sizePolicy().hasHeightForWidth())
         self.Upload1fileinThread.setSizePolicy(sizePolicy)
-        self.Upload1fileinThread.setMinimumSize(QSize(388, 40))
-        self.Upload1fileinThread.setMaximumSize(QSize(388, 40))
+        self.Upload1fileinThread.setMinimumSize(QSize(230, 40))
+        self.Upload1fileinThread.setMaximumSize(QSize(230, 40))
         self.Upload1fileinThread.setStyleSheet(u"            QTextEdit {\n"
 "                border: 1px solid #E0E0E0;\n"
 "                padding: 5px;\n"
@@ -2623,7 +2659,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.myStackedWidget.setCurrentIndex(6)
+        self.myStackedWidget.setCurrentIndex(3)
         self.stackedWidget_instruction.setCurrentIndex(0)
         self.stackedWidget_SettingsCreate.setCurrentIndex(0)
 
@@ -2672,14 +2708,14 @@ class Ui_MainWindow(object):
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Initial Settings", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Name Agent", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Key In Firebase", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Agent Category", None))
         self.KeyInFirebase.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">AgentForPlanningDallas</p></body></html>", None))
         self.KeyInFirebase.setPlaceholderText(QCoreApplication.translate("MainWindow", u"AgentForPlanningDallas", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Key In Firebase", None))
-        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Agent Category", None))
         self.NameAgent.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -2692,6 +2728,7 @@ class Ui_MainWindow(object):
         self.ModelSelect.setItemText(0, QCoreApplication.translate("MainWindow", u"gpt-4o-mini-2024-07-18", None))
         self.ModelSelect.setItemText(1, QCoreApplication.translate("MainWindow", u"gpt-4o-2024-11-20", None))
 
+        self.label_37.setText(QCoreApplication.translate("MainWindow", u"Agent Keys Firebase", None))
         self.groupBox_9.setTitle(QCoreApplication.translate("MainWindow", u"Advanced Settings", None))
         self.PromptSettings.setText(QCoreApplication.translate("MainWindow", u"Prompt Settings", None))
         self.ArgumentsSettings.setText(QCoreApplication.translate("MainWindow", u"Arguments Settings", None))
