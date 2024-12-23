@@ -7,7 +7,7 @@
 # 📜 Table of Contents
 - [📖 About](#-about)
 - [📖 Index Docs](#-indexdocs)
-- [🔄 Info-Update](#Docs/Update.md)
+- [🔄 Info-Update](#Docs/Update/Update.md)
 - [🚀 Starting SoftwareAI Chat](#-start-softwareai-chat)
 - [🚀 Starting SoftwareAI Editor](#-softwareai-editor)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
