@@ -10,3 +10,6 @@ from .Software_Development.NexGenCoder import *
 from .Software_Development.SignalMaster import *
 from .Software_Requirements_Analysis.SynthOperator import *
 from .Pre_Project.Tigrao import *
+
+from .Software_Requirements_Analysis.Dallas2 import *
+                
