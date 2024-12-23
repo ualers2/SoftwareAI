@@ -25,7 +25,7 @@ from CoreApp._init_keys_ import *
 class QProcessCreateOpenAItokens(QThread):
     ModalSucess = Signal(str)
     ModalInfo = Signal(str)
-
+    finish = Signal()
     def __init__(self,
                 openaikey,
                 openainamefortoken_AgentKeys
@@ -55,4 +55,4 @@ class OpenAIKeys{self.openainamefortoken_AgentKeys.replace(" ", "_")}:
 
 
         self.ModalSucess.emit(f"Your Key has been created")
-
+        self.finish.emit()
