@@ -1,0 +1,136 @@
+{
+    "QMainWindow": [
+        {
+            "tittle":"Software AI",
+            "icon":":/feather/icons/feather/user.png",
+            "frameless": true,
+            "transluscentBg": true
+            
+        },
+        {
+			"shadow":[
+				{
+					"color": "#555",
+					"blurRadius": 20,
+					"xOffset": 0,
+					"yOffset": 0,
+					"centralWidget": "centralwidget"
+				}
+			]
+		},
+        {
+			"navigation":[
+				{
+					"moveWindow": "frame_4"
+				},
+				{
+                    "minimize":"minimize_window_button",
+					"close": "close_window_button",
+					"restore":[
+						{	
+							"buttonName": "restore_window_button",
+							"normalIcon": ":/feather/icons/feather/maximize-2.png",
+							"maximizedIcon": ":/material_design/icons/material_design/minimize.png"
+						}
+					]
+				}
+
+			]
+		}
+    ],
+	"QPushButton": [
+		{
+			"name": "settings_agent",
+			"defaultStyle": [
+				"border-style: solid;",
+				"border-width: 2px;",
+				"border-radius: 3px;",
+				"color: #d3dae3;",
+				"padding: 5px;"
+			]
+		}
+	],
+    "QCustomQStackedWidget":[
+		{
+			"name":"stackedWidget_2",
+			"navigation":[
+				{
+					"nextPage":"settings_agent",
+					"previousPage": "pushButton_5"
+
+				}
+			]
+
+		}
+	],
+    "QCustomSlideMenu": [{
+            "name": "widget",
+            "defaultSize": [{
+                "width": 50,
+                "height": 698
+            }],
+            "collapsedSize": [{
+                "width": 0,
+                "height": 698
+            }],
+            "expandedSize": [{
+                "width": 50,
+                "height": 698
+            }],
+
+            "toggleButton": [{
+                "buttonName": "pushButton_16",
+                "icons": [{
+                    "whenMenuIsCollapsed": ":/icons/font_awesome/solid/chevron-right.png",
+                    "whenMenuIsExpanded": ":/icons/font_awesome/solid/keyboard_backspace.png"
+                }]
+
+            }]
+        },
+        {
+            "name": "sliddemenulousa",
+            "defaultSize": [{
+                "width": "parent",
+                "height": "parent"
+            }],
+            "collapsedSize": [{
+                "width": 0,
+                "height": "parent"
+            }],
+            "expandedSize": [{
+                "width": "parent",
+                "height": "parent"
+            }],
+            "toggleButton": [{
+                "buttonName": "openLousa",
+                "icons": [{
+                    "whenMenuIsCollapsed": ":/material_design/icons/material_design/code.png",
+                    "whenMenuIsExpanded": ":/material_design/icons/material_design/code_off.png"
+                }]
+
+            }]
+        }
+    ],
+    "QSettings": [
+        {
+            "ThemeSettings": [
+                {
+                    "CustomTheme": [
+                        {
+                            "Background-color": "#16191d",
+                            "Text-color": "#fff",
+                            "Accent-color": "#03C3C3",
+                            "Theme-name": "Dark-Blue",
+                            "Default-Theme": true
+                        }
+                    ]
+                }
+            ],
+            "AppSettings": {
+                "OrginizationName": "Urobot Software",
+                "ApplicationName": "SoftwareAI",
+                "OrginizationDormain": "UrobotSoftware.org"
+            }
+        }
+    ]
+}
