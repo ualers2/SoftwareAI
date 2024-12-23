@@ -49,9 +49,9 @@
 - [Installation](Docs/Installation)
 - [Moderation](Docs/Moderation/RemoveWords.md)
 - [Roadmaps](Docs/Roadmaps)
-- [Structure](Docs/Structure)
+- [Structure](Docs/Structure/SoftwareAIStructure.md)
 - [ToolsAndFunctions](Docs/ToolsAndFunctions/doc-tools.md)
-- [Update](Docs/Update)
+- [Update](Docs/Update/Update.md)
 ## 🤝 Contributing
 While SoftwareAI is primarily AI-driven, we welcome contributions from the community:
 - 🐛 Bug Reports
