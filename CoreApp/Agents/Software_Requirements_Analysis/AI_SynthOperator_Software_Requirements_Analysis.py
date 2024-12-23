@@ -20,7 +20,6 @@ class Softwareanaysis:
     def __init__(self):
         pass
 
-
     ##############################################################################################
     def AI_SynthOperator(self, path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto):
         read_path_Roadmap = python_functions.analyze_txt(path_Roadmap)
@@ -33,6 +32,7 @@ class Softwareanaysis:
         model_select = "gpt-4o-mini-2024-07-18"
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
+
         Upload_1_image_for_vision_in_thread = None
         vectorstore_in_assistant = None
         vectorstore_in_Thread = None
