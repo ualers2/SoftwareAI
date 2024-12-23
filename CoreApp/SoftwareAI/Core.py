@@ -27,8 +27,15 @@ from openai.types.beta.threads.runs import ToolCall, ToolCallDelta
 
 # key_api = OpenAIKeys.keys_openai()
 
+class FirebaseKeysinit:
+    def _init_app_(name_app):
+        try:
+            app1 = name_app()
+            return app1
+        except: 
+            return "app1"
+        
 
-app1 = keys_app_1()
 
 class OpenAIKeysinit:
     
@@ -41,7 +48,7 @@ class OpenAIKeysinit:
 
 class AutenticateAgent:
 
-    def create_or_auth_vectorstoreadvanced(key, UseVectorstoreToGenerateFiles):
+    def create_or_auth_vectorstoreadvanced(key, UseVectorstoreToGenerateFiles, app1):
         """
         This function checks if a user's vectorstore advanced settings exist in the database.
 
@@ -88,7 +95,7 @@ class AutenticateAgent:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return str(UseVectorstoreToGenerateFiles)
 
-    def create_or_auth_AI(client, key: str, 
+    def create_or_auth_AI(app1, client, key: str, 
         instructionsassistant: Optional[str] = None,
         nameassistant: Optional[str] = None, 
         model_select: Optional[str] = "gpt-4o-mini-2024-07-18", 
@@ -233,7 +240,7 @@ class AutenticateAgent:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return str(assistant.id), str(instructionsassistant), str(nameassistant), str(model_select)
         
-    def create_or_auth_thread(client, key, 
+    def create_or_auth_thread(app1, client, key, 
                             attachavectorstoretoThreads: Optional[List] = None,
                             code_interpreter_in_thread=None
                             ):
@@ -356,6 +363,7 @@ class ResponseAgent:
                                             mensagem: str,
                                             agent_id: str,
                                             key: str,
+                                            app1, 
                                             client,
                                             stream: bool = False,
                                             streamLogger: Optional[Signal] = None,
@@ -751,7 +759,7 @@ class Agent_files_update:
     
 class Agent_files:
 
-    def auth_vectorstoreAdvanced(client, name_for_vectorstore, file_paths):
+    def auth_vectorstoreAdvanced(app1, client, name_for_vectorstore, file_paths):
         """
         Uploads multiple files to an existing Vector Store or creates a new one if it doesn't exist.
 
@@ -803,7 +811,7 @@ class Agent_files:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return vector_store.id
 
-    def auth_or_upload_multiple_files(client, name_for: str, list_files_path: list):
+    def auth_or_upload_multiple_files(app1, client, name_for: str, list_files_path: list):
         """
         This function attempts to retrieve a list of file IDs from the database under the key 'auth_or_upload_multiple_files/User_{name_for}'.
 
@@ -860,7 +868,7 @@ class Agent_files:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return lista_de_file_id
 
-    def auth_or_create_vector_store_with_multiple_files(client, name_for_vectorstore: str, file_ids: list): 
+    def auth_or_create_vector_store_with_multiple_files(app1, client, name_for_vectorstore: str, file_ids: list): 
         """
         This function creates or retrieves an existing vector store based on the provided name and a list of file IDs.
 
@@ -903,7 +911,7 @@ class Agent_files:
 
             return vector_store.id
 
-    def auth_or_create_vectorstore(client, name_for_vectorstore: str, file_paths=None, update1newfiles=None):
+    def auth_or_create_vectorstore(app1, client, name_for_vectorstore: str, file_paths=None, update1newfiles=None):
         """
         Authenticates with the database or creates a new vector store based on the provided name.
 
