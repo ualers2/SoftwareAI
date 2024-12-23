@@ -1,10 +1,7 @@
 
 
 
-
-
-
-
+## 📖 About
 # * **🤔💭What is SoftwareAI?**
 * SoftwareAI is an AI framework with the aim of creating a software/application development company/organization governed by AI, its purpose is not only to create the software with updates, landing page, technical and github documentation, schedules and spreadsheets, SoftwareAI is able to govern a software company completely with a CEO team, accounting team, support team, and all the teams that make up a software company
 #
@@ -28,21 +25,6 @@ Thu, July 18th at 4:17 pm OPENAI launched the GPT-4o mini, 60% cheaper than othe
     - [📄 PDFGenPython](https://github.com/A-I-O-R-G/PDFGenPython)
     - [📁 OrganizaArquivos](https://github.com/A-I-O-R-G/OrganizaArquivos)
     - [💱 ConversorMoedasAPI](https://github.com/A-I-O-R-G/ConversorMoedasAPI)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
