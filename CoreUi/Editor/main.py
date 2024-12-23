@@ -31,16 +31,9 @@ from CoreApp._init_core_ import(
         Agent_files,
         Agent_files_update,
         OpenAIKeysinit,
-        app1)
+        FirebaseKeysinit
+)
 ########################################################################
-
-
-########################################################################
-# IMPORT Keys
-from CoreApp._init_keys_ import keys_app_2
-
-app2 = keys_app_2()
-
 
 ########################################################################
 
@@ -100,28 +93,29 @@ class MainWindow(QMainWindow):
 
         ########################################################################
 
-        self.setup_plain_text_qtextedit(self.ui.Promptmain)
-        self.setup_plain_text_qtextedit(self.ui.PromptRules)
-        self.setup_plain_text_qtextedit(self.ui.PromptExample)
-        self.setup_plain_text_qtextedit(self.ui.InstructionAgentCreate)
-        self.setup_plain_text_qtextedit(self.ui.AditionalInstructionsAgentCreate)
-        self.setup_plain_text_qtextedit(self.ui.AgentTools)
-        self.setup_plain_text_qtextedit(self.ui.FunctionPython)
-        self.setup_plain_text_qtextedit(self.ui.FunctionPythonOutput)
-        self.setup_plain_text_qtextedit(self.ui.ArgsCreatetextedit)
-        self.setup_plain_text_qtextedit(self.ui.NameAgent)
-        self.setup_plain_text_qtextedit(self.ui.KeyInFirebase)
-        self.setup_plain_text_qtextedit(self.ui.Vectorstoreinassistant)
-        self.setup_plain_text_qtextedit(self.ui.VectorstoreinThread)
-        self.setup_plain_text_qtextedit(self.ui.Upload1fileinThread)
-        self.setup_plain_text_qtextedit(self.ui.Upload1fileinmessage)
-        self.setup_plain_text_qtextedit(self.ui.Upload1imageforvisioninThread)
-        self.setup_plain_text_qtextedit(self.ui.Uploadlistfileforcodeinterpreterinthread)
-        self.setup_plain_text_qtextedit(self.ui.textEdit_2)
-        self.setup_plain_text_qtextedit(self.ui.Current_instuction_html_edit)
-        self.setup_plain_text_qtextedit(self.ui.instruction_input_edit)
-        #self.setup_plain_text_qtextedit(self.ui.NameForInstruction_create)
-        self.setup_plain_text_qtextedit(self.ui.New_instruction_html_create)
+
+        self.QPlaintextedit(self.ui.Promptmain)
+        self.QPlaintextedit(self.ui.PromptRules)
+        self.QPlaintextedit(self.ui.PromptExample)
+        self.QPlaintextedit(self.ui.InstructionAgentCreate)
+        self.QPlaintextedit(self.ui.AditionalInstructionsAgentCreate)
+        self.QPlaintextedit(self.ui.AgentTools)
+        self.QPlaintextedit(self.ui.FunctionPython)
+        self.QPlaintextedit(self.ui.FunctionPythonOutput)
+        self.QPlaintextedit(self.ui.ArgsCreatetextedit)
+        self.QPlaintextedit(self.ui.NameAgent)
+        self.QPlaintextedit(self.ui.KeyInFirebase)
+        self.QPlaintextedit(self.ui.Vectorstoreinassistant)
+        self.QPlaintextedit(self.ui.VectorstoreinThread)
+        self.QPlaintextedit(self.ui.Upload1fileinThread)
+        self.QPlaintextedit(self.ui.Upload1fileinmessage)
+        self.QPlaintextedit(self.ui.Upload1imageforvisioninThread)
+        self.QPlaintextedit(self.ui.Uploadlistfileforcodeinterpreterinthread)
+        self.QPlaintextedit(self.ui.textEdit_2)
+        self.QPlaintextedit(self.ui.Current_instuction_html_edit)
+        self.QPlaintextedit(self.ui.instruction_input_edit)
+        #self.QPlaintextedit(self.ui.NameForInstruction_create)
+        self.QPlaintextedit(self.ui.New_instruction_html_create)
 
 
 
@@ -253,20 +247,20 @@ class MainWindow(QMainWindow):
         self.CreateInstructionbutton_create.clicked.connect(self.create_instruction)
 
         self.openaitoken_AgentKeys = self.ui.openaitoken_AgentKeys
-        self.setup_plain_text_qtextedit(self.openaitoken_AgentKeys)
+        self.QPlaintextedit(self.openaitoken_AgentKeys)
 
         self.openainamefortoken_AgentKeys = self.ui.openainamefortoken_AgentKeys
-        self.setup_plain_text_qtextedit(self.openainamefortoken_AgentKeys)
+        self.QPlaintextedit(self.openainamefortoken_AgentKeys)
 
         self.githuusername_AgentKeys = self.ui.githuusername_AgentKeys
-        self.setup_plain_text_qtextedit(self.githuusername_AgentKeys)
+        self.QPlaintextedit(self.githuusername_AgentKeys)
 
         self.githubtoken_AgentKeys = self.ui.githubtoken_AgentKeys
-        self.setup_plain_text_qtextedit(self.githubtoken_AgentKeys)
+        self.QPlaintextedit(self.githubtoken_AgentKeys)
 
 
         self.credentialsapp_AgentKeys = self.ui.credentialsapp_AgentKeys
-        self.setup_plain_text_qtextedit(self.credentialsapp_AgentKeys)
+        self.QPlaintextedit(self.credentialsapp_AgentKeys)
 
 
         self.githuusername_AgentKeys = self.ui.githuusername_AgentKeys
@@ -276,22 +270,30 @@ class MainWindow(QMainWindow):
 
 
         self.appname_AgentKeys = self.ui.appname_AgentKeys
-        self.setup_plain_text_qtextedit(self.appname_AgentKeys)
+        self.QPlaintextedit(self.appname_AgentKeys)
         self.Databaseurl_AgentKeys = self.ui.Databaseurl_AgentKeys
-        self.setup_plain_text_qtextedit(self.Databaseurl_AgentKeys)
+        self.QPlaintextedit(self.Databaseurl_AgentKeys)
         self.Storagebucket_AgentKeys = self.ui.Storagebucket_AgentKeys
-        self.setup_plain_text_qtextedit(self.Storagebucket_AgentKeys)
+        self.QPlaintextedit(self.Storagebucket_AgentKeys)
         self.credentialsapp_AgentKeys = self.ui.credentialsapp_AgentKeys
-        self.setup_plain_text_qtextedit(self.credentialsapp_AgentKeys)
+        self.QPlaintextedit(self.credentialsapp_AgentKeys)
 
 
         self.AgentKeysOpenAI = self.ui.AgentKeysOpenAI
 
         self.AgentKeysGithub = self.ui.AgentKeysGithub
 
+        self.AgentKeysFirebase = self.ui.AgentKeysFirebase
+
+        self.CreateAgents_menu = self.ui.CreateAgents_menu
+        self.CreateAgents_menu.clicked.connect(self.update_home)
+
         self.load_AgentKeysOpenAI()
         
         self.load_AgentKeysGithub()
+
+        self.load_AgentKeysFirebase()
+
 
         self.createkeysfirebase_AgentKeys = self.ui.createkeysfirebase_AgentKeys
         self.createkeysfirebase_AgentKeys.clicked.connect(self.CreateFirebasekeysbuttonClicked)
@@ -299,30 +301,14 @@ class MainWindow(QMainWindow):
         self.uploadcredentialapp_AgentKeys = self.ui.uploadcredentialapp_AgentKeys
         self.uploadcredentialapp_AgentKeys.clicked.connect(self.click_uploadcredentialapp_AgentKeys)
         key_api = self.AgentKeysOpenAI.currentText()
+        name_app = self.AgentKeysFirebase.currentText()
         self.client = OpenAIKeysinit._init_client_(key_api)
+        self.app1 = FirebaseKeysinit._init_app_(name_app)
+
 
         self.show()
 
-
-    def Update_AgentViewCode(self, Agent):
-        paths_agents = self.init_paths_agents()
-        for path in paths_agents:
-            agentss = os.listdir(path)
-            for agent in agentss:
-                if agent == "DocGitHubData":
-                    pass
-                elif agent == "docs_uploaded.log":
-                    pass
-                elif agent.replace(".py", "").replace("__pycache__", "").strip() == Agent:
-                    print(Agent)
-                    path_py = os.path.join(path, f"{Agent}.py")
-                    # with open(path_py, "r") as f:
-                    #     content = f.read()
-
-                    self.CodeEditor.loadFile(path_py)
-
     def CreateAgentButtonClicked(self):
-        
         KeyInFirebase_AgentCreate = self.KeyInFirebase_AgentCreate.toPlainText()
         ModelSelect_AgentCreate = self.ModelSelect_AgentCreate.currentText()
         Vectorstoreinassistant_AgentCreate = self.Vectorstoreinassistant_AgentCreate.toPlainText()
@@ -343,26 +329,19 @@ class MainWindow(QMainWindow):
         AditionalInstructionsAgentCreate = self.AditionalInstructionsAgentCreate.toPlainText()
         FunctionPythonOutputAgentCreate = self.FunctionPythonOutputAgentCreate.toPlainText()
         UseVectorstoreToGenerateFiles = self.UseVectorstoreToGenerateFiles.isChecked()
-        
         if self.ArgsCreatetextedit.toPlainText().strip():
             ArgsCreatetextedit = self.ArgsCreatetextedit.toPlainText()
         else:
             ArgsCreatetextedit = None
-
         CurrentArgs_AgentCreate = self.CurrentArgs_AgentCreate.currentText()
-    
         StorageAgentCompletions_AgentCreate = self.ui.StorageAgentCompletions.isChecked()
         StorageAgentOutput_AgentCreate = self.ui.StorageAgentOutput_.isChecked()
         StoreFormatJsonAndJsonl_AgentCreate = self.ui.StoreFormatJsonAndJsonl.isChecked()
-    
         AgentKeysGithub = self.AgentKeysGithub.currentText()
         AgentKeysGithubName = re.findall(r'\(([^)]*)\)', AgentKeysGithub)
-
-
         AgentOpenAIelement = self.AgentKeysOpenAI.currentText()
         AgentKeyOpenAI = re.sub(r'\([^)]*\)', '', AgentOpenAIelement)
         AgentKeysOpenAIName = re.findall(r'\(([^)]*)\)', AgentOpenAIelement)
-
         self.thread_processe_create_agent = QProcessCreateAgent(
             KeyInFirebase_AgentCreate,
             ModelSelect_AgentCreate,
@@ -392,15 +371,11 @@ class MainWindow(QMainWindow):
             AgentKeysGithubName,
             AgentKeysOpenAIName,
             AgentKeyOpenAI
-
-
         )
         self.thread_processe_create_agent.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_processe_create_agent.ModalInfo.connect(self.update_custommodals_info)
-        self.thread_processe_create_agent.finishedqthread.connect(self.update_finishedqthread)
+        self.thread_processe_create_agent.finishedqthread.connect(self.finish_thread_processe_create_agent)
         self.thread_processe_create_agent.start()
-
-
 
     def CreateOpenAIbuttonClicked(self):
         openaitoken_AgentKeys = self.ui.openaitoken_AgentKeys.toPlainText()
@@ -411,9 +386,8 @@ class MainWindow(QMainWindow):
         )
         self.thread_process_create_openaikeys.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_process_create_openaikeys.ModalInfo.connect(self.update_custommodals_info)
+        self.thread_process_create_openaikeys.finish.connect(self.finish_thread_process_create_openaikeys)
         self.thread_process_create_openaikeys.start()
-
-
 
     def CreateGitHubKeysbuttonClicked(self):
         githuusername_AgentKeys = self.ui.githuusername_AgentKeys.toPlainText()
@@ -424,17 +398,14 @@ class MainWindow(QMainWindow):
         )
         self.thread_process_create_GitHubKeys.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_process_create_GitHubKeys.ModalInfo.connect(self.update_custommodals_info)
+        self.thread_process_create_GitHubKeys.finish.connect(self.finish_thread_process_create_GitHubKeys)
         self.thread_process_create_GitHubKeys.start()
-
-
 
     def CreateFirebasekeysbuttonClicked(self):
         appname_AgentKeys = self.ui.appname_AgentKeys.toPlainText()
         Databaseurl_AgentKeys = self.ui.Databaseurl_AgentKeys.toPlainText()
         Storagebucket_AgentKeys = self.ui.Storagebucket_AgentKeys.toPlainText()
         credentialsapp_AgentKeys = self.ui.credentialsapp_AgentKeys.toPlainText()
-        
-        
         self.thread_process_create_Firebasekeys = QProcessCreateFirebasekeys(
             appname_AgentKeys,
             Databaseurl_AgentKeys,
@@ -444,69 +415,16 @@ class MainWindow(QMainWindow):
         )
         self.thread_process_create_Firebasekeys.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_process_create_Firebasekeys.ModalInfo.connect(self.update_custommodals_info)
+        self.thread_process_create_Firebasekeys.finish.connect(self.finish_thread_process_create_Firebasekeys)
         self.thread_process_create_Firebasekeys.start()
 
 
-
-    def click_uploadcredentialapp_AgentKeys(self):
-        dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
-        dialog.setFileMode(QFileDialog.ExistingFile) 
-        dialog.setWindowTitle("Select the Credentials Firebase")
-        dialog.setNameFilter(
-            "All Files (*)"
-        )
-        if dialog.exec_():
-            selected_files = dialog.selectedFiles()[0]
-            with open(selected_files, 'r', encoding='utf-8') as file:
-                content = file.read()
-            self.ui.credentialsapp_AgentKeys.setPlainText(content)
-
-
-
-
     def load_AgentKeysOpenAI(self, chave="str_key", company="companyname"):
+        self.AgentKeysOpenAI.clear()
         try:
             caminho_arquivo = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CoreApp/KeysOpenAI/keys.py'))
-
             with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
                 for linha in arquivo:
-                    # Verificar se a linha contém uma declaração de chave e valor
                     match = re.match(r'(\w+)\s*=\s*[\'\"](.*?)[\'\"]', linha.strip())
                     if match:
                         chave_encontrada, valor = match.groups()
@@ -518,7 +436,23 @@ class MainWindow(QMainWindow):
         except:
             pass
 
+    def load_AgentKeysFirebase(self):
+        self.AgentKeysFirebase.clear()
+        caminho_arquivo = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CoreApp/KeysFirebase/keys.py'))
+        try:
+            with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
+                conteudo = arquivo.read() 
+                pattern = re.compile(r"(\w+)\s*=\s*initialize_app\(", re.DOTALL)
+                matches = pattern.findall(conteudo)  
+                if matches:
+                    for app_nome in matches:
+                        self.AgentKeysFirebase.addItem(f"{app_nome}")
+
+        except Exception as e:
+            self.AgentKeysFirebase.addItem(f"Erro ao carregar: {str(e)}")
+
     def load_AgentKeysGithub(self, chave = "github_token",  user = "github_username"):
+        self.AgentKeysGithub.clear()
         caminho_arquivo = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CoreApp/KeysGitHub/keys.py'))
         with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
             for linha in arquivo:
@@ -536,38 +470,38 @@ class MainWindow(QMainWindow):
 
 
 
-    def update_finishedqthread(self):
-        self.InstructionSelector_create.clear()
+    def update_home(self):
+        self.load_AgentKeysOpenAI()
+        
+        self.load_AgentKeysGithub()
 
-        self.list_instruction()
-        self.list_category_instruction()
-        self.list_agents()
+        self.load_AgentKeysFirebase()
+
         self.list_category_Agent()
 
-    def setup_plain_text_qtextedit(self, editor: QTextEdit):
-        """
-        Configures a QTextEdit to handle pasted text as plain text only.
+        self.list_agents()
 
-        :param editor: Instance of QTextEdit to configure
-        """
-        # Disable rich text acceptance to ensure only plain text is allowed
-        editor.setAcceptRichText(False)
+        self.list_instruction()
 
-        # Override the insertFromMimeData to enforce plain text pasting
-        def insert_plain_text_from_mime_data(self, source):
-            if source.hasText():
-                self.insertPlainText(source.text())
-            else:
-                super(QTextEdit, self).insertFromMimeData(source)
+    def Update_AgentViewCode(self, Agent):
+        paths_agents = self.init_paths_agents()
+        for path in paths_agents:
+            agentss = os.listdir(path)
+            for agent in agentss:
+                if agent == "DocGitHubData":
+                    pass
+                elif agent == "docs_uploaded.log":
+                    pass
+                elif agent.replace(".py", "").replace("__pycache__", "").strip() == Agent:
+                    print(Agent)
+                    path_py = os.path.join(path, f"{Agent}.py")
+                    # with open(path_py, "r") as f:
+                    #     content = f.read()
 
-        # Replace the QTextEdit's insertFromMimeData method dynamically
-        editor.__class__.insertFromMimeData = insert_plain_text_from_mime_data
+                    self.CodeEditor.loadFile(path_py)
 
-
-
-    def custom_file_dialogVectorstoreinThread(self):
-        dialog = QFileDialog()
-        dialog.setStyleSheet("""
+    def dialogsetStyleSheet(self):
+        text = """
             QFileDialog {
                 background-color: white;
                 border: 1px solid #F7F7F7;
@@ -602,7 +536,66 @@ class MainWindow(QMainWindow):
                 border-radius: 6px;
                 padding: 3px;
             }
-        """)
+        """
+        return text
+
+    def click_uploadcredentialapp_AgentKeys(self):
+        dialog = QFileDialog()
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
+        dialog.setFileMode(QFileDialog.ExistingFile) 
+        dialog.setWindowTitle("Select the Credentials Firebase")
+        dialog.setNameFilter(
+            "All Files (*)"
+        )
+        if dialog.exec_():
+            selected_files = dialog.selectedFiles()[0]
+            with open(selected_files, 'r', encoding='utf-8') as file:
+                content = file.read()
+            self.ui.credentialsapp_AgentKeys.setPlainText(content)
+
+
+
+    def finish_thread_process_create_openaikeys(self):
+        self.ui.openaitoken_AgentKeys.clear()
+        self.ui.openainamefortoken_AgentKeys.clear()
+
+    def finish_thread_process_create_GitHubKeys(self):
+        self.ui.githuusername_AgentKeys.clear()
+        self.ui.githubtoken_AgentKeys.clear()
+
+    def finish_thread_process_create_Firebasekeys(self):
+        self.ui.appname_AgentKeys.clear()
+        self.ui.Databaseurl_AgentKeys.clear()
+        self.ui.Storagebucket_AgentKeys.clear()
+        self.ui.credentialsapp_AgentKeys.clear()
+
+    def finish_thread_processe_create_agent(self):
+        self.InstructionSelector_create.clear()
+
+        self.list_instruction()
+        self.list_category_instruction()
+        self.list_agents()
+        self.list_category_Agent()
+
+    def QPlaintextedit(self, editor: QTextEdit):
+        """
+        Configures a QTextEdit to handle pasted text as plain text only.
+
+        :param editor: Instance of QTextEdit to configure
+        """
+        editor.setAcceptRichText(False)
+        def insert_plain_text_from_mime_data(self, source):
+            if source.hasText():
+                self.insertPlainText(source.text())
+            else:
+                super(QTextEdit, self).insertFromMimeData(source)
+        editor.__class__.insertFromMimeData = insert_plain_text_from_mime_data
+
+
+
+    def custom_file_dialogVectorstoreinThread(self):
+        dialog = QFileDialog()
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFiles) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter(
@@ -619,7 +612,7 @@ class MainWindow(QMainWindow):
 
             self.update_custommodals_SuccessModal2(f"Selected files!!")
 
-            self.thread_VectorstoreinThread_AgentCreate = QProcessCreateVectorStoreThreadByUser(selected_files, app1, self.client)
+            self.thread_VectorstoreinThread_AgentCreate = QProcessCreateVectorStoreThreadByUser(selected_files, self.app1, self.client)
             self.thread_VectorstoreinThread_AgentCreate.vectorsignal.connect(self.update_VectorstoreinThread_AgentCreate)
                 
             self.thread_VectorstoreinThread_AgentCreate.ModalSucess.connect(self.update_custommodals_SuccessModal2)
@@ -631,42 +624,7 @@ class MainWindow(QMainWindow):
 
     def custom_file_dialogVectorstoreinassistant(self):
         dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFiles) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter(
@@ -683,7 +641,7 @@ class MainWindow(QMainWindow):
 
             self.update_custommodals_SuccessModal2(f"Selected files!!")
 
-            self.thread_Vectorstoreinassistant_AgentCreate = QProcessCreateVectorStoreByUser(selected_files, app1, self.client)
+            self.thread_Vectorstoreinassistant_AgentCreate = QProcessCreateVectorStoreByUser(selected_files, self.app1, self.client)
             self.thread_Vectorstoreinassistant_AgentCreate.vectorsignal.connect(self.update_Vectorstoreinassistant_AgentCreate)
                             
             self.thread_Vectorstoreinassistant_AgentCreate.ModalSucess.connect(self.update_custommodals_SuccessModal2)
@@ -694,42 +652,7 @@ class MainWindow(QMainWindow):
 
     def upload1fileinthread(self):
         dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFile) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter(
@@ -752,42 +675,7 @@ class MainWindow(QMainWindow):
 
     def upload1fileinmessage(self):
         dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFile) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter(
@@ -805,49 +693,10 @@ class MainWindow(QMainWindow):
             self.update_custommodals_SuccessModal2(f"Selected files!!")
             self.Upload1fileinmessage_AgentCreate.clear()
             self.Upload1fileinmessage_AgentCreate.setPlainText(f"'{selected_files}'")
-            
-
-
-
-
+     
     def upload1imageforvisioninThread(self):
         dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFile) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter("Imagens (*.png *.jpg *.jpeg);;Todos os Arquivos (*)")  # Filtro
@@ -856,48 +705,10 @@ class MainWindow(QMainWindow):
             self.update_custommodals_SuccessModal2(f"Selected files!!")
             self.Upload1imageforvisioninThread_AgentCreate.clear()
             self.Upload1imageforvisioninThread_AgentCreate.setPlainText(f"'{selected_files}'")
-            
-
-
 
     def uploadlistfileforcodeinterpreterinthread(self):
         dialog = QFileDialog()
-        dialog.setStyleSheet("""
-            QFileDialog {
-                background-color: white;
-                border: 1px solid #F7F7F7;
-                border-radius: 13px;
-                color: black;
-                font-size: 16px;
-            }
-            /* Personalizar os botões */
-            QPushButton {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                padding: 5px;
-            }
-            QPushButton:hover {
-                background-color: #E6E6E6;
-            }
-            QPushButton:pressed {
-                background-color: #D6D6D6;
-            }
-            /* Personalizar lista de arquivos */
-            QListView, QTreeView {
-                background-color: white;
-                border: none;
-                color: black;
-                font-size: 14px;
-            }
-            /* Barra de navegação */
-            QLineEdit {
-                background-color: #F7F7F7;
-                border: 1px solid #CCCCCC;
-                border-radius: 6px;
-                padding: 3px;
-            }
-        """)
+        dialog.setStyleSheet(self.dialogsetStyleSheet())
         dialog.setFileMode(QFileDialog.ExistingFiles) 
         dialog.setWindowTitle("Select the files that will go to vector storage")
         dialog.setNameFilter(
@@ -914,33 +725,6 @@ class MainWindow(QMainWindow):
             self.update_custommodals_SuccessModal2(f"Selected files!!")
             self.Uploadlistfileforcodeinterpreterinthread_AgentCreate.clear()
             self.Uploadlistfileforcodeinterpreterinthread_AgentCreate.setPlainText(f"[{selected_files}]")
-            
-
-
-
-
-
-    def update_Vectorstoreinassistant_AgentCreate(self, VectorstoreID):
-        self.Vectorstoreinassistant_AgentCreate.setPlainText(VectorstoreID)
-
-
-    def update_VectorstoreinThread_AgentCreate(self, VectorstoreID):
-        self.VectorstoreinThread_AgentCreate.setPlainText(VectorstoreID)
-
-    
-
-
-    def addShadow(self, widget):
-        effect = QGraphicsDropShadowEffect(widget)
-        effect.setColor(QColor(30, 30, 30, 200))
-        effect.setBlurRadius(20)
-        effect.setXOffset(0)
-        effect.setYOffset(0)
-        widget.setGraphicsEffect(effect)
-
-        
-
-
 
 
 
@@ -1068,6 +852,21 @@ class MainWindow(QMainWindow):
                     self.InstructionSelector.addItem(instruct_refact)
 
 
+    def update_Vectorstoreinassistant_AgentCreate(self, VectorstoreID):
+        self.Vectorstoreinassistant_AgentCreate.setPlainText(VectorstoreID)
+
+    def update_VectorstoreinThread_AgentCreate(self, VectorstoreID):
+        self.VectorstoreinThread_AgentCreate.setPlainText(VectorstoreID)
+
+    def addShadow(self, widget):
+        effect = QGraphicsDropShadowEffect(widget)
+        effect.setColor(QColor(30, 30, 30, 200))
+        effect.setBlurRadius(20)
+        effect.setXOffset(0)
+        effect.setYOffset(0)
+        widget.setGraphicsEffect(effect)
+
+        
     def adjust_height(self, element, max_height = 150, increase=True):
         base_height = 50
         current_text_length = len(element.toPlainText())
@@ -1214,143 +1013,41 @@ class MainWindow(QMainWindow):
             print("Erro: chat_area não está inicializado.")
 
 
-    def send_message(self):
-        message = self.message_input.toPlainText()
-        
-        myModal = QCustomModals.InformationModal(
-            title="Mensagem Enviada", 
-            parent=self,
-            position='top-left',
-            closeIcon=":/feather/icons/feather/window_close.png",
-            modalIcon=":/feather/icons/feather/info.png",
-            description="Sua mensagem foi enviada",
-            isClosable=False,
-            duration=3000
-        )
-        myModal.show()
-
-        self.AI_ByteManager_thread.new_message.emit(message)  
-        self.message_input.clear()
-        self.Upload1fileinthread.setText("None")
-        self.Upload1fileinmessage.setText("None")
-        self.Upload1imageforvisioninthread.setText("None")
-        self.save_config()
-
-
-
-    # def display_matrix_message(self, message):
-    #     """Exibe a mensagem do MatrixAI alinhada à esquerda, sem duplicar o prefixo."""
-    #     # Força a remoção de qualquer ocorrência do prefixo no início da mensagem
-    #     if message.startswith("MatrixAI: "):
-    #         message = message.replace("MatrixAI: ", "", 1)  # Remove só a primeira ocorrência
-    #     # Exibe a mensagem sem duplicar o prefixo
-    #     self.chat_area.append(f'<p style="color: black; background-color: #E8E8E8; padding: 8px; border-radius: 8px; margin: 5px auto 5px 0px; text-align: left;"><b>MatrixAI:</b> {message}</p>')
-                        
-    # def open_file_dialog(self):
-    #     options = QFileDialog.Options()
-    #     file_name, _ = QFileDialog.getOpenFileName(self, "Select File", "", "All Files (*);;Text Files (*.txt)", options=options)
-    #     if file_name:
-    #         print(f"Selected file: {file_name}")
-    #         if self.is_image_file(file_name):
-    #             if "visao" in self.message_input.text().lower() or "vision" in self.message_input.text().lower() or "imagem" in self.message_input.text().lower():
-    #                 self.Upload1imageforvisioninthread.setText(file_name)
-    #             else:
-    #                 self.Upload1fileinmessage.setText(file_name)
-    #         else:
-    #             self.Upload1fileinthread.setText(file_name)
-
-
 
     def is_image_file(self, file_name):
         # Verifica a extensão do arquivo
         image_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
         return file_name.lower().endswith(image_extensions)
-    
-
-
-    
-    # def closeEvent(self, event):
-    #     self.receiver_thread.stop()
-    #     self.sock.close()
-    #     event.accept()
 
     def get_machine_info(self):
         system_info = platform.uname()
         machine = system_info.node
         return machine
 
-
-
-
-    def save_config(self):
-        def sanitize_key(key):
-            return re.sub(r'[$#\[\]/.]', '_', key)
-        
-        respostaname_machine = self.get_machine_info()
-        ref1 = db.reference(f'save_settings_users', app=app2)
-        data1 = ref1.get()
-        controle_das_funcao2 = sanitize_key(f"DESKTOP-5L1VA7L")
-        controle_das_funcao_info_2 = {
-            #"chat_area": f"{self.chat_area.toPlainText()}",
-            "Instruction": f"{self.Vectorstoreinassistant_AgentCreate.toPlainText()}",
-            "Key": f"{self.Key.text()}",
-            "Nameassistant": f"{self.Nameassistant.text()}",
-            "Modelselect": f"{self.Modelselect.text()}",
-            "Aditionalinstructions": f"{self.Aditionalinstructions.text()}",
-            "tools": f"{self.tools.toPlainText()}",
-            "Vectorstoreinassistant": f"{self.Vectorstoreinassistant.toPlainText()}",
-            "VectorstoreinThread": f"{self.VectorstoreinThread.toPlainText()}",
-            "Upload1fileinthread": f"{self.Upload1fileinthread.text()}",
-            "Upload1fileinmessage": f"{self.Upload1fileinmessage.text()}",
-            "Upload1imageforvisioninthread": f"{self.Upload1imageforvisioninthread.text()}",
-        }
-        ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
-
-    def load_config(self):
-        def sanitize_key(key):
-            return re.sub(r'[$#\[\]/.]', '_', key)
+    
+    def closeEvent(self, event):
         try:
-            
-            respostaname_machine = self.get_machine_info()
-            ref1 = db.reference(f'save_settings_users/DESKTOP-5L1VA7L', app=app2)
-            data1 = ref1.get()                         
-
-            #chat_area = data1["chat_area"]
-            Instruction = data1["Instruction"]
-            Key = data1["Key"]
-            Nameassistant = data1["Nameassistant"]
-            Modelselect = data1["Modelselect"]
-            Aditionalinstructions = data1["Aditionalinstructions"]
-            tools = data1["tools"]
-            Vectorstoreinassistant = data1["Vectorstoreinassistant"]
-            VectorstoreinThread = data1["VectorstoreinThread"]
-            Upload1fileinthread = data1["Upload1fileinthread"]
-            Upload1fileinmessage = data1["Upload1fileinmessage"]
-            Upload1imageforvisioninthread = data1["Upload1imageforvisioninthread"]
-
-
-            def str_to_bool(s):
-                return s.lower() in ['true', '1', 't', 'y', 'yes']
-            
-
-            #self.chat_area.setPlainText(str(chat_area))
-            self.Instruction.setPlainText(str(Instruction))
-            self.Key.setText(str(Key))
-            self.Nameassistant.setText(str(Nameassistant))
-            self.Modelselect.setText(str(Modelselect))
-            self.Aditionalinstructions.setText(str(Aditionalinstructions))
-            self.tools.setPlainText(str(tools))
-            self.Vectorstoreinassistant.setPlainText(str(Vectorstoreinassistant))
-            self.VectorstoreinThread.setPlainText(str(VectorstoreinThread))
-            self.Upload1fileinthread.setText(str(Upload1fileinthread))
-            self.Upload1fileinmessage.setText(str(Upload1fileinmessage))
-            self.Upload1imageforvisioninthread.setText(str(Upload1imageforvisioninthread))
+            self.thread_processe_create_agent.stop()
+        except:
+            pass
+        try:
+            self.thread_process_create_openaikeys.stop()
+        except:
+            pass
+        try:
+            self.thread_process_create_GitHubKeys.stop()
+        except:
+            pass
+        try:
+            self.thread_process_create_Firebasekeys.stop()
+        except:
+            pass
 
 
 
-        except Exception as e:
-            print(e)
-            #self.save_config()
+
+        event.accept()
+
 
 
 
