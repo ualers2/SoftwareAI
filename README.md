@@ -1,6 +1,7 @@
-![UI](Gifs/logo.gif)
 
-![Version](https://img.shields.io/badge/version-0.1.8-blue)
+![UI](Gifs/logo.gif)
+# 👥 Your software company governed by AI
+![Version](https://img.shields.io/badge/version-0.2.8-blue)
 ![Status](https://img.shields.io/badge/status-beta-yellow)
 ![License](https://img.shields.io/badge/license-Apache-green)
 
@@ -13,7 +14,7 @@
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
 - [👥 Index-Team](Docs/IndexTeam/IndexTeam.md)
 - [🗺️ Roadmaps](Docs/Roadmaps)
-- [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
+- [📊 Flowchart](Docs/Flowchart/Fluxogram-beta-v-0.1.8.pdf)
 - [📁 SoftwareAI Structure](Docs/Structure/SoftwareAIStructure.md)
 - [🤝 Contributing](#-contributing)
 #
