@@ -11,7 +11,7 @@
 - [🚀 Starting SoftwareAI Chat](#-start-softwareai-chat)
 - [🚀 Starting SoftwareAI Editor](#-softwareai-editor)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
-- [👥 Index-Team](#-index-team:)
+- [👥 Index-Team](#-index-team)
 - [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
 - [📁 Project Structure](#-softwareai-structure)
@@ -40,7 +40,7 @@
 - [SoftwareAI About](Docs/About/SoftwareAI.md)
 ## 📁 SoftwareAI Structure: 
 - [SoftwareAI Structure](Docs/Structure/SoftwareAIStructure.md)
-## 👥 Index Team: 
+## 👥 Index Team 
 - [Teams Docs](Docs/IndexTeam/IndexTeam.md)
 
 ## 📖 IndexDocs
