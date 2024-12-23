@@ -11,9 +11,7 @@
 - [🚀 Starting SoftwareAI Chat](#-start-softwareai-with-ui)
 - [🚀 Starting SoftwareAI Editor](#-start-softwareai-editor-with-ui)
 - [🚀 Starting Without Ui](#-get-started-softwareai-without-ui)
-
 - [👥 Index-Team](#-indexteam)
-
 - [🗺️ Roadmaps](Docs/Roadmaps)
 - [📊 Flowchart](Flowchart/Fluxogram-beta-v-0.1.8.pdf)
 - [📁 Project Structure](#-softwareai-structure)
@@ -23,8 +21,8 @@
 #
 
 
-## 🚀 Start SoftwareAI-Editor with UI
-
+## 🚀 Start SoftwareAI-Editor
+![UI](Gifs/1222.gif)
 ### Installation SoftwareAI
 ```bash
 git clone https://github.com/ualers/SoftwareAI
@@ -32,13 +30,6 @@ git clone https://github.com/ualers/SoftwareAI
 ### Installation requirements
 ```bash
 pip install -r requirements.txt
-```
-### Extract icons
-```bash
-CoreUi/Editor/Qss/icons/icons/font_awesome.zip
-```
-```bash
-CoreUi/Editor/Qss/icons/icons/material_design.zip
 ```
 ### Basic Usage
 ```bash
