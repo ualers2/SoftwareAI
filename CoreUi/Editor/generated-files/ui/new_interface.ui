@@ -442,7 +442,7 @@ QWidget {
 </string>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="page_2">
        <layout class="QGridLayout" name="gridLayout_4">
@@ -554,7 +554,7 @@ QComboBox QAbstractItemView {
              <string />
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/material_design/icons/material_design/cleaning_services.png</normaloff>:/material_design/icons/material_design/cleaning_services.png</iconset>
             </property>
             <property name="iconSize">
@@ -769,7 +769,7 @@ QComboBox QAbstractItemView {
              <string />
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/material_design/icons/material_design/image.png</normaloff>:/material_design/icons/material_design/image.png</iconset>
             </property>
             <property name="iconSize">
@@ -803,7 +803,7 @@ QComboBox QAbstractItemView {
              <string />
             </property>
             <property name="icon">
-             <iconset resource="../Qss/icons/_icons.qrc">
+             <iconset>
               <normaloff>:/material_design/icons/material_design/send.png</normaloff>:/material_design/icons/material_design/send.png</iconset>
             </property>
             <property name="iconSize">
@@ -830,7 +830,7 @@ QComboBox QAbstractItemView {
             <item row="0" column="2">
              <widget class="QComboBox" name="comboBox_list_instruction_edit">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -843,7 +843,7 @@ QComboBox QAbstractItemView {
               </property>
               <property name="maximumSize">
                <size>
-                <width>571</width>
+                <width>16777215</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -1569,13 +1569,6 @@ QComboBox QAbstractItemView {
                  <property name="verticalSpacing">
                   <number>15</number>
                  </property>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_7">
-                   <property name="text">
-                    <string>Name Agent</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="5" column="1">
                   <widget class="QComboBox" name="AgentCategory">
                    <property name="sizePolicy">
@@ -1626,6 +1619,27 @@ QComboBox QAbstractItemView {
                    </property>
                   </widget>
                  </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>Name Agent</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>Key In Firebase</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_15">
+                   <property name="text">
+                    <string>Agent Category</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="0" column="1">
                   <widget class="QTextEdit" name="KeyInFirebase">
                    <property name="sizePolicy">
@@ -1664,20 +1678,6 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="placeholderText">
                     <string>AgentForPlanningDallas</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_6">
-                   <property name="text">
-                    <string>Key In Firebase</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="5" column="0">
-                  <widget class="QLabel" name="label_15">
-                   <property name="text">
-                    <string>Agent Category</string>
                    </property>
                   </widget>
                  </item>
@@ -1729,6 +1729,13 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
+                 <item row="6" column="0">
+                  <widget class="QLabel" name="label_28">
+                   <property name="text">
+                    <string>Agent Keys Github</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="6" column="1">
                   <widget class="QComboBox" name="AgentKeysGithub">
                    <property name="styleSheet">
@@ -1758,13 +1765,6 @@ QComboBox QAbstractItemView {
     font-size: 16px; /* Ajuste de fonte para itens */
 }
 </string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="6" column="0">
-                  <widget class="QLabel" name="label_28">
-                   <property name="text">
-                    <string>Agent Keys Github</string>
                    </property>
                   </widget>
                  </item>
@@ -1847,6 +1847,45 @@ QComboBox QAbstractItemView {
                      <string>gpt-4o-2024-11-20</string>
                     </property>
                    </item>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QComboBox" name="AgentKeysFirebase">
+                   <property name="styleSheet">
+                    <string notr="true">QComboBox {
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;  /* Borda arredondada */
+    color: black;  /* Cor do texto */
+    font-size: 12px;  /* Tamanho da fonte */
+    padding: 5px 10px;  /* Espaçamento interno */
+}
+
+QComboBox:hover {
+    background-color: #EDEDED; /* Fundo ao passar o mouse */
+}
+
+QComboBox:pressed {
+    background-color: #DCDCDC; /* Fundo ao pressionar */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+    selection-background-color: #EDEDED;
+    selection-color: black;
+    border-radius: 10px;  /* Borda arredondada para a lista */
+    font-size: 16px; /* Ajuste de fonte para itens */
+}
+</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_37">
+                   <property name="text">
+                    <string>Agent Keys Firebase</string>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -2137,13 +2176,13 @@ QComboBox QAbstractItemView {
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>136</width>
+                     <width>201</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>136</width>
+                     <width>201</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2171,13 +2210,13 @@ QComboBox QAbstractItemView {
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>136</width>
+                     <width>201</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>136</width>
+                     <width>201</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2336,7 +2375,7 @@ QComboBox QAbstractItemView {
                   <number>5</number>
                  </property>
                  <property name="horizontalSpacing">
-                  <number>61</number>
+                  <number>78</number>
                  </property>
                  <property name="verticalSpacing">
                   <number>8</number>
@@ -2369,13 +2408,13 @@ in Assistant</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>375</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2433,13 +2472,13 @@ in Assistant</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2506,13 +2545,13 @@ in Thread</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2592,13 +2631,13 @@ in Thread</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
@@ -2626,7 +2665,7 @@ in Thread</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>129</width>
+                     <width>113</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -2647,13 +2686,13 @@ in thread</string>
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>388</width>
+                     <width>230</width>
                      <height>40</height>
                     </size>
                    </property>
