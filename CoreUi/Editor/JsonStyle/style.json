@@ -38,6 +38,25 @@
 		}
     ],
 
+	"QCard": [
+			{
+			    "cards": [
+					"card1",
+					"card2",
+					"card3"
+				],
+				"shadow":[
+					{
+						"color": "#000",
+						"blurRadius": 8,
+						"xOffset": 0,
+						"yOffset": 0
+					}
+				]
+			}
+			
+	],
+	
     "QCustomQStackedWidget":[
 		{
 			"name":"myStackedWidget",
@@ -45,8 +64,9 @@
 				{
 					"navigationButtons":[
 						{
+							"ViewCodeAgent": "page_14",
 							"Editor_instructions": "page",
-							"Editor_functions": "page_2",
+							"Editoragentkeysongithub": "page_11",
 							"CreateAgents_menu": "page_settings"
 						}
 					]
@@ -104,7 +124,9 @@
 							"PromptSettings": "page_7",
 							"InstructionSettings": "page_5",
 							"FunctionsSettings": "page_8",
+							"ArgumentsSettings": "page_10",
 							"pushButton_2": "page_6",
+							"BacktoEditinstruction_create_2": "page_6",
 							"pushButton": "page_6",
 							"BackToSettings": "page_6"
 						}
@@ -130,15 +152,15 @@
             "name": "menu_widget",
             "defaultSize": [{
                 "width": 39,
-                "height": 491
+                "height": 631
             }],
             "collapsedSize": [{
                 "width": 0,
-                "height": 491
+                "height": 631
             }],
             "expandedSize": [{
                 "width": 39,
-                "height": 491
+                "height": 631
             }],
 
             "toggleButton": [{
