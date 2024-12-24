@@ -21,40 +21,52 @@
 
 ⚠️ **Note**: SoftwareAI is in beta phase and does not currently reflect the final product.
 ## 🚀 SoftwareAI-Editor 
-**Build Agents**: Edit, Build and Bring your Agent to life
+**🎨 Build Agents**: Edit, Build and Bring your Agent to life
 ![UI](Gifs/1222.gif)
-📖 **SoftwareAI-Editor**: is the most important part when thinking about creating a company 100% governed by AI, here we will build and modify each agent for its specific use
-## 📚 [Editor Installation](Docs/Installation/Editor.md)
+**💡 SoftwareAI-Editor**: is the most important part when thinking about creating a company 100% governed by AI, here we will build and modify each agent for its specific use
 ## 📚 [Editor RoadMap](Docs/Roadmaps/Editor-Roadmap.md)
-#
-
-#
-
+### 📖 Editor Installation
+```python
+pip install --upgrade SoftwareAI
+```
+### 🐍 Editor Usage
+```python
+from softwareai.Editor import initeditor
+initeditor()
+```
 ## 🚀 Start SoftwareAI-Chat
-⚠️ **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
+🔍 **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
 ![UI](Gifs/1221.gif)
-
-## 📚 [SoftwareAI-Chat Installation](Docs/Installation/Chat.md)
 ## 📚 [SoftwareAI-Chat RoadMap](Docs/Roadmaps/Chat-Roadmap.md)
+## 📚 [SoftwareAI-Chat Installation](Docs/Installation/Chat.md)
+### 🐍 Chat Usage
+```python
+from softwareai.Chat import initchat
+initchat()
+```
+
 #
 ## 🚀 Get started SoftwareAI without UI
-- 🔧 [SoftwareAI Installation](Docs/Installation/SoftwareAI.md)
-- 🔧 Basic Usage:
-    ```python
-    # Importing SoftwareAI Agents
-    from CoreApp._init_agents_ import AgentInitializer
+- 🛠️ SoftwareAI Installation:
+```python
+pip install --upgrade SoftwareAI
+```
+- 🐍 Usage:
+```python
+# Importing SoftwareAI Agents
+from softwareai.CoreApp._init_agents_ import AgentInitializer
 
-    # Importing SoftwareAI Libraries
-    from CoreApp._init_libs_ import *
+# Importing SoftwareAI Libraries
+from softwareai.CoreApp._init_libs_ import *
 
-    # Initializing Agent
-    byte_manager = AgentInitializer.get_agent('ByteManager') 
+# Initializing Agent
+byte_manager = AgentInitializer.get_agent('ByteManager') 
 
-    # Usage Example
-    message = "I request a script for technical analysis of Solana cryptocurrency"
-    owner_response = byte_manager.AI_1_ByteManager_Company_Owners(message)
-    print(owner_response)
-    ```
+# Usage Example
+message = "I request a script for technical analysis of Solana cryptocurrency"
+owner_response = byte_manager.AI_1_ByteManager_Company_Owners(message)
+print(owner_response)
+```
 ## 💡 SoftwareAI without UI Features
 - 📊 Creation of pre-project documentation
 - 🗺️ Roadmap generation
