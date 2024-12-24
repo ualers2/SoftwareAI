@@ -1,11 +1,5 @@
 
 ### Installation SoftwareAI
 ```bash
-git clone https://github.com/ualers/SoftwareAI
+pip install --upgrade SoftwareAI
 ```
-### Installation requirements
-```bash
-pip install -r requirements.txt
-```
-
-#
