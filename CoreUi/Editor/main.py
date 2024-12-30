@@ -300,15 +300,25 @@ class MainWindow(QMainWindow):
         
         self.uploadcredentialapp_AgentKeys = self.ui.uploadcredentialapp_AgentKeys
         self.uploadcredentialapp_AgentKeys.clicked.connect(self.click_uploadcredentialapp_AgentKeys)
-        key_api = self.AgentKeysOpenAI.currentText()
-        name_app = self.AgentKeysFirebase.currentText()
-        self.client = OpenAIKeysinit._init_client_(key_api)
-        self.app1 = FirebaseKeysinit._init_app_(name_app)
-
+        try:
+            key_api = self.AgentKeysOpenAI.currentText()
+            name_app = self.AgentKeysFirebase.currentText()
+            self.client = OpenAIKeysinit._init_client_(key_api)
+            self.app1 = FirebaseKeysinit._init_app_(name_app)
+        except Exception as e:
+            print(e)
 
         self.show()
 
     def CreateAgentButtonClicked(self):
+        try:
+            if self.thread_processe_create_agent:
+                print("Aguardando a thread finalizar...")
+                self.thread_processe_create_agent.cancel()  
+                QTimer.singleShot(1000, self.check_task_status)
+        except:
+            pass
+
         KeyInFirebase_AgentCreate = self.KeyInFirebase_AgentCreate.toPlainText()
         ModelSelect_AgentCreate = self.ModelSelect_AgentCreate.currentText()
         Vectorstoreinassistant_AgentCreate = self.Vectorstoreinassistant_AgentCreate.toPlainText()
@@ -341,7 +351,9 @@ class MainWindow(QMainWindow):
         AgentKeysGithubName = re.findall(r'\(([^)]*)\)', AgentKeysGithub)
         AgentOpenAIelement = self.AgentKeysOpenAI.currentText()
         AgentKeyOpenAI = re.sub(r'\([^)]*\)', '', AgentOpenAIelement)
+        
         AgentKeysOpenAIName = re.findall(r'\(([^)]*)\)', AgentOpenAIelement)
+        name_app = self.AgentKeysFirebase.currentText()
         self.thread_processe_create_agent = QProcessCreateAgent(
             KeyInFirebase_AgentCreate,
             ModelSelect_AgentCreate,
@@ -370,7 +382,8 @@ class MainWindow(QMainWindow):
             StoreFormatJsonAndJsonl_AgentCreate,
             AgentKeysGithubName,
             AgentKeysOpenAIName,
-            AgentKeyOpenAI
+            AgentKeyOpenAI.replace("  ", "").replace(" ", ""),
+            name_app
         )
         self.thread_processe_create_agent.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_processe_create_agent.ModalInfo.connect(self.update_custommodals_info)
@@ -405,19 +418,26 @@ class MainWindow(QMainWindow):
         appname_AgentKeys = self.ui.appname_AgentKeys.toPlainText()
         Databaseurl_AgentKeys = self.ui.Databaseurl_AgentKeys.toPlainText()
         Storagebucket_AgentKeys = self.ui.Storagebucket_AgentKeys.toPlainText()
+        Storagebucket_AgentKeys = Storagebucket_AgentKeys.replace("gs://", "")
         credentialsapp_AgentKeys = self.ui.credentialsapp_AgentKeys.toPlainText()
         self.thread_process_create_Firebasekeys = QProcessCreateFirebasekeys(
             appname_AgentKeys,
             Databaseurl_AgentKeys,
             Storagebucket_AgentKeys,
             credentialsapp_AgentKeys
-            
         )
         self.thread_process_create_Firebasekeys.ModalSucess.connect(self.update_custommodals_SuccessModal)
         self.thread_process_create_Firebasekeys.ModalInfo.connect(self.update_custommodals_info)
         self.thread_process_create_Firebasekeys.finish.connect(self.finish_thread_process_create_Firebasekeys)
         self.thread_process_create_Firebasekeys.start()
 
+
+    @Slot()
+    def check_task_status(self):
+        if self.thread_processe_create_agent:
+            QTimer.singleShot(1000, self.check_task_status) 
+        else:
+            print("check_task_status Tarefa concluída.")
 
     def load_AgentKeysOpenAI(self, chave="str_key", company="companyname"):
         self.AgentKeysOpenAI.clear()
