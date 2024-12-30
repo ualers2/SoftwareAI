@@ -16,10 +16,10 @@ from datetime import datetime
 caminho_raiz = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../SoftwareAI'))
 sys.path.append(caminho_raiz)
 
-from CoreApp._init_core_ import OpenAIKeysinit,AutenticateAgent,Agent_files,  ResponseAgent, python_functions 
+from softwareai.CoreApp._init_core_ import OpenAIKeysinit,AutenticateAgent,Agent_files,  ResponseAgent, python_functions 
 
 
-from CoreUi.ChatSoftwareAI.Chat.Formatmessage import format_message
+from softwareai.CoreUi.Chat.Chat.Formatmessage import format_message
 
 
 
@@ -100,8 +100,10 @@ class QChatOpenAi(QObject):
                 self.client = OpenAIKeysinit._init_client_(self.key_api)
 
                 AI, instructionsassistant, nameassistant, model_select  = AutenticateAgent.create_or_auth_AI(
-                    key=self.keyAssistant,
-                    client=self.client
+                    app1=self.appx,
+                    client=self.client,
+                    key=self.keyAssistant
+                    
                 )
                 
                 self.emit_message("user", self.message)
