@@ -1,13 +1,22 @@
 
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 
 
-def create_github_repo_and_upload(repo_name: str, repo_description: str, readme_file_path: str, code_file_paths: list, token: str):
-    # URL para criar o repositório dentro da organização
+def create_github_repo_and_upload(repo_name: str, 
+                                repo_description: str,
+                                setup_file_path: str,
+                                requirements_file_path: str,
+                                LICENSE_file_path: str,
+                                pyproject_file_path: str,
+                                readme_file_path: str,
+                                CoreApp_path: str,
+                                token: str
+                                ):
     repo_url = f"https://api.github.com/orgs/A-I-O-R-G/repos"
+    branch = "main"
 
     headers = {
         "Authorization": f"token {token}",
@@ -51,12 +60,66 @@ def create_github_repo_and_upload(repo_name: str, repo_description: str, readme_
             print(f"Falha ao fazer upload do arquivo {file_name}. Status: {upload_response.status_code}")
             return {"status": "error", "message": upload_response.json()}
 
+
+    def upload_codes_to_github(directory):
+        for dirpath, dirnames, filenames in os.walk(directory):
+            for filename in filenames:
+                file_path = os.path.join(dirpath, filename)
+                with open(file_path, "rb") as file:
+                    content = file.read()
+                    encoded_content = base64.b64encode(content).decode("utf-8")
+
+                # Obtém o caminho relativo e ajusta para o formato GitHub
+                relative_path = os.path.relpath(file_path, start=directory)  # Caminho relativo baseado no diretório especificado
+                github_path = relative_path.replace("\\", "/")  # Converte para o formato de caminho do GitHub
+                
+                # Cria a URL para a API do GitHub
+                url = f"https://api.github.com/repos/{repo_name}/contents/CoreApp/{github_path}"
+
+                # Verifica se o arquivo já existe
+                response = requests.get(url, headers={"Authorization": f"token {token}"})
+                sha = response.json().get("sha") if response.status_code == 200 else None
+
+                # Define os dados para a requisição
+                data = {
+                    "message": f"Add {filename}",
+                    "content": encoded_content,
+                    "branch": branch
+                }
+                if sha:
+                    data["sha"] = sha  # Adiciona o SHA se o arquivo já existir
+
+                # Envia a requisição para o GitHub
+                response = requests.put(url, json=data, headers={"Authorization": f"token {token}"})
+                print(f"Arquivo: {github_path} - Status: {response.status_code} ")
+
+
+
     # Upload do arquivo README.md
     upload_file_to_github(readme_file_path, "Adicionando documentação")
 
-    # Upload dos arquivos Python
-    for code_file_path in code_file_paths:
-        upload_file_to_github(code_file_path, "Adicionando código fonte")
+    # Upload do arquivo setup.py
+    upload_file_to_github(setup_file_path, "Adicionando setup.py")
+
+    # Upload do arquivo requirements.txt
+    upload_file_to_github(requirements_file_path, "Adicionando requirements.txt")
+
+    # Upload do arquivo LICENSE.txt
+    upload_file_to_github(LICENSE_file_path, "Adicionando LICENSE")
+
+    # Upload do arquivo pyproject.toml
+    upload_file_to_github(pyproject_file_path, "Adicionando pyproject.toml")
+
+    # Upload do CoreApp
+    upload_codes_to_github(CoreApp_path)
+    # code_file_paths = os.listdir(CoreApp_path)
+    # for code_file_path in code_file_paths:
+    #     code_path = os.path.join(CoreApp_path, code_file_path)
+    #     upload_file_to_github(code_path, "Adicionando código fonte")
+
+
+
+
 
     # Adicionando colaborador com permissões de administrador
     collaborator_url = f"https://api.github.com/repos/A-I-O-R-G/{repo_name}/collaborators/SignalMaster727"
@@ -106,36 +169,3 @@ def create_github_repo_and_upload(repo_name: str, repo_description: str, readme_
         return {"status": "error", "message": collaborator_response.json()}
 
     return {"status": "success", "message": "Repositório, arquivos e colaborador adicionados com sucesso"}
-
-
-def submit_upload_results(client, thread_id, run_id, result_data, function_name):
-    """
-    Envia os resultados do upload do repositório e arquivos para a API da OpenAI.
-
-    :param client: Instância do cliente da API da OpenAI
-    :param thread_id: ID da thread em execução
-    :param run_id: ID do run específico
-    :param result_data: Dicionário contendo o status do upload
-    :param function_name: Nome da função para registrar a execução
-    """
-    function_data = {
-        "thread_id": thread_id,
-        "run_id": run_id,
-        "result_data": result_data
-    }
-
-    response = client.beta.threads.runs.submit_tool_outputs(
-        thread_id=thread_id,
-        run_id=run_id,
-        tool_output={
-            "function_name": function_name,
-            "arguments": json.dumps(function_data)
-        }
-    )
-
-    if response.status == "success":
-        print("Resultados do upload enviados com sucesso.")
-    else:
-        print(f"Erro ao enviar resultados do upload: {response}")
-
-
