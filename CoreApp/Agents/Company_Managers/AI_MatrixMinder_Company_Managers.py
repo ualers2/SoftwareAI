@@ -1,20 +1,26 @@
 
+
 #########################################
 # IMPORT SoftwareAI Core
-from ..._init_core_ import *
-#########################################
-# IMPORT SoftwareAI Agents 
-from ..._init_agents_ import *
+from softwareai.CoreApp._init_core_ import * 
 #########################################
 # IMPORT SoftwareAI Libs 
-from ..._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
+#########################################
+# IMPORT SoftwareAI All Paths 
+from softwareai.CoreApp._init_paths_ import *
 #########################################
 # IMPORT SoftwareAI Instructions
-from ...SoftwareAI.Instructions._init_Instructions_ import *
+from softwareai.CoreApp.SoftwareAI.Instructions._init_Instructions_ import *
 #########################################
 # IMPORT SoftwareAI Tools
-from ...SoftwareAI.Tools._init_tools_ import *
+from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
 #########################################
+# IMPORT SoftwareAI keys
+from softwareai.CoreApp._init_keys_ import *
+#########################################
+
+
 
 
 
