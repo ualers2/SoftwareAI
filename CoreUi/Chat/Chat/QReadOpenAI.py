@@ -16,7 +16,7 @@ from datetime import datetime
 caminho_raiz = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../SoftwareAI'))
 sys.path.append(caminho_raiz)
 
-from CoreUi.ChatSoftwareAI.Chat.Formatmessage import format_message
+from softwareai.CoreUi.Chat.Chat.Formatmessage import format_message
 
 
 
