@@ -8,6 +8,10 @@
 - []  Criar Opcao para adicionar mais de uma function ao buildar agente
 - []  Criar Opcao para selecionar argumentos para chamada do agente ja conhecidos e consolidados
 - []  Criar Opcao para buildar agentes especificos ja consolidados com 1 click como por exemplo `CloudArchitect` que cria documentos .md de alta qualidade ou `QuantumCore` que é capaz de criar um software e upalo no github
+- []  Seção para remover agentes 
+- []  Seção para remover chaves da open ai
+- []  Seção para remover chaves do firebase
+- []  Seção para remover chaves do github
 
 
 
