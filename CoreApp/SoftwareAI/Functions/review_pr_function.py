@@ -2,10 +2,10 @@
 
 #########################################
 # IMPORT SoftwareAI Core
-from CoreApp._init_core_ import *
+from softwareai.CoreApp._init_core_ import *
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 
 def merge_pull_request(repo_owner: str, repo_name: str, pr_number: int, token: str):
