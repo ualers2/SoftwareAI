@@ -1,14 +1,15 @@
-from .Agents.Company_CEO.AI_ByteManager_Company_CEO import ByteManager
-from .Agents.Software_Planning.AI_Bob_Software_Planning import Gerente_de_projeto
-from .Agents.Software_Documentation.AI_CloudArchitect_Software_Documentation import Software_Documentation
-from .Agents.Software_Planning.AI_Dallas_Software_Planning import Equipe_De_Solucoes
-from .Agents.Software_Development.AI_DataWeaver_Software_Development import software_improvements
-from .Agents.Company_Managers.AI_MatrixMinder_Company_Managers import Company_Managers
-from .Agents.Software_Development.AI_QuantumCore_Software_Development import SoftwareDevelopment
-from .Agents.Software_Development.AI_SignalMaster_Software_Development import SoftwareDevelopment_SignalMaster
-from .Agents.Software_Requirements_Analysis.AI_SynthOperator_Software_Requirements_Analysis import Softwareanaysis
-from .Agents.Pre_Project.AI_Tigrao_Pre_Project import Pre_Project_Document
-from .Agents.Software_Development.AI_NexGenCoder_Software_Development import SoftwareDevelopment_NexGenCoder
+from softwareai.CoreApp.Agents.Company_CEO.ByteManager import ByteManager
+
+from softwareai.CoreApp.Agents.Software_Planning.Bob import Gerente_de_projeto
+from softwareai.CoreApp.Agents.Software_Documentation.CloudArchitect import Software_Documentation
+from softwareai.CoreApp.Agents.Software_Planning.Dallas import Equipe_De_Solucoes
+from softwareai.CoreApp.Agents.Software_Development.DataWeaver import software_improvements
+from softwareai.CoreApp.Agents.Company_Managers.AI_MatrixMinder_Company_Managers import Company_Managers
+from softwareai.CoreApp.Agents.Software_Development.QuantumCore import SoftwareDevelopment
+from softwareai.CoreApp.Agents.Software_Development.SignalMaster import SoftwareDevelopment_SignalMaster
+from softwareai.CoreApp.Agents.Software_Requirements_Analysis.SynthOperator import Softwareanaysis
+from softwareai.CoreApp.Agents.Pre_Project.Tigrao import Pre_Project_Document
+from softwareai.CoreApp.Agents.Software_Development.NexGenCoder import SoftwareDevelopment_NexGenCoder
 
 class AgentInitializer:
     _agents = {}
@@ -17,6 +18,7 @@ class AgentInitializer:
     def initialize_agents(cls):
         """Initializes all agents and stores them in the _agents dictionary."""
         cls._agents['Gerente_de_projeto'] = Gerente_de_projeto()
+
         cls._agents['Company_Managers'] = Company_Managers() 
         cls._agents['Pre_Project_Document'] = Pre_Project_Document() 
         cls._agents['Software_Documentation'] = Software_Documentation()
