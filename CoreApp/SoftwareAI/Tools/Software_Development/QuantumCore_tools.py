@@ -5,7 +5,7 @@ tools_QuantumCore = [
         "type": "function",
         "function": {
             "name": "create_github_repo_and_upload",
-            "description": "Cria um repositório no GitHub e realiza o upload da documentação (.md) e do código Python.",
+            "description": "Cria um repositório no GitHub e realiza o upload do projeto Python.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -17,23 +17,44 @@ tools_QuantumCore = [
                         "type": "string",
                         "description": "Descrição do repositório."
                     },
+                    "setup_file_path": {
+                        "type": "string",
+                        "description": "Caminho do arquivo .md (README) a ser carregado no repositório."
+                    },
+                    "requirements_file_path": {
+                        "type": "string",
+                        "description": "Caminho do arquivo requirements.txt a ser carregado no repositório."
+                    },
+                    "LICENSE_file_path": {
+                        "type": "string",
+                        "description": "Caminho do arquivo LICENSE.txt a ser carregado no repositório."
+                    },
+                    "pyproject_file_path": {
+                        "type": "string",
+                        "description": "Caminho do arquivo pyproject.toml a ser carregado no repositório."
+                    },
                     "readme_file_path": {
                         "type": "string",
                         "description": "Caminho do arquivo .md (README) a ser carregado no repositório."
                     },
-                    "code_file_paths": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "Lista de caminhos dos arquivos de código Python a serem carregados no repositório."
+                    "CoreApp_path": {
+                        "type": "string",
+                        "description": "Caminho do CoreApp a serem carregados no repositório."
                     },
                     "token": {
                         "type": "string",
                         "description": "Token de autenticação do GitHub para realizar operações na API."
                     }
                 },
-                "required": ["repo_name", "repo_description", "readme_file_path", "code_file_paths", "token"]
+                "required": ["repo_name",
+                            "repo_description", 
+                            "setup_file_path",
+                            "requirements_file_path", 
+                            "LICENSE_file_path",
+                            "pyproject_file_path",
+                            "readme_file_path",
+                            "CoreApp_path", 
+                            "token"]
             }
         }
     },
