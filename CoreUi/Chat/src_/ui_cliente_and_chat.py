@@ -439,44 +439,43 @@ class Ui_MainWindow(object):
         self.StorageAgentOutput_.setObjectName(u"StorageAgentOutput_")
         self.StorageAgentOutput_.setChecked(True)
 
-        self.gridLayout_47.addWidget(self.StorageAgentOutput_, 2, 0, 1, 2)
+        self.gridLayout_47.addWidget(self.StorageAgentOutput_, 3, 0, 1, 2)
+
+        self.StorageAgentCompletions = QCheckBox(self.frame_5)
+        self.StorageAgentCompletions.setObjectName(u"StorageAgentCompletions")
+        self.StorageAgentCompletions.setChecked(True)
+
+        self.gridLayout_47.addWidget(self.StorageAgentCompletions, 2, 0, 1, 2)
+
+        self.radioButton = QRadioButton(self.frame_5)
+        self.radioButton.setObjectName(u"radioButton")
+
+        self.gridLayout_47.addWidget(self.radioButton, 5, 0, 1, 1)
+
+        self.StoreFormatJsonAndJsonl = QRadioButton(self.frame_5)
+        self.StoreFormatJsonAndJsonl.setObjectName(u"StoreFormatJsonAndJsonl")
+        self.StoreFormatJsonAndJsonl.setChecked(True)
+
+        self.gridLayout_47.addWidget(self.StoreFormatJsonAndJsonl, 4, 0, 1, 1)
 
         self.label_34 = QLabel(self.frame_5)
         self.label_34.setObjectName(u"label_34")
 
         self.gridLayout_47.addWidget(self.label_34, 0, 0, 1, 1)
 
-        self.radioButton = QRadioButton(self.frame_5)
-        self.radioButton.setObjectName(u"radioButton")
-
-        self.gridLayout_47.addWidget(self.radioButton, 4, 0, 1, 1)
-
-        self.StoreFormatJsonAndJsonl = QRadioButton(self.frame_5)
-        self.StoreFormatJsonAndJsonl.setObjectName(u"StoreFormatJsonAndJsonl")
-        self.StoreFormatJsonAndJsonl.setChecked(True)
-
-        self.gridLayout_47.addWidget(self.StoreFormatJsonAndJsonl, 3, 0, 1, 1)
-
-        self.StorageAgentCompletions = QCheckBox(self.frame_5)
-        self.StorageAgentCompletions.setObjectName(u"StorageAgentCompletions")
-        self.StorageAgentCompletions.setChecked(True)
-
-        self.gridLayout_47.addWidget(self.StorageAgentCompletions, 1, 0, 1, 2)
-
-        self.verticalSpacer_14 = QSpacerItem(20, 202, QSizePolicy.Minimum, QSizePolicy.Fixed)
-
-        self.gridLayout_47.addItem(self.verticalSpacer_14, 6, 0, 1, 2)
-
         self.radioButton_2 = QRadioButton(self.frame_5)
         self.radioButton_2.setObjectName(u"radioButton_2")
 
-        self.gridLayout_47.addWidget(self.radioButton_2, 5, 0, 1, 1)
+        self.gridLayout_47.addWidget(self.radioButton_2, 6, 0, 1, 1)
 
         self.AgentKeysOpenAI = QComboBox(self.frame_5)
         self.AgentKeysOpenAI.setObjectName(u"AgentKeysOpenAI")
-        sizePolicy.setHeightForWidth(self.AgentKeysOpenAI.sizePolicy().hasHeightForWidth())
-        self.AgentKeysOpenAI.setSizePolicy(sizePolicy)
-        self.AgentKeysOpenAI.setMinimumSize(QSize(310, 0))
+        sizePolicy5 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.AgentKeysOpenAI.sizePolicy().hasHeightForWidth())
+        self.AgentKeysOpenAI.setSizePolicy(sizePolicy5)
+        self.AgentKeysOpenAI.setMinimumSize(QSize(0, 0))
         self.AgentKeysOpenAI.setStyleSheet(u"QComboBox {\n"
 "    background-color: #F7F7F7;\n"
 "    border: 1px solid #E0E0E0;\n"
@@ -505,6 +504,48 @@ class Ui_MainWindow(object):
 "")
 
         self.gridLayout_47.addWidget(self.AgentKeysOpenAI, 0, 1, 1, 1)
+
+        self.verticalSpacer_14 = QSpacerItem(20, 202, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.gridLayout_47.addItem(self.verticalSpacer_14, 7, 0, 1, 2)
+
+        self.label_4 = QLabel(self.frame_5)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout_47.addWidget(self.label_4, 1, 0, 1, 1)
+
+        self.AgentKeysFirebase = QComboBox(self.frame_5)
+        self.AgentKeysFirebase.setObjectName(u"AgentKeysFirebase")
+        sizePolicy5.setHeightForWidth(self.AgentKeysFirebase.sizePolicy().hasHeightForWidth())
+        self.AgentKeysFirebase.setSizePolicy(sizePolicy5)
+        self.AgentKeysFirebase.setStyleSheet(u"QComboBox {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    border-radius: 5px;  /* Borda arredondada */\n"
+"    color: black;  /* Cor do texto */\n"
+"    font-size: 12px;  /* Tamanho da fonte */\n"
+"    padding: 5px 10px;  /* Espa\u00e7amento interno */\n"
+"}\n"
+"\n"
+"QComboBox:hover {\n"
+"    background-color: #EDEDED; /* Fundo ao passar o mouse */\n"
+"}\n"
+"\n"
+"QComboBox:pressed {\n"
+"    background-color: #DCDCDC; /* Fundo ao pressionar */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: #F7F7F7;\n"
+"    border: 1px solid #E0E0E0;\n"
+"    selection-background-color: #EDEDED;\n"
+"    selection-color: black;\n"
+"    border-radius: 10px;  /* Borda arredondada para a lista */\n"
+"    font-size: 16px; /* Ajuste de fonte para itens */\n"
+"}\n"
+"")
+
+        self.gridLayout_47.addWidget(self.AgentKeysFirebase, 1, 1, 1, 1)
 
 
         self.gridLayout.addLayout(self.gridLayout_47, 1, 0, 1, 3)
@@ -861,11 +902,12 @@ class Ui_MainWindow(object):
         self.view_threads.setText("")
         self.settings_agent.setText("")
         self.StorageAgentOutput_.setText(QCoreApplication.translate("MainWindow", u"Store agent output and entries", None))
-        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Agent Keys OpenAI:", None))
+        self.StorageAgentCompletions.setText(QCoreApplication.translate("MainWindow", u"Store Completions", None))
         self.radioButton.setText(QCoreApplication.translate("MainWindow", u"Store Format json", None))
         self.StoreFormatJsonAndJsonl.setText(QCoreApplication.translate("MainWindow", u"Store Format json and jsonl", None))
-        self.StorageAgentCompletions.setText(QCoreApplication.translate("MainWindow", u"Store Completions", None))
+        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Agent Keys OpenAI:", None))
         self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Store Format jsonl", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Agent Keys Firebase", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Back to home", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Thread's files", None))
         self.pushButton_3.setText("")
