@@ -23,7 +23,7 @@
 ## 🚀 SoftwareAI-Editor 
 **🎨 Build Agents**: Edit, Build and Bring your Agent to life
 ![UI](Gifs/1222.gif)
-**💡 SoftwareAI-Editor**: is the most important part when thinking about creating a company 100% governed by AI, here we will build and modify each agent for its specific use
+## 📚 [Editor About](Docs/About/Editor.md)
 ## 📚 [Editor RoadMap](Docs/Roadmaps/Editor-Roadmap.md)
 ### 📖 Editor Installation
 ```python
@@ -35,16 +35,15 @@ from softwareai.Editor import initeditor
 initeditor()
 ```
 ## 🚀 Start SoftwareAI-Chat
-🔍 **Note**: It is with great pleasure that we present a functional version of the softwareai chat, now you can select the agent and chat with him with images, files and messages (audio coming soon) in addition, inspired by the openai whiteboard we created our own whiteboard where all generated code goes for her, despite being very complete there is still a lot to be done if you find an error open an Issues
 ![UI](Gifs/1221.gif)
-## 📚 [SoftwareAI-Chat RoadMap](Docs/Roadmaps/Chat-Roadmap.md)
-## 📚 [SoftwareAI-Chat Installation](Docs/Installation/Chat.md)
+## 📚 [Chat About](Docs/About/Chat.md)
+## 📚 [Chat RoadMap](Docs/Roadmaps/Chat-Roadmap.md)
+## 📚 [Chat Installation](Docs/Installation/Chat.md)
 ### 🐍 Chat Usage
 ```python
 from softwareai.Chat import initchat
 initchat()
 ```
-
 #
 ## 🚀 Get started SoftwareAI without UI
 - 🛠️ SoftwareAI Installation:
