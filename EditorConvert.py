@@ -7,3 +7,4 @@ def initconvert():
     comando_terminal = ['python', 'Convert.py'] 
     subprocess.run(comando_terminal, shell=True)
 
+initconvert()
