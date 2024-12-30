@@ -9,3 +9,4 @@ def initchatconvert():
 
     comando_terminal = ['python', 'Convert.py']  # Executando main.py dentro do diretório 
     subprocess.run(comando_terminal, shell=True)
+initchatconvert()
