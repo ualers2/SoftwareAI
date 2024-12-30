@@ -1,10 +1,10 @@
 
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Functions
-from ..Functions._init_functions_ import *
+from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
 #########################################
 
 def submit_output_create_github_repo_and_upload(function_name,
@@ -21,8 +21,13 @@ def submit_output_create_github_repo_and_upload(function_name,
         result = create_github_repo_and_upload(
             repo_name=args['repo_name'],
             repo_description=args['repo_description'],
+            setup_file_path=args['setup_file_path'],
+            requirements_file_path=args['requirements_file_path'],
+            LICENSE_file_path=args['LICENSE_file_path'],
+            pyproject_file_path=args['pyproject_file_path'],
+            
             readme_file_path=args['readme_file_path'],
-            code_file_paths=args['code_file_paths'],
+            CoreApp_path=args['CoreApp_path'],
             token=args['token']
         )
         tool_call_id = tool_call.id
