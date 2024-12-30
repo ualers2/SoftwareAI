@@ -1,10 +1,10 @@
 
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Functions
-from ..Functions._init_functions_ import *
+from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
 #########################################
 
 def submit_output_add_projectmap_to_github(function_name,
