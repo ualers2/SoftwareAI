@@ -1,11 +1,12 @@
 
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Functions
-from ..Functions._init_functions_ import *
+from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
 #########################################
+
 tool_outputs = []
 def submit_output_get_current_datetime(function_name,
                                 function_arguments,
