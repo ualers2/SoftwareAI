@@ -1,41 +1,31 @@
-#########################################
+######################################### SoftwareAI Core #########################################
+
 # IMPORT SoftwareAI Functions
-from .Functions._init_functions_ import *
+from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
 #########################################
 # IMPORT SoftwareAI Functions Submit Outputs
-from .Functions_Submit_Outputs._init_submit_outputs_ import _init_output_
+from softwareai.CoreApp.SoftwareAI.Functions_Submit_Outputs._init_submit_outputs_ import _init_output_
 #########################################
 # IMPORT SoftwareAI Agents 
-from .._init_agents_ import *
+from softwareai.CoreApp._init_agents_ import *
 #########################################
 # IMPORT SoftwareAI Libs 
-from .._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Keys 
-from .._init_keys_ import *
+from softwareai.CoreApp._init_keys_ import *
 #########################################
-import hashlib
-from CoreUi.ChatSoftwareAI.Chat.Formatmessage import format_message
+# IMPORT Formatmessage
+from softwareai.CoreUi.Chat.Chat.Formatmessage import format_message
 
-from PySide2.QtCore import Signal
-
-from typing import Optional, List, Union
-from typing_extensions import override
-from openai import AssistantEventHandler, OpenAI
-from openai.types.beta.threads import Text, TextDelta
-from openai.types.beta.threads.runs import ToolCall, ToolCallDelta
-
-# key_api = OpenAIKeys.keys_openai()
 
 class FirebaseKeysinit:
     def _init_app_(name_app):
-        try:
-            app1 = name_app()
-            return app1
-        except: 
-            return "app1"
-        
-
+        module_path = "softwareai.CoreApp.KeysFirebase.keys"
+        keys_module = importlib.import_module(module_path)
+        imported_name_app = getattr(keys_module, name_app)
+        appfb = imported_name_app()
+        return appfb
 
 class OpenAIKeysinit:
     
@@ -95,14 +85,16 @@ class AutenticateAgent:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return str(UseVectorstoreToGenerateFiles)
 
-    def create_or_auth_AI(app1, client, key: str, 
+    def create_or_auth_AI(
+        app1,
+        client,
+        key: str, 
         instructionsassistant: Optional[str] = None,
         nameassistant: Optional[str] = None, 
         model_select: Optional[str] = "gpt-4o-mini-2024-07-18", 
         tools: Optional[List] = None,
         vectorstore: Optional[List] = None,
         codeinterpreter: Optional[List] = None,
-        
         ):
         """ 
         :param key: this is the key that represents the agent in the database
@@ -303,7 +295,7 @@ class AutenticateAgent:
 
 class ResponseAgent:
 
-    def ResponseAgent_message_completions(prompt, key_api, sistema = "", json_format = True):
+    def ResponseAgent_message_completions(prompt, key_api, sistema = "", json_format = True, store=True):
         """
         Sends a message to an OpenAI chat model and returns the completion.
 
@@ -343,7 +335,7 @@ class ResponseAgent:
         data = {
             "model": "gpt-4o-mini",  
             "messages": mensagem,
-            "store": True,
+            "store": store,
             "max_tokens": 16_384,
             "response_format": { "type": formato },
         }
@@ -419,7 +411,7 @@ class ResponseAgent:
                     purpose="vision"
                 )
 
-                threead_id = AutenticateAgent.create_or_auth_thread(client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
+                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
 
                 message = client.beta.threads.messages.create(
                     thread_id=threead_id,
@@ -442,7 +434,7 @@ class ResponseAgent:
             message_file = client.files.create(
                 file=open(Upload_1_file_in_message, "rb"), purpose="assistants"
             )
-            threead_id = AutenticateAgent.create_or_auth_thread(client, key, vectorstore_in_Thread, code_interpreter_in_thread)
+            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
 
             message = client.beta.threads.messages.create(
                 thread_id=threead_id,
@@ -462,7 +454,7 @@ class ResponseAgent:
             )
             print(file_batch.status)
             print(file_batch.file_counts)
-            threead_id = AutenticateAgent.create_or_auth_thread(client, key,  [vector_store.id], code_interpreter_in_thread)
+            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  [vector_store.id], code_interpreter_in_thread)
             message = client.beta.threads.messages.create(
                 thread_id=threead_id,
                 role="user",
@@ -477,7 +469,7 @@ class ResponseAgent:
                 )
                 list_file_id.append(file.id)
             code_interpreter_in_thread = list_file_id
-            threead_id = AutenticateAgent.create_or_auth_thread(client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
+            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
 
             message = client.beta.threads.messages.create(
                 thread_id=threead_id,
@@ -490,7 +482,7 @@ class ResponseAgent:
                 file=open(Upload_1_file_for_code_interpreter_in_message, "rb"),
                 purpose='assistants'
             )
-            threead_id = AutenticateAgent.create_or_auth_thread(client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
+            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
 
             message = client.beta.threads.messages.create(
                 thread_id=threead_id,
@@ -501,7 +493,7 @@ class ResponseAgent:
               
         elif Upload_1_image_for_vision_in_thread is None and Upload_1_image_for_vision_in_thread != "" and Upload_1_file_in_message is None and Upload_multiples_file_in_thread is None and Upload_list_for_code_interpreter_in_thread is None:
             code_interpreter_in_thread = None
-            threead_id = AutenticateAgent.create_or_auth_thread(client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
+            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  vectorstore_in_Thread, code_interpreter_in_thread)
    
             message = client.beta.threads.messages.create(
                 thread_id=threead_id,
@@ -973,6 +965,39 @@ class Agent_files:
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return vector_store.id
         
+class Agent_destilation:
+                                                
+    def DestilationResponseAgent(input, output, instructionsassistant, nameassistant):                        
+         
+        date = datetime.now().strftime('%Y-%m-%d')
+        output_path_jsonl = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Jsonl/DestilationAgent{date}.jsonl'))
+        output_path_json = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Json/DestilationAgent{date}.json'))
+        os.makedirs(output_path_json, exist_ok=True)
+        os.makedirs(output_path_jsonl, exist_ok=True)
+            
+        datasetjson = {
+            "input": input,
+            "output": output
+        }
+        datasetjsonl = {
+            "messages": [
+                {"role": "system", "content": f"{instructionsassistant}"},
+                {"role": "user", "content": f"{input}"},
+                {"role": "assistant", "content": f"{output}"}
+            ]
+        }
+
+        finaloutputjson = os.path.join(output_path_json, f"DestilationDateTime_{date.replace('-', '_').replace(':', '_')}.json")
+        with open(finaloutputjson, 'a', encoding='utf-8') as json_file:
+            json.dump(datasetjson, json_file, indent=4, ensure_ascii=False)
+        
+        finaloutputjsonl = os.path.join(output_path_jsonl, f"DestilationDateTime_{date.replace('-', '_').replace(':', '_')}.jsonl")
+        with open(finaloutputjsonl, 'a', encoding='utf-8') as json_file:
+            json_file.write(json.dumps(datasetjsonl, ensure_ascii=False) + "\n")
+        
+        return True
+
+
 
 
 class python_functions:
@@ -1297,9 +1322,6 @@ class python_functions:
         with open(file_path, 'r') as file:
             data = json.load(file)
         print(f"Dados JSON: {data}")
-
-
-
         
 class EventHandler(AssistantEventHandler):
   @override
