@@ -1,5 +1,6 @@
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 
+            
