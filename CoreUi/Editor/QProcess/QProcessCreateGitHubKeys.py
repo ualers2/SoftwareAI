@@ -1,26 +1,16 @@
-########################################################################
-## IMPORTS Libs
-import sys
-import json
-import time
-import os
-import subprocess
-import platform
-from firebase_admin import credentials, initialize_app, storage, db, delete_app
-import concurrent.futures
-########################################################################
 
-########################################################################
-# IMPORT Pyside2
-from PySide2extn.RoundProgressBar import roundProgressBar #IMPORT THE EXTENSION LIBRARY
-from PySide2.QtCore import QTimer, Signal, QThread
-from PySide2.QtWidgets import QFileDialog
-########################################################################
-
-from CoreApp._init_core_ import OpenAIKeysinit,AutenticateAgent,Agent_files,  ResponseAgent, python_functions 
-# IMPORT SoftwareAI Keys 
-from CoreApp._init_keys_ import *
 #########################################
+# IMPORT SoftwareAI Libs 
+from softwareai.CoreApp._init_libs_ import *
+#########################################
+# IMPORT SoftwareAI Core
+from softwareai.CoreApp._init_core_ import * 
+#########################################
+# IMPORT SoftwareAI keys
+from softwareai.CoreApp._init_keys_ import *
+
+
+
 
 class QProcessCreateGitHubKeys(QThread):
     ModalSucess = Signal(str)
