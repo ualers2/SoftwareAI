@@ -1,5 +1,19 @@
 
 ## 🔄 Update
+### QuantumCore: V 0.3.45
+***(30/12/2024)***
+Updates for version 0.3.45:
+* **QuantumCore**: QuantumCore Recebe novos argumentos para a criação do repositorio github 
+```
+
+    "setup_file_path",
+    "requirements_file_path", 
+    "LICENSE_file_path",
+    "pyproject_file_path",
+   code_file_paths  que antes era um array de str agora é um str com o caminho do CoreApp "CoreApp_path", 
+
+```
+
 
 ### QReadOpenAi: V 0.2.0.0
 ***(13/12/2024)***
@@ -11,6 +25,7 @@ Updates for version 0.2.0.0:
         ├── 📁 Chat
             ├── 🐍 AIQthread.py
                 ├── 🔄 QReadOpenAi
+```
 
 Now:
 ```python
