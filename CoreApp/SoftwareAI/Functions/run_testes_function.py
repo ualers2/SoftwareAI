@@ -1,10 +1,10 @@
 
 #########################################
 # IMPORT SoftwareAI Core
-from CoreApp._init_core_ import *
+from softwareai.CoreApp._init_core_ import *
 #########################################
 # IMPORT SoftwareAI Libs 
-from CoreApp._init_libs_ import *
+from softwareai.CoreApp._init_libs_ import *
 #########################################
 
 
