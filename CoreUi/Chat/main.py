@@ -8,14 +8,20 @@ sys.path.append(caminho_raiz)
 from CoreApp._init_libs_ import *
 #########################################
 # IMPORT CoreApp
-from CoreUi.ChatSoftwareAI.Chat.QChatOpenAI import QChatOpenAi
-from CoreUi.ChatSoftwareAI.Chat.QReadOpenAI import QReadOpenAi
-from CoreUi.ChatSoftwareAI.Chat.QListAgent import QListAgents
-from CoreUi.ChatSoftwareAI.Chat.QAiRunnable import QAIRunnable
-from CoreUi.ChatSoftwareAI.Chat.HandleTextEdit import setup_plain_text_qtextedit
-#########################################
-# IMPORT FirebaseKeys
-from CoreApp._init_keys_ import keys_app_2,keys_app_x, OpenAIKeys
+from CoreUi.Chat.Chat.QChatOpenAI import QChatOpenAi
+from CoreUi.Chat.Chat.QReadOpenAI import QReadOpenAi
+from CoreUi.Chat.Chat.QListAgent import QListAgents
+from CoreUi.Chat.Chat.QAiRunnable import QAIRunnable
+from CoreUi.Chat.Chat.HandleTextEdit import setup_plain_text_qtextedit
+from CoreApp._init_core_ import(
+        AutenticateAgent,
+        ResponseAgent,
+        python_functions,
+        Agent_files,
+        Agent_files_update,
+        OpenAIKeysinit,
+        FirebaseKeysinit
+)
 #########################################
 # IMPORT .qrc
 from src_ import icons_interpreter
@@ -40,13 +46,12 @@ from PySide2.QtCore import QTimer, Signal, QThread, QRunnable
 
 
 
-app2 = keys_app_2()
-appx = keys_app_x()
+# appx = keys_app_x()
 
-key_api = OpenAIKeys.keys_openai()
-client = OpenAI(
-    api_key=key_api,
-)
+# key_api = OpenAIKeys.keys_openai()
+# client = OpenAI(
+#     api_key=key_api,
+# )
 
 
 
@@ -213,20 +218,65 @@ class MainWindow(QMainWindow):
         self.QListAgentsThread.messagesignal.connect(self.update_spinner)
         self.QListAgentsThread.start()
 
+        self.AgentKeysOpenAI = self.ui.AgentKeysOpenAI
+        self.AgentKeysFirebase = self.ui.AgentKeysFirebase
+        
+        self.load_AgentKeysOpenAI()
+        
+        self.load_AgentKeysFirebase()
+
+        key_api = self.AgentKeysOpenAI.currentText()
+        name_app = self.AgentKeysFirebase.currentText()
+        self.client = OpenAIKeysinit._init_client_(key_api)
+        self.app1 = FirebaseKeysinit._init_app_(name_app)
+
         #self.load_config()
     
 
         ########################################################################
 
         self.show()
-        
+
+
+    def load_AgentKeysOpenAI(self, chave="str_key", company="companyname"):
+        self.AgentKeysOpenAI.clear()
+        try:
+            caminho_arquivo = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CoreApp/KeysOpenAI/keys.py'))
+            with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
+                for linha in arquivo:
+                    match = re.match(r'(\w+)\s*=\s*[\'\"](.*?)[\'\"]', linha.strip())
+                    if match:
+                        chave_encontrada, valor = match.groups()
+                        if chave_encontrada == company:
+                            companyname = valor
+                        elif chave_encontrada == chave:
+                            str_key = valor
+                            self.AgentKeysOpenAI.addItem(f"({companyname}) {str_key}")
+        except:
+            pass
+
+
+    def load_AgentKeysFirebase(self):
+        self.AgentKeysFirebase.clear()
+        caminho_arquivo = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CoreApp/KeysFirebase/keys.py'))
+        try:
+            with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
+                conteudo = arquivo.read() 
+                pattern = re.compile(r"(\w+)\s*=\s*initialize_app\(", re.DOTALL)
+                matches = pattern.findall(conteudo)  
+                if matches:
+                    for app_nome in matches:
+                        self.AgentKeysFirebase.addItem(f"{app_nome}")
+
+        except Exception as e:
+            self.AgentKeysFirebase.addItem(f"Erro ao carregar: {str(e)}")
 
     def keyPressEvent(self, event: QKeyEvent):
         if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
             self.send_message()  # Chama a função ao pressionar Enter
 
     def list_threads(self, agent):
-        self.QRead_thread = QReadOpenAi(agent, appx, client)
+        self.QRead_thread = QReadOpenAi(agent, self.app1, self.client)
         self.QRead_thread.Threadlabel.connect(self.update_Threadlabel)
         self.QRead_thread.Tokenslabel.connect(self.update_Tokenslabel)
         self.QRead_thread.htmlchat.connect(self.update_htmlchat)
@@ -250,7 +300,7 @@ class MainWindow(QMainWindow):
                                     StorageAgentCompletions,
                                     StorageAgentOutput_,
                                     StoreFormatJsonAndJsonl,
-                                    key_api, appx
+                                    key_api, self.app1
                                     )
         self.AI_thread.chat.connect(self.message_signal.emit)
         self.AI_thread.code.connect(self.update_codeeditor)
@@ -279,7 +329,6 @@ class MainWindow(QMainWindow):
                     filterstrkey = strkey.replace('return', "").replace('"', "").replace(' ', "").replace('str_key', "").replace('=', "").replace("return str_key", "")
                     self.AgentKeysOpenAI.addItem(filterstrkey)
 
-
     def update_spinner(self, str):
         self.spinner.message = str
 
@@ -302,7 +351,6 @@ class MainWindow(QMainWindow):
     def send_message(self):
         message = self.message_input.toPlainText()
         if message.strip():
-                
             myModal = QCustomModals.InformationModal(
                 title="Message Sent!!!", 
                 parent=self,
@@ -738,77 +786,6 @@ class MainWindow(QMainWindow):
             pass
         
         event.accept()
-
-
-    def save_config(self):
-        def sanitize_key(key):
-            return re.sub(r'[$#\[\]/.]', '_', key)
-        
-        respostaname_machine = self.get_machine_info()
-        ref1 = db.reference(f'save_settings_users', app=app2)
-        data1 = ref1.get()
-        controle_das_funcao2 = sanitize_key(f"DESKTOP-5L1VA7L")
-        controle_das_funcao_info_2 = {
-            #"chat_area": f"{self.chat_area.toPlainText()}",
-            "Instruction": f"{self.Instruction.toPlainText()}",
-            "Key": f"{self.Key.text()}",
-            "Nameassistant": f"{self.Nameassistant.text()}",
-            "Modelselect": f"{self.Modelselect.text()}",
-            "Aditionalinstructions": f"{self.Aditionalinstructions.text()}",
-            "tools": f"{self.tools.toPlainText()}",
-            "Vectorstoreinassistant": f"{self.Vectorstoreinassistant.toPlainText()}",
-            "VectorstoreinThread": f"{self.VectorstoreinThread.toPlainText()}",
-            "Upload1fileinthread": f"{self.Upload1fileinthread.text()}",
-            "Upload1fileinmessage": f"{self.Upload1fileinmessage.text()}",
-            "Upload1imageforvisioninthread": f"{self.Upload1imageforvisioninthread.text()}",
-        }
-        ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
-
-    def load_config(self):
-        def sanitize_key(key):
-            return re.sub(r'[$#\[\]/.]', '_', key)
-        try:
-            
-            respostaname_machine = self.get_machine_info()
-            ref1 = db.reference(f'save_settings_users/DESKTOP-5L1VA7L', app=app2)
-            data1 = ref1.get()                         
-
-            #chat_area = data1["chat_area"]
-            Instruction = data1["Instruction"]
-            Key = data1["Key"]
-            Nameassistant = data1["Nameassistant"]
-            Modelselect = data1["Modelselect"]
-            Aditionalinstructions = data1["Aditionalinstructions"]
-            tools = data1["tools"]
-            Vectorstoreinassistant = data1["Vectorstoreinassistant"]
-            VectorstoreinThread = data1["VectorstoreinThread"]
-            Upload1fileinthread = data1["Upload1fileinthread"]
-            Upload1fileinmessage = data1["Upload1fileinmessage"]
-            Upload1imageforvisioninthread = data1["Upload1imageforvisioninthread"]
-
-
-            def str_to_bool(s):
-                return s.lower() in ['true', '1', 't', 'y', 'yes']
-            
-
-            #self.chat_area.setPlainText(str(chat_area))
-            self.Instruction.setPlainText(str(Instruction))
-            self.Key.setText(str(Key))
-            self.Nameassistant.setText(str(Nameassistant))
-            self.Modelselect.setText(str(Modelselect))
-            self.Aditionalinstructions.setText(str(Aditionalinstructions))
-            self.tools.setPlainText(str(tools))
-            self.Vectorstoreinassistant.setPlainText(str(Vectorstoreinassistant))
-            self.VectorstoreinThread.setPlainText(str(VectorstoreinThread))
-            self.Upload1fileinthread.setText(str(Upload1fileinthread))
-            self.Upload1fileinmessage.setText(str(Upload1fileinmessage))
-            self.Upload1imageforvisioninthread.setText(str(Upload1imageforvisioninthread))
-
-
-
-        except Exception as e:
-            print(e)
-            #self.save_config()
 
 
 
