@@ -738,10 +738,37 @@ QComboBox QAbstractItemView {
              <property name="rightMargin">
               <number>158</number>
              </property>
-             <item row="2" column="0" colspan="2">
+             <item row="3" column="0" colspan="2">
               <widget class="QCheckBox" name="StorageAgentOutput_">
                <property name="text">
                 <string>Store agent output and entries</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QCheckBox" name="StorageAgentCompletions">
+               <property name="text">
+                <string>Store Completions</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QRadioButton" name="radioButton">
+               <property name="text">
+                <string>Store Format json</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QRadioButton" name="StoreFormatJsonAndJsonl">
+               <property name="text">
+                <string>Store Format json and jsonl</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -755,34 +782,58 @@ QComboBox QAbstractItemView {
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QRadioButton" name="radioButton">
+             <item row="6" column="0">
+              <widget class="QRadioButton" name="radioButton_2">
                <property name="text">
-                <string>Store Format json</string>
+                <string>Store Format jsonl</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QRadioButton" name="StoreFormatJsonAndJsonl">
-               <property name="text">
-                <string>Store Format json and jsonl</string>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="AgentKeysOpenAI">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="checked">
-                <bool>true</bool>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QComboBox {
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;  /* Borda arredondada */
+    color: black;  /* Cor do texto */
+    font-size: 12px;  /* Tamanho da fonte */
+    padding: 5px 10px;  /* Espaçamento interno */
+}
+
+QComboBox:hover {
+    background-color: #EDEDED; /* Fundo ao passar o mouse */
+}
+
+QComboBox:pressed {
+    background-color: #DCDCDC; /* Fundo ao pressionar */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+    selection-background-color: #EDEDED;
+    selection-color: black;
+    border-radius: 10px;  /* Borda arredondada para a lista */
+    font-size: 16px; /* Ajuste de fonte para itens */
+}
+</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="0" colspan="2">
-              <widget class="QCheckBox" name="StorageAgentCompletions">
-               <property name="text">
-                <string>Store Completions</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0" colspan="2">
+             <item row="7" column="0" colspan="2">
               <spacer name="verticalSpacer_14">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -798,26 +849,20 @@ QComboBox QAbstractItemView {
                </property>
               </spacer>
              </item>
-             <item row="5" column="0">
-              <widget class="QRadioButton" name="radioButton_2">
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Store Format jsonl</string>
+                <string>Agent Keys Firebase</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="AgentKeysOpenAI">
+             <item row="1" column="1">
+              <widget class="QComboBox" name="AgentKeysFirebase">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>310</width>
-                 <height>0</height>
-                </size>
                </property>
                <property name="styleSheet">
                 <string notr="true">QComboBox {
