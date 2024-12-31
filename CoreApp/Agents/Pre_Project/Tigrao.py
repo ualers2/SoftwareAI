@@ -35,25 +35,16 @@ class Pre_Project_Document:
         :param mensagem: str \n
         :param output: path_name_doc_Pre_Projeto
         """   
-
-       
-
         key = "AI_Tigrao_Escritor_de_documento_Pre_Projeto"
         nameassistant = "AI Tigrao Escritor de documento Pre-Projeto"
         model_select = "gpt-4o-mini-2024-07-18"
-        
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
         Upload_1_image_for_vision_in_thread = None
         Upload_list_for_code_interpreter_in_thread = None
         vectorstore_in_Thread = None
         vectorstore_in_agent = None
-
         key_openai = OpenAIKeysteste.keys()
-        # name_app = "appx"
-        # appfb = FirebaseKeysinit._init_app_(name_app)
-        # client = OpenAIKeysinit._init_client_(key_openai)
-
 
         AI_Tigrao, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionTigrao, nameassistant, model_select, tools_Tigrao, vectorstore_in_agent)
 
