@@ -39,13 +39,13 @@ class SoftwareDevelopment:
     ##############################################################################################
     def AI_QuantumCore(
                     self,
-                    appfb, client,  
+                    appfb, client, repo_name,
                     timeline_file_path,
                     spreadsheet_file_path,
                     pre_project_file_path,
                     Roadmap_file_path,
-                    analysis_txt_path
-                    
+                    analysis_txt_path,
+                    UseVectorstoreToGenerateFiles = True
                     ):
 
 
@@ -109,14 +109,6 @@ class SoftwareDevelopment:
         
         # vector_store_id_Twitch_downloader_software = Agent_files.auth_or_create_vectorstore(Twitch_downloader_software_name, file_path_Twitch_downloader_software_in_company)
         
-        read_timeline_file_path = python_functions.analyze_txt(timeline_file_path)
-        read_spreadsheet_file_path = python_functions.analyze_txt(spreadsheet_file_path)
-        read_pre_project_file_path = python_functions.analyze_txt(pre_project_file_path)
-        read_Roadmap_file_path = python_functions.analyze_txt(Roadmap_file_path)
-        read_analysis_txt_path = python_functions.analyze_txt(analysis_txt_path)
-
-
-
 
 
         Upload_1_file_in_thread = None
@@ -131,31 +123,37 @@ class SoftwareDevelopment:
         load_env()
 
         key_openai = OpenAIKeysteste.keys()
-        # name_app = "appx"
-        # appfb = FirebaseKeysinit._init_app_(name_app)
-        # client = OpenAIKeysinit._init_client_(key_openai)
 
         AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
         
-        #analysis_txt = python_functions.analyze_txt(analysis_txt_path)
-        #update_vector_storage_at_assistant_level = analysis_txt_path
-        #vector_store_id = Agent_files.auth_or_create_vectorstore("Software_Requirements_Analysis", [analysis_txt_path])
-       #AI_QuantumCore = Agent_files_update.update_vectorstore_in_agent(AI_QuantumCore, [vector_store_id])
-        
-        mensaxgem = f"""crie um script em python com base nos requisitos fornecidos no analysis e nos outros documentos\n
-        
-        analysis\n
-        {read_analysis_txt_path}\n
-        timeline\n
-        {read_timeline_file_path}\n
-        spreadsheet\n
-        {read_spreadsheet_file_path}\n
-        preproject\n
-        {read_pre_project_file_path}\n
-        Roadmap\n
-        {read_Roadmap_file_path}\n
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [timeline_file_path, spreadsheet_file_path, pre_project_file_path, Roadmap_file_path, analysis_txt_path]
+            AI_QuantumCore = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_QuantumCore, "QuantumCore_Work_Environment", file_paths)
+            mensaxgem = f"""crie um script em python com base nos requisitos fornecidos no analysis e nos outros documentos que estao armazenados em QuantumCore_Work_Environment \n
+            """
 
-        """
+        else:
+            
+            read_timeline_file_path = python_functions.analyze_txt(timeline_file_path)
+            read_spreadsheet_file_path = python_functions.analyze_txt(spreadsheet_file_path)
+            read_pre_project_file_path = python_functions.analyze_txt(pre_project_file_path)
+            read_Roadmap_file_path = python_functions.analyze_txt(Roadmap_file_path)
+            read_analysis_txt_path = python_functions.analyze_txt(analysis_txt_path)
+
+            mensaxgem = f"""crie um script em python com base nos requisitos fornecidos no analysis e nos outros documentos\n
+            
+            analysis\n
+            {read_analysis_txt_path}\n
+            timeline\n
+            {read_timeline_file_path}\n
+            spreadsheet\n
+            {read_spreadsheet_file_path}\n
+            preproject\n
+            {read_pre_project_file_path}\n
+            Roadmap\n
+            {read_Roadmap_file_path}\n
+
+            """
 
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensaxgem,
@@ -190,25 +188,16 @@ class SoftwareDevelopment:
 
         ##Agent Destilation##                   
         Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
-        
+    
 
-        for i in range(3):
-            mensaxgem = f"""crie um nome e descricao para o repositorio desse software no github:\n
-            {codigo}
-            """
-            regras = "Descrição do Repositório NÃO exceder o limite de 350 caracteres"
-            format = 'Responda no formato JSON Exemplo: {"nome": "nome..."}, {"descricao": "descricao..."}'
-            
-            mensagem = mensaxgem + regras + format
-            response = ResponseAgent.ResponseAgent_message_completions(mensagem, key_openai, "", True, True)
-            try:
-                repo_name = response["nome"]
-                repo_description = response["descricao"]
-                break
-            except Exception as errror2:
-                print(errror2)
-                print(response)
-                continue
+        mensaxgem = f"""crie uma descricao de 250 caracteres para o repositorio desse codigo no github:\n
+        {codigo}
+        """
+        format = 'Responda no formato JSON Exemplo: {"descricao": "descricao..."}'
+        mensagem = mensaxgem + format
+        response = ResponseAgent.ResponseAgent_message_completions(mensagem, key_openai, "", True, True)
+        repo_description = response["descricao"]
+
 
         ##Agent Destilation##                   
         Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
@@ -225,7 +214,24 @@ class SoftwareDevelopment:
 
         readme_file_path = self.Software_Documentation.CloudArchitect_Software_Documentation_Type_Create(appfb, client, path_Software_Development_py, path_Analysis, path_Roadmap, path_Spreadsheet, path_Timeline, path_Preproject)
         #code_file_paths = [path_Software_Development_py]
-        CoreApp_path = os.getenv("PATH_CoreApp")
+        PATH_SOFTWARE_DEVELOPMENT_init_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_init_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_PY_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_config_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_config_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV")
+        PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV")
+        PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_services___init___ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_services___init___ENV")
+        PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV")
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV")
+        PATH_SOFTWARE_DEVELOPMENT_Example_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_Example_ENV")
+
         requirements_file_path = os.getenv("PATH_SOFTWARE_DEVELOPMENT_Requirements_ENV")
         LICENSE_file_path = os.getenv("PATH_DOCUMENTACAO_LICENSE_ENV")
         setup_file_path = os.getenv("PATH_DOCUMENTACAO_setup_ENV")
@@ -246,8 +252,40 @@ class SoftwareDevelopment:
         {pyproject_file_path}
         readme_file_path:\n
         {readme_file_path}\n
-        CoreApp_path:\n
-        {CoreApp_path}\n
+        PATH_SOFTWARE_DEVELOPMENT_init_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_init_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_PY_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_PY_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_config_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_config_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_services___init___ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_services___init___ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV}\n
+        PATH_SOFTWARE_DEVELOPMENT_Example_ENV:\n
+        {PATH_SOFTWARE_DEVELOPMENT_Example_ENV}\n
         token:\n
         {github_token}\n
         """
