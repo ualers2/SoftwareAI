@@ -1,9 +1,7 @@
 # IMPORT SoftwareAI Libs 
 from softwareai.CoreApp._init_libs_ import *
 #########################################
-# IMPORT SoftwareAI Core
-from softwareai.CoreApp._init_core_ import * 
-#########################################
+
 
 def load_env():
     """
@@ -19,7 +17,21 @@ def load_env():
         print(f".env carregado de: {env_path}")
     else:
         print(f"Erro: Arquivo environment.env não encontrado em {env_path}")
-        
+
+
+def create_env(variables, env):
+    """
+    Cria um arquivo .env com as variáveis fornecidas.
+    Se o arquivo já existir, ele será sobrescrito.
+
+    Args:
+        variables (dict): Um dicionário com chave-valor representando as variáveis de ambiente.
+    """
+    with open(env, "w") as file:
+        for key, value in variables.items():
+            file.write(f"{key}={value}\n")
+    return True
+
 def init_env(repo_name):
     base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "Work_Environment", f"{repo_name}"))
     file_paths = {
@@ -71,7 +83,7 @@ def init_env(repo_name):
     for key in list(os.environ.keys()):
         if key.endswith('_ENV'):
             del os.environ[key]                                                                                                                                                                     
-    flag = python_functions.create_env(file_paths, os.path.abspath(os.path.join(os.path.dirname(__file__), "environment.env")))
+    flag = create_env(file_paths, os.path.abspath(os.path.join(os.path.dirname(__file__), "environment.env")))
     load_env()
 
 
@@ -151,4 +163,8 @@ def init_env(repo_name):
 
     PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV")
     with open(PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV, "w") as file:
+        file.write("###init###")
+
+    PATH_SOFTWARE_DEVELOPMENT_config_ENV = os.getenv("PATH_SOFTWARE_DEVELOPMENT_config_ENV")
+    with open(PATH_SOFTWARE_DEVELOPMENT_config_ENV, "w") as file:
         file.write("###init###")
