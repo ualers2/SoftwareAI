@@ -12,25 +12,38 @@ def create_github_repo_and_upload(repo_name: str,
                                 LICENSE_file_path: str,
                                 pyproject_file_path: str,
                                 readme_file_path: str,
-                                CoreApp_path: str,
+                                PATH_SOFTWARE_DEVELOPMENT_init_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_PY_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_config_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_services___init___ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV: str,
+                                PATH_SOFTWARE_DEVELOPMENT_Example_ENV: str,
+
                                 token: str
                                 ):
     repo_url = f"https://api.github.com/orgs/A-I-O-R-G/repos"
-    branch = "main"
 
     headers = {
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github.v3+json"
     }
-
     repo_data = {
         "name": repo_name,
         "description": repo_description,
         "private": False
     }
-
     response = requests.post(repo_url, json=repo_data, headers=headers)
-
     if response.status_code == 201:
         print(f"Repositório {repo_name} criado com sucesso na organização A-I-O-R-G!")
     else:
@@ -57,43 +70,16 @@ def create_github_repo_and_upload(repo_name: str,
         if upload_response.status_code == 201:
             print(f"Arquivo {file_name} carregado com sucesso no repositório.")
         else:
-            print(f"Falha ao fazer upload do arquivo {file_name}. Status: {upload_response.status_code}")
+            try:
+                print(f"Falha ao fazer upload do arquivo {file_name}. Status: {upload_response.status_code} {upload_response.content}")
+            except:
+                try:
+                    print(f"Falha ao fazer upload do arquivo {file_name}. Status: {upload_response.status_code} {upload_response.json()}")
+                except:
+                    print(f"Falha ao fazer upload do arquivo {file_name}. Status: {upload_response.status_code} {upload_response.json}")
+
+
             return {"status": "error", "message": upload_response.json()}
-
-
-    def upload_codes_to_github(directory):
-        for dirpath, dirnames, filenames in os.walk(directory):
-            for filename in filenames:
-                file_path = os.path.join(dirpath, filename)
-                with open(file_path, "rb") as file:
-                    content = file.read()
-                    encoded_content = base64.b64encode(content).decode("utf-8")
-
-                # Obtém o caminho relativo e ajusta para o formato GitHub
-                relative_path = os.path.relpath(file_path, start=directory)  # Caminho relativo baseado no diretório especificado
-                github_path = relative_path.replace("\\", "/")  # Converte para o formato de caminho do GitHub
-                
-                # Cria a URL para a API do GitHub
-                url = f"https://api.github.com/repos/{repo_name}/contents/CoreApp/{github_path}"
-
-                # Verifica se o arquivo já existe
-                response = requests.get(url, headers={"Authorization": f"token {token}"})
-                sha = response.json().get("sha") if response.status_code == 200 else None
-
-                # Define os dados para a requisição
-                data = {
-                    "message": f"Add {filename}",
-                    "content": encoded_content,
-                    "branch": branch
-                }
-                if sha:
-                    data["sha"] = sha  # Adiciona o SHA se o arquivo já existir
-
-                # Envia a requisição para o GitHub
-                response = requests.put(url, json=data, headers={"Authorization": f"token {token}"})
-                print(f"Arquivo: {github_path} - Status: {response.status_code} ")
-
-
 
     # Upload do arquivo README.md
     upload_file_to_github(readme_file_path, "Adicionando documentação")
@@ -110,8 +96,65 @@ def create_github_repo_and_upload(repo_name: str,
     # Upload do arquivo pyproject.toml
     upload_file_to_github(pyproject_file_path, "Adicionando pyproject.toml")
 
-    # Upload do CoreApp
-    upload_codes_to_github(CoreApp_path)
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_init_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_init_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_PY_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_PY_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_config_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_config_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_services___init___ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_services___init___ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV")
+
+    # Upload do arquivo 
+    upload_file_to_github(PATH_SOFTWARE_DEVELOPMENT_Example_ENV, "Adicionando PATH_SOFTWARE_DEVELOPMENT_Example_ENV")
+
+
+
+
+
+    # # Upload do CoreApp
+    # upload_codes_to_github(f"{CoreApp_path}")
+
+
     # code_file_paths = os.listdir(CoreApp_path)
     # for code_file_path in code_file_paths:
     #     code_path = os.path.join(CoreApp_path, code_file_path)
