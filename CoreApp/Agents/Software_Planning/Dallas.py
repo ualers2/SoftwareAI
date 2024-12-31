@@ -27,10 +27,7 @@ class Equipe_De_Solucoes:
     def __init__(self):
         pass
 
-    def Dallas_Equipe_De_Solucoes_Roadmap(self, appfb, client, cronograma_do_projeto, planilha_json, doc_Pre_Projeto):
-        read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
-        read_planilha_json = python_functions.analyze_txt(planilha_json)
-        read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
+    def Dallas_Equipe_De_Solucoes_Roadmap(self, appfb, client, cronograma_do_projeto, planilha_json, doc_Pre_Projeto, UseVectorstoreToGenerateFiles = True):
 
         key = "AI_Dallas_Equipe_de_Solucoes"
         nameassistant = "AI Dallas Equipe de Solucoes"
@@ -51,21 +48,35 @@ class Equipe_De_Solucoes:
         # client = OpenAIKeysinit._init_client_(key_openai)
 
         AI_Dallas, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionDallas, nameassistant, model_select, tools_Dallas, vectorstore_in_assistant)
-        mensagem = f"""
-        Planeje um Roadmap do Projeto com base no Cronograma,Planilha e Documento Pre Projeto asseguir:\n
 
-        Cronograma
-        \n
-        {read_cronograma_do_projeto}
-        \n
-        Planilha
-        \n
-        {read_planilha_json}
-        \n
-        Documento Pre Projeto 
-        \n
-        {read_doc_Pre_Projeto}
-        """
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [cronograma_do_projeto, planilha_json, doc_Pre_Projeto]
+            AI_Dallas = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_Dallas, "Dallas_Work_Environment", file_paths)
+            mensagem = f"""
+            Planeje um Roadmap do Projeto com base no Cronograma,Planilha e Documento Pre Projeto que estao armazenados em Dallas_Work_Environment:\n
+            """
+        
+        else:    
+            read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
+            read_planilha_json = python_functions.analyze_txt(planilha_json)
+            read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
+
+            
+            mensagem = f"""
+            Planeje um Roadmap do Projeto com base no Cronograma,Planilha e Documento Pre Projeto asseguir:\n
+
+            Cronograma
+            \n
+            {read_cronograma_do_projeto}
+            \n
+            Planilha
+            \n
+            {read_planilha_json}
+            \n
+            Documento Pre Projeto 
+            \n
+            {read_doc_Pre_Projeto}
+            """
         
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensagem,
