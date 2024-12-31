@@ -30,19 +30,7 @@ class Software_Documentation:
     def __init__(self):
         pass
 
-    def CloudArchitect_Software_Documentation_Type_Create(self, appfb, client, path_python_software, path_Analysis, path_Roadmap, path_Spreadsheet, path_Timeline, path_Preproject):
-
-        python_software = python_functions.analyze_txt(path_python_software)
-
-        Analysis = python_functions.analyze_txt(path_Analysis)
-
-        Roadmap = python_functions.analyze_txt(path_Roadmap)
-
-        Spreadsheet = python_functions.analyze_txt(path_Spreadsheet)
-
-        Timeline = python_functions.analyze_txt(path_Timeline)
-
-        Preproject = python_functions.analyze_txt(path_Preproject)
+    def CloudArchitect_Software_Documentation_Type_Create(self, appfb, client, path_python_software, path_Analysis, path_Roadmap, path_Spreadsheet, path_Timeline, path_Preproject, UseVectorstoreToGenerateFiles = True):
 
         key = "AI_CloudArchitect_Software_Documentation"
         nameassistant = "AI CloudArchitect Software Documentation"
@@ -64,24 +52,38 @@ class Software_Documentation:
 
         AI_CloudArchitect, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionCloudArchitect, nameassistant, model_select, tools_CloudArchitect, vectorstore_in_assistant)
         
-        #vector_store_id = Agent_files.auth_or_create_vectorstore("DocGitHubData")
-        #AI_CloudArchitect = Agent_files_update.update_vectorstore_in_agent(AI_CloudArchitect, [vector_store_id])
-        
-        mensagem = f"""
-        Crie a Documentacao para o github desse software com base no codigo do software e nas documentacoes\n
-        Codigo Software:\n
-        {python_software}\n
-        Documentacao Analysis:\n
-        {Analysis}\n
-        Documentacao Roadmap:\n
-        {Roadmap}\n
-        Documentacao Spreadsheet:\n
-        {Spreadsheet}\n
-        Documentacao Timeline:\n
-        {Timeline}\n
-        Documentacao Preproject:\n
-        {Preproject}\n
-        """
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [path_python_software, path_Analysis, path_Roadmap, path_Spreadsheet, path_Timeline, path_Preproject]
+            AI_CloudArchitect = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_CloudArchitect, "CloudArchitect_Work_Environment", file_paths)
+            mensagem = f"""
+            Crie a Documentacao para o github desse software com base no codigo do software e nas documentacoes que estao armazenadas em CloudArchitect_Work_Environment \n
+            """
+
+
+        else:
+            python_software = python_functions.analyze_txt(path_python_software)
+            Analysis = python_functions.analyze_txt(path_Analysis)
+            Roadmap = python_functions.analyze_txt(path_Roadmap)
+            Spreadsheet = python_functions.analyze_txt(path_Spreadsheet)
+            Timeline = python_functions.analyze_txt(path_Timeline)
+            Preproject = python_functions.analyze_txt(path_Preproject)
+
+            mensagem = f"""
+            Crie a Documentacao para o github desse software com base no codigo do software e nas documentacoes\n
+            Codigo Software:\n
+            {python_software}\n
+            Documentacao Analysis:\n
+            {Analysis}\n
+            Documentacao Roadmap:\n
+            {Roadmap}\n
+            Documentacao Spreadsheet:\n
+            {Spreadsheet}\n
+            Documentacao Timeline:\n
+            {Timeline}\n
+            Documentacao Preproject:\n
+            {Preproject}\n
+            """
+
         rregras = "Regras: NÃO use a function update_readme_to_github"
         mensagem_final = mensagem + rregras
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
@@ -295,7 +297,7 @@ class Software_Documentation:
         Agent_destilation.DestilationResponseAgent(mensaxgem, response, instructionsassistant, nameassistant)
         
         self.check_and_upload_docs(appfb, client)
-        
+
         return path_Documentacao
 
 
