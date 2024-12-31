@@ -29,7 +29,7 @@ class Gerente_de_projeto:
         pass
 
     ##############################################################################################
-    def Bob_Gerente_de_projeto(self, appfb, client, path_name_doc_Pre_Projeto):
+    def Bob_Gerente_de_projeto(self, appfb, client, path_name_doc_Pre_Projeto, UseVectorstoreToGenerateFiles = True):
 
         """Cria o cronograma e planilha"""
 
@@ -104,20 +104,30 @@ class Gerente_de_projeto:
             pass #return path_name_doc_Pre_Projeto
 
         
-        doc_cronograma = python_functions.analyze_txt(path_nome_do_cronograma)
-        mensagem = f"""
-        Crie a planilha do projeto com base no documento pre projeto e cronograma\n
-        
-        Documento Pre Projeto
-        \n
-        {doc_Pre_Projeto}
-        \n
-        Documento cronograma
-        \n
-        {doc_cronograma}
 
-        """
-        
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [path_name_doc_Pre_Projeto, path_nome_do_cronograma]
+            AI_Bob = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_Bob, "Bob_Work_Environment", file_paths)
+            mensagem = f"""
+            Crie a planilha do projeto com base no documento pre projeto e cronograma armazenados em Bob_Work_Environment \n
+            """
+            
+        else:
+            doc_cronograma = python_functions.analyze_txt(path_nome_do_cronograma)
+            
+            mensagem = f"""
+            Crie a planilha do projeto com base no documento pre projeto e cronograma\n
+            
+            Documento Pre Projeto
+            \n
+            {doc_Pre_Projeto}
+            \n
+            Documento cronograma
+            \n
+            {doc_cronograma}
+
+            """
+            
 
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensagem,
