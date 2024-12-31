@@ -37,9 +37,73 @@ tools_QuantumCore = [
                         "type": "string",
                         "description": "Caminho do arquivo .md (README) a ser carregado no repositório."
                     },
-                    "CoreApp_path": {
+                    "PATH_SOFTWARE_DEVELOPMENT_init_ENV": {
                         "type": "string",
-                        "description": "Caminho do CoreApp a serem carregados no repositório."
+                        "description": "Caminho do _init_.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_PY_ENV": {
+                        "type": "string",
+                        "description": "Caminho do main.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_config_ENV": {
+                        "type": "string",
+                        "description": "Caminho do config.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV": {
+                        "type": "string",
+                        "description": "Caminho do utils___init___.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV": {
+                        "type": "string",
+                        "description": "Caminho do utils_file_utils.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV": {
+                        "type": "string",
+                        "description": "Caminho do modules ___init___.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV": {
+                        "type": "string",
+                        "description": "Caminho do modules_module1.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV": {
+                        "type": "string",
+                        "description": "Caminho do modules_module2.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_services___init___ENV": {
+                        "type": "string",
+                        "description": "Caminho do services_init.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV": {
+                        "type": "string",
+                        "description": "Caminho do services_service1.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV": {
+                        "type": "string",
+                        "description": "Caminho do services_service2.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV": {
+                        "type": "string",
+                        "description": "Caminho do tests init.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV": {
+                        "type": "string",
+                        "description": "Caminho do test_module1.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV": {
+                        "type": "string",
+                        "description": "Caminho do test_module2.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV": {
+                        "type": "string",
+                        "description": "Caminho do test_service1.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV": {
+                        "type": "string",
+                        "description": "Caminho do test_service2.py a serem carregados no repositório."
+                    },
+                    "PATH_SOFTWARE_DEVELOPMENT_Example_ENV": {
+                        "type": "string",
+                        "description": "Caminho do Example.py a serem carregados no repositório."
                     },
                     "token": {
                         "type": "string",
@@ -53,7 +117,23 @@ tools_QuantumCore = [
                             "LICENSE_file_path",
                             "pyproject_file_path",
                             "readme_file_path",
-                            "CoreApp_path", 
+                            "PATH_SOFTWARE_DEVELOPMENT_init_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_PY_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_config_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_utils___init___ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_utils_file_utils_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_modules___init___ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_modules_module1_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_modules_module2_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_services___init___ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_services_service1_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_services_service2_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_tests___init___ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_tests_test_module1_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_tests_test_module2_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_tests_test_service1_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_tests_test_service2_ENV", 
+                            "PATH_SOFTWARE_DEVELOPMENT_Example_ENV", 
                             "token"]
             }
         }
