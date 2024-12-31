@@ -26,18 +26,14 @@ class Softwareanaysis:
         pass
 
     ##############################################################################################
-    def AI_SynthOperator(self, appfb, client,  path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto):
-        read_path_Roadmap = python_functions.analyze_txt(path_Roadmap)
-        read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
-        read_planilha = python_functions.analyze_txt(planilha)
-        read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
-        
+    def AI_SynthOperator(self, appfb, client,  path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto, UseVectorstoreToGenerateFiles = True):
+
+
         key = "AI_SynthOperator_Software_requirements_analyst"
         nameassistant = "AI SynthOperator Software requirements analyst"
         model_select = "gpt-4o-mini-2024-07-18"
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
-
         Upload_1_image_for_vision_in_thread = None
         vectorstore_in_assistant = None
         vectorstore_in_Thread = None
@@ -53,20 +49,31 @@ class Softwareanaysis:
 
         AI_SynthOperator, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionSynthOperator, nameassistant, model_select, tools_SynthOperator, vectorstore_in_assistant)
 
-        #AI_SynthOperator_Software_requirements_analyst = Agent_files_update.update_vectorstore_in_agent(AI_SynthOperator_Software_requirements_analyst, vector_store_id)
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto]
+            AI_SynthOperator = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_SynthOperator, "SynthOperator_Work_Environment", file_paths)
+            mensaxgem = f"""
+            Analise os quatro arquivos relacionados a um projeto de software que estao armazenados em SynthOperator_Work_Environment \n
+            """
 
-        mensaxgem = f"""
-        Analise os quatro arquivos abaixo relacionados a um projeto de software \n
-        Roadmap:\n
-        {read_path_Roadmap}\n
-        cronograma_do_projeto:\n
-        {read_cronograma_do_projeto}\n
-        planilha:\n
-        {read_planilha}\n
-        doc_Pre_Projeto:\n
-        {read_doc_Pre_Projeto}\n
+        else:
+            read_path_Roadmap = python_functions.analyze_txt(path_Roadmap)
+            read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
+            read_planilha = python_functions.analyze_txt(planilha)
+            read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
+            
+            mensaxgem = f"""
+            Analise os quatro arquivos abaixo relacionados a um projeto de software \n
+            Roadmap:\n
+            {read_path_Roadmap}\n
+            cronograma_do_projeto:\n
+            {read_cronograma_do_projeto}\n
+            planilha:\n
+            {read_planilha}\n
+            doc_Pre_Projeto:\n
+            {read_doc_Pre_Projeto}\n
 
-        """
+            """
 
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensaxgem,
