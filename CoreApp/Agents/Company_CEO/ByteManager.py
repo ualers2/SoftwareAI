@@ -200,7 +200,7 @@ class ByteManager:
             anaysis_in_txt_path = self.Softwareanaysis.AI_SynthOperator(appfb, client, path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto)
 
             script_version_1_path = self.SoftwareDevelopment.AI_QuantumCore(
-                    appfb, client, 
+                    appfb, client, repo_name,
                     os.getenv("PATH_NOME_DO_CRONOGRAMA_ENV"),
                     os.getenv("PATH_PLANILHA_PROJETO_ENV"),
                     os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV"),
