@@ -28,7 +28,7 @@ class software_improvements:
     def __init__(self):
         pass
 
-    def AI_DataWeaver_improvements(self, appfb, client, file_path):
+    def AI_DataWeaver_improvements(self, appfb, client, file_path, UseVectorstoreToGenerateFiles = True):
         """
         Nome da IA: DataWeaver \n
         Função: ideas for software improvements \n
@@ -41,8 +41,6 @@ class software_improvements:
         :param output: path_to_py
         """   
 
-
-        python_content = python_functions.analyze_file(file_path) 
 
         key = "AI_DataWeaver_ideas_for_software_improvements"
         nameassistant = "AI DataWeaver ideas for software improvements"
@@ -111,11 +109,20 @@ class software_improvements:
         
         AI_DataWeaver, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionDataWeaver, nameassistant, model_select, tools_DataWeaver, vectorstore_in_assistant)
         
-        
-        mensaxgem = f"""melhore esse script em python com novas funcionalidades \n
-        script:\n
-        {python_content}
-        """
+        if UseVectorstoreToGenerateFiles == True:
+            file_paths = [file_path]
+            AI_DataWeaver = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_DataWeaver, "DataWeaver_Work_Environment", file_paths)
+            mensaxgem = f"""melhore o script em python que esta armazenado DataWeaver_Work_Environment em com novas funcionalidades \n
+            """
+
+        else:
+            python_content = python_functions.analyze_file(file_path) 
+            mensaxgem = f"""melhore esse script em python com novas funcionalidades \n
+            script:\n
+            {python_content}
+            """
+
+
         format = 'Responda no formato JSON Exemplo: {"codigo": "import..."}'
         mensagem = mensaxgem + format
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
