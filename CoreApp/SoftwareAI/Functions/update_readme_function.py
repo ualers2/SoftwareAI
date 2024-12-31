@@ -3,6 +3,8 @@
 # IMPORT SoftwareAI Libs 
 from softwareai.CoreApp._init_libs_ import *
 #########################################
+# IMPORT SoftwareAI _init_environment_
+from softwareai.CoreApp._init_environment_ import load_env
 
 
 def get_file_sha(repo, path, token):
@@ -22,9 +24,9 @@ def update_readme_to_github(
                             token: str
                         ):
     
-    from dotenv import load_dotenv
-    load_dotenv(dotenv_path=r"C:\Users\Media Cuts Studio\Desktop\Saas do site\Projetos de codigo aberto\SoftwareAI\CoreApp\ambiente.env")
 
+    load_env()
+    
     file_path_readme_improvements_teste = os.getenv("PATH_DOCUMENTACAO_ENV")
     directory = os.path.dirname(file_path_readme_improvements_teste)
 
