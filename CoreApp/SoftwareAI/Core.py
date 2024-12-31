@@ -748,10 +748,30 @@ class Agent_files_update:
             return assistant.id
         except Exception as e:
             raise Exception(f"Error updating assistant: {e}")
-    
+
+    def del_all_and_upload_files_in_vectorstore(appfb, client, AI:str, name_for_vectorstore:str, file_paths:list):
+        
+        vector_store_id = Agent_files.auth_vectorstoreAdvanced(app1=appfb, client=client, name_for_vectorstore=name_for_vectorstore, file_paths=file_paths)
+        lista = client.beta.vector_stores.files.list(vector_store_id)
+        ids = [file.id for file in lista.data]
+        print(ids)
+        for id in ids:
+            deleted_vector_store_file = client.beta.vector_stores.files.delete(
+                vector_store_id=vector_store_id,
+                file_id=id
+            )
+            print(deleted_vector_store_file)
+
+        vector_store_id = Agent_files.auth_vectorstoreAdvanced(app1=appfb, client=client, name_for_vectorstore=name_for_vectorstore, file_paths=file_paths)
+        AI = Agent_files_update.update_vectorstore_in_agent(client, AI [vector_store_id])
+        return AI
+
+
+
+
 class Agent_files:
 
-    def auth_vectorstoreAdvanced(app1, client, name_for_vectorstore, file_paths):
+    def auth_vectorstoreAdvanced(app1, client, name_for_vectorstore, file_paths: list):
         """
         Uploads multiple files to an existing Vector Store or creates a new one if it doesn't exist.
 
@@ -781,6 +801,7 @@ class Agent_files:
             ref1 = db.reference(f'ai_org_vector_store/User_{name_for_vectorstore}', app=app1)
             data1 = ref1.get()
             vector_store_id = data1['vector_store_id']
+        
             for update1newfiles in file_paths:
                 update1newfile = open(update1newfiles, "rb")
                 client.beta.vector_stores.files.upload(
@@ -964,21 +985,53 @@ class Agent_files:
             }
             ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
             return vector_store.id
-        
+
 class Agent_destilation:
                                                 
     def DestilationResponseAgent(input, output, instructionsassistant, nameassistant):                        
          
         date = datetime.now().strftime('%Y-%m-%d')
-        output_path_jsonl = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Jsonl/DestilationAgent{date}'))
-        output_path_json = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Json/DestilationAgent{date}'))
+        datereplace = date.replace('-', '_').replace(':', '_')
+        output_path_jsonl = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Jsonl/DestilationAgent{datereplace}'))
+        output_path_json = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Json/DestilationAgent{datereplace}'))
+        output_path_json2 = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../Destilation/{nameassistant}/Jsonl_2/DestilationAgent{datereplace}', f"DestilationDateTime_{datereplace}.json"))
         os.makedirs(output_path_json, exist_ok=True)
+        os.makedirs(os.path.dirname(output_path_json2), exist_ok=True)
         os.makedirs(output_path_jsonl, exist_ok=True)
             
         datasetjson = {
             "input": input,
             "output": output
         }
+
+        try:
+            with open(output_path_json2, 'x', encoding='utf-8') as json_file:
+                json_file.close()
+        except:
+            pass
+
+        new_entry = {"input": input, "output": output}
+
+        # Verificando se o arquivo já existe e lendo os dados
+        if os.path.exists(output_path_json2):
+            with open(output_path_json2, 'r', encoding='utf-8') as json_file:
+                try:
+                    datasetjson2 = json.load(json_file)  # Carregar o JSON existente
+                    if not isinstance(datasetjson2, list):
+                        datasetjson2 = []  # Se não for uma lista, inicializar como lista
+                except json.JSONDecodeError:
+                    datasetjson2 = []  # Inicializar lista se o arquivo estiver vazio ou corrompido
+        else:
+            datasetjson2 = []  # Inicializar lista se o arquivo não existir
+
+        datasetjson2.append(new_entry)
+
+        with open(output_path_json2, 'w', encoding='utf-8') as json_file:
+            json.dump(datasetjson2, json_file, indent=4, ensure_ascii=False)
+                
+
+
+
         datasetjsonl = {
             "messages": [
                 {"role": "system", "content": f"{instructionsassistant}"},
@@ -987,11 +1040,12 @@ class Agent_destilation:
             ]
         }
 
-        finaloutputjson = os.path.join(output_path_json, f"DestilationDateTime_{date.replace('-', '_').replace(':', '_')}.json")
+        finaloutputjson = os.path.join(output_path_json, f"DestilationDateTime_{datereplace}.json")
         with open(finaloutputjson, 'a', encoding='utf-8') as json_file:
-            json_file.write(json.dumps(datasetjson, ensure_ascii=False) + ",\n")
-        
-        finaloutputjsonl = os.path.join(output_path_jsonl, f"DestilationDateTime_{date.replace('-', '_').replace(':', '_')}.jsonl")
+            json.dump(datasetjson, json_file, indent=4, ensure_ascii=False)
+
+
+        finaloutputjsonl = os.path.join(output_path_jsonl, f"DestilationDateTime_{datereplace}.jsonl")
         with open(finaloutputjsonl, 'a', encoding='utf-8') as json_file:
             json_file.write(json.dumps(datasetjsonl, ensure_ascii=False) + "\n")
         
