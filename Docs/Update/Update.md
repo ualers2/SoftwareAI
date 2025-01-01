@@ -1,5 +1,19 @@
 
 ## 🔄 Update
+### NexGenCoder: V 0.3.82
+***(01/01/2025)***
+Updates for version 0.3.82:
+* **NexGenCoder**: Changelog para cada versao do codigo do repositorio
+```python
+
+incrementar_versao_em_arquivo(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}","Changelog.env")))
+version = os.getenv("version")
+self.load_env("Changelog.env")
+
+```
+
+
+
 ### QuantumCore: V 0.3.45
 ***(30/12/2024)***
 Updates for version 0.3.45:
