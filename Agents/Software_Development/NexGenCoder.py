@@ -147,21 +147,28 @@ class SoftwareDevelopment_NexGenCoder:
             if review_response.status_code == 200:
                 print("Pull request aprovado com sucesso!")
                 resultado = self.merge_pull_request("A-I-O-R-G", repo_name, pr_number, github_token)
-                return {"status": "approved", "message": f"Pull request aprovado com sucesso. {resultado}"}
+
+                incrementar_versao_em_arquivo(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}","Changelog.env")))
+                version = os.getenv("version")
+                self.load_env("Changelog.env")
+
+                return {"status": "approved", "message": f"Pull request aprovado com sucesso. {resultado} version:{version}"}
             else:
                 print(f"Erro ao aprovar o PR. Status: {review_response.status_code}")
                 return {"status": "error", "message": review_response.json()}
-        
 
-
-
-
-
-
-
-
-
-
+    def load_env(self, env):
+        """
+        Method to load the .env file located in the two folders above the script.
+        """
+        env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}", env))
+        print(env_path)
+        # Carregar o arquivo .env se ele existir
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
+            print(f".env carregado de: {env_path}")
+        else:
+            print(f"Erro: Arquivo environment.env não encontrado em {env_path}")
 
     def merge_pull_request(self, repo_owner: str, repo_name: str, pr_number: int, token: str):
         """
