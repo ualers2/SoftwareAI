@@ -123,42 +123,7 @@ def quantumcore_review_pr(repo_owner: str, repo_name: str, pr_number: int):
     adxitional_instructions = None
     tools=[
         {"type": "file_search"},
-        {
-            "type": "function",
-            "function": {
-                "name": "create_github_repo_and_upload",
-                "description": "Cria um repositório no GitHub e realiza o upload da documentação (.md) e do código Python.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "repo_name": {
-                            "type": "string",
-                            "description": "Nome do repositório a ser criado no GitHub."
-                        },
-                        "repo_description": {
-                            "type": "string",
-                            "description": "Descrição do repositório."
-                        },
-                        "readme_file_path": {
-                            "type": "string",
-                            "description": "Caminho do arquivo .md (README) a ser carregado no repositório."
-                        },
-                        "code_file_paths": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            },
-                            "description": "Lista de caminhos dos arquivos de código Python a serem carregados no repositório."
-                        },
-                        "token": {
-                            "type": "string",
-                            "description": "Token de autenticação do GitHub para realizar operações na API."
-                        }
-                    },
-                    "required": ["repo_name", "repo_description", "readme_file_path", "code_file_paths", "token"]
-                }
-            }
-        }
+
     ]
 
     Upload_1_file_in_thread = None
