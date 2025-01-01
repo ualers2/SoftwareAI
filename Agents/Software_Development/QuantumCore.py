@@ -120,7 +120,7 @@ class SoftwareDevelopment:
 
         github_username, github_token = GithubKeys.QuantumCore_github_keys()
 
-        load_env()
+        load_env("environment.env", repo_name)
 
         key_openai = OpenAIKeysteste.keys()
 
