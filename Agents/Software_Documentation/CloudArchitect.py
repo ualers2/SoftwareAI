@@ -134,9 +134,9 @@ class Software_Documentation:
         Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
         
         self.diretorio_script = os.path.dirname(os.path.abspath(__file__))
-        self.path_DocGitHubDataREADME = os.path.join(self.diretorio_script,  '../../../',  'CoreCompany', 'DocGitHubData', f"README{random.randint(30, 900)}.md")
-        self.path_DocGitHubData = os.path.join(self.diretorio_script,  '../../../', 'CoreCompany', 'DocGitHubData')
-        self.path_DocGitHubData_log = os.path.join(self.diretorio_script,  '../../../',  'CoreCompany', 'docs_uploaded.log')
+        self.path_DocGitHubDataREADME = os.path.join(self.diretorio_script, '../../../', 'CoreCompany',  'KnowLedgeData', 'GitHubData', 'DocMd', f"README{random.randint(30, 900)}.md")
+        self.path_DocGitHubData = os.path.join(self.diretorio_script, '../../../', 'CoreCompany', 'KnowLedgeData', 'GitHubData', 'DocMd')
+        self.path_DocGitHubData_log = os.path.join(self.diretorio_script, '../../../', 'CoreCompany',  'KnowLedgeData', 'GitHubData', 'DocMd' , 'docs_uploaded.log')
 
         python_functions.save_TXT(documentacao_corrigida, self.path_DocGitHubDataREADME, "w")
 
@@ -260,9 +260,9 @@ class Software_Documentation:
         Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
         
         self.diretorio_script = os.path.dirname(os.path.abspath(__file__))
-        self.path_DocGitHubDataREADME = os.path.join(self.diretorio_script, '../../../', 'CoreCompany', 'DocGitHubData', f"README{random.randint(30, 900)}.md")
-        self.path_DocGitHubData = os.path.join(self.diretorio_script, '../../../', 'CoreCompany', 'DocGitHubData')
-        self.path_DocGitHubData_log = os.path.join(self.diretorio_script, '../../../', 'CoreCompany', 'docs_uploaded.log')
+        self.path_DocGitHubDataREADME = os.path.join(self.diretorio_script, '../../../', 'CoreCompany',  'KnowLedgeData', 'GitHubData', 'DocMd', f"README{random.randint(30, 900)}.md")
+        self.path_DocGitHubData = os.path.join(self.diretorio_script, '../../../', 'CoreCompany', 'KnowLedgeData', 'GitHubData', 'DocMd')
+        self.path_DocGitHubData_log = os.path.join(self.diretorio_script, '../../../', 'CoreCompany',  'KnowLedgeData', 'GitHubData', 'DocMd' , 'docs_uploaded.log')
 
         python_functions.save_TXT(documentacao_corrigida, self.path_DocGitHubDataREADME, "w")
 
