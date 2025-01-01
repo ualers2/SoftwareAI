@@ -19,6 +19,8 @@ from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
 # IMPORT SoftwareAI keys
 from softwareai.CoreApp._init_keys_ import *
 #########################################
+# IMPORT SoftwareAI _init_environment_
+from softwareai.CoreApp._init_environment_ import load_env
 
 
 
@@ -150,25 +152,14 @@ class SoftwareDevelopment_NexGenCoder:
 
                 incrementar_versao_em_arquivo(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}","Changelog.env")))
                 version = os.getenv("version")
-                self.load_env("Changelog.env")
+  
+                load_env("Changelog.env", repo_name)
 
                 return {"status": "approved", "message": f"Pull request aprovado com sucesso. {resultado} version:{version}"}
             else:
                 print(f"Erro ao aprovar o PR. Status: {review_response.status_code}")
                 return {"status": "error", "message": review_response.json()}
 
-    def load_env(self, env):
-        """
-        Method to load the .env file located in the two folders above the script.
-        """
-        env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}", env))
-        print(env_path)
-        # Carregar o arquivo .env se ele existir
-        if os.path.exists(env_path):
-            load_dotenv(env_path)
-            print(f".env carregado de: {env_path}")
-        else:
-            print(f"Erro: Arquivo environment.env não encontrado em {env_path}")
 
     def merge_pull_request(self, repo_owner: str, repo_name: str, pr_number: int, token: str):
         """
