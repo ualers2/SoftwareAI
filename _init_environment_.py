@@ -3,7 +3,7 @@ from softwareai.CoreApp._init_libs_ import *
 #########################################
 
 
-def load_env(env):
+def load_env(env, repo_name):
     """
     Method to load the .env file located in the two folders above the script.
     """
@@ -51,7 +51,7 @@ def init_env(repo_name):
 
     incrementar_versao_em_arquivo(os.path.abspath(os.path.join(os.path.dirname(__file__), "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}", "Changelog.env")))
 
-    load_env("Changelog.env")
+    load_env("Changelog.env", repo_name)
 
     version = os.getenv("version")
     print(version)
@@ -108,7 +108,7 @@ def init_env(repo_name):
         if key.endswith('_ENV'):
             del os.environ[key]                                                                                                                                                                     
     flag = create_env(file_paths, os.path.abspath(os.path.join(os.path.dirname(__file__), "environment.env")))
-    load_env("environment.env")
+    load_env("environment.env", repo_name)
 
 
 
