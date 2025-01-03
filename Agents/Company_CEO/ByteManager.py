@@ -80,9 +80,11 @@ class ByteManager:
         
         """  
 
-        exemplo = "Caso seja solicitado algum script ou software Responda no formato JSON Exemplo: {'solicitadoalgumcodigo': 'solicitacao...'} "
+        regra1 = "Regra 1 - Caso seja solicitado algum script ou software Responda no formato JSON Exemplo: {'solicitadoalgumcodigo': 'solicitacao...'} "
+
+        regra2 = "Regra 2 - Caso seja solicitado alguma atualização de repositorio de software Responda no formato JSON Exemplo: {'solicitadoatualizaçãoderepositoriosoftware': 'somente o nome do repositorio que o usuario informou'} "
             
-        mensaxgemfinal = mensaxgem + exemplo
+        mensaxgemfinal = mensaxgem + regra1 + regra2
         
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensaxgemfinal,
@@ -128,7 +130,17 @@ class ByteManager:
             resposta_AI_ByteManager_dict = json.loads(passando_resposta_do_matrixminder)
             resposta_AI_ByteManager = resposta_AI_ByteManager_dict['resposta']
             return resposta_AI_ByteManager
-        
+
+        if 'solicitadoatualizaçãoderepositoriosoftware' in teste_dict:
+
+            repo_name = teste_dict['solicitadoatualizaçãoderepositoriosoftware'] 
+
+            init_env(repo_name)
+
+            QuantumCoreUpdate = self.SoftwareDevelopment.QuantumCoreUpdate(
+                appfb, client, repo_name
+                )
+
         if 'solicitadoalgumcodigo' in teste_dict:
 
 
