@@ -43,67 +43,17 @@ class SoftwareDevelopment_SignalMaster:
         nameassistant = "AI SignalMaster Desenvolvedor Pleno de Software em Python"
         model_select = "gpt-4o-mini-2024-07-18"
 
-        # path_Conhecimentos_python = r"C:\Users\ualer\Downloads\Saas do site\A-I-O-R-G\AI_Team_Software_Development\Conhecimentos_python_em_pdf"
-        # name_for_vectorstore = "Conhecimentos_python_em_pdf"
-        # file_path_Conhecimentos_python_em_pdf = [
-        #     f"{path_Conhecimentos_python}/Automate the Boring Stuff with Python.pdf",
-        #     f"{path_Conhecimentos_python}/Effective Python 2nd.pdf",
-        #     f"{path_Conhecimentos_python}/Fluent Python.pdf",
-        #     f"{path_Conhecimentos_python}/pep8-readthedocs-io-en-release-1.7.x.pdf",
-        #     f"{path_Conhecimentos_python}/pep257-readthedocs-io-en-0.6.0.pdf",
-        #     f"{path_Conhecimentos_python}/python_para_desenvolvedores.pdf",
-        #     f"{path_Conhecimentos_python}/python-clean-code-best-practices-and-techniques-for-writing-clear-concise-and-maintainable-code-publishdrivenbsped.pdf",
-        #     f"{path_Conhecimentos_python}/python-cookbook-3rd-edition-9781449357337-1449357334.pdf",
-        #     f"{path_Conhecimentos_python}/python-type-checking-readthedocs-io-en-latest.pdf",
-        # ]
-        # list_file_id_Conhecimentos_python_em_pdf = Agent_files.auth_or_upload_multiple_files(name_for_vectorstore, file_path_Conhecimentos_python_em_pdf)
-        # vector_store_id_conhecimentospython = Agent_files.auth_or_create_vector_store_with_multiple_files(name_for_vectorstore, list_file_id_Conhecimentos_python_em_pdf)
-
-
-        # path_localYoutube = r"C:\Users\ualer\Downloads\Saas do site\Youtube Downloader (dev)"
-        # path_localTwitch = r"C:\Users\ualer\Downloads\Saas do site\Twitch Downloader (dev)"
-        # all_software_name = "All_Software_in_company"
-        # file_path_all_software_in_company = [
-
-        #     f"{path_localTwitch}/main_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/CoreApp/Securityclass_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/Update_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/Update_exe_Twitch_Downloader.py", f"{path_localTwitch}/Update_Update_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/TwitchDownloader.py", f"{path_localTwitch}/Enviar_atualizacao_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/Convert_ui_Twitch_Downloader.py", f"{path_localTwitch}/uisave/UI_Convert_Twitch_Downloader.py",
-        #     #f"{path_localTwitch}/uisave/mode_all_vod_dialog.xml", f"{path_localTwitch}/uisave/login.xml", f"{path_localTwitch}/uisave/main_window.xml",
-        #     f"{path_localTwitch}/CoreApp/ui/mode_all_vod_dialog_ui_Twitch_Downloader.py",
-        #     f"{path_localTwitch}/CoreApp/ui/main_window_ui_Twitch_Downloader.py", f"{path_localTwitch}/CoreApp/ui/login_ui_Twitch_Downloader.py",
-           
-        #     f"{path_localYoutube}/main_Youtube_Downloader.py",
-        #     f"{path_localYoutube}/CoreApp/Securityclass_Youtube_Downloader.py",
-        #     f"{path_localYoutube}/Update_Youtube_Downloader.py",
-        #     f"{path_localYoutube}/Update_exe_Youtube_Downloader.py", f"{path_localYoutube}/Update_Update_Youtube_Downloader.py",
-        #     f"{path_localYoutube}/YoutubeDownloader.py", f"{path_localYoutube}/Enviar_atualizacao_Youtube_Downloader.py",
-        #     f"{path_localYoutube}/Convert_ui_Youtube_Downloader.py", f"{path_localYoutube}/uisave/UI_Convert_Youtube_Downloader.py",
-        #     #f"{path_local}/uisave/latestchannelstreams.xml", f"{path_local}/uisave/main_window.xml",
-        #     f"{path_localYoutube}/CoreApp/ui/latestchannelstreams_ui_Youtube_Downloader.py", f"{path_localYoutube}/CoreApp/ui/main_window_ui_Youtube_Downloader.py"
-
-        # ]
-
-        # vector_store_id_all_software_in_company = Agent_files.auth_or_create_vectorstore(all_software_name, file_path_all_software_in_company)
-
-
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
         Upload_list_for_code_interpreter_in_thread = None
         Upload_1_image_for_vision_in_thread = None
-        vectorstore_in_assistant = None #[vector_store_id_all_software_in_company]
+        vectorstore_in_assistant = None 
         vectorstore_in_Thread = None
 
         github_username, github_token = GithubKeys.SignalMaster_github_keys()
 
         key_openai = OpenAIKeysteste.keys()
-        # name_app = "appx"
-        # appfb = FirebaseKeysinit._init_app_(name_app)
-        # client = OpenAIKeysinit._init_client_(key_openai)
 
-        
         AI_SignalMaster, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionSignalMaster, nameassistant, model_select, tools_SignalMaster, vectorstore_in_assistant)
         
         
