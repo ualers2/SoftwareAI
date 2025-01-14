@@ -1,0 +1,42 @@
+repositoryname/
+|    AppMap/
+|    |   Analisys/
+|    |       ├── AnalysisRequirements.txt 
+|    |   PreProject/
+|    |       ├── doc.txt
+|    |   RoadMap/
+|    |       ├── Roadmap.txt
+|    |   SpreadsheetAndTimeline/
+|    |       ├── Schedule.txt
+|    |       ├── Spreadsheet.txt
+|    repositoryname/
+|    |       Examples/
+|    |           ├── Example.py
+|    |       modules/
+|    |           ├── __init__.py
+|    |           ├── module1.py
+|    |           ├── module2.py
+|    |       services/
+|    |           ├── __init__.py
+|    |           ├── service1.py
+|    |           ├── service2.py
+|    |       tests/
+|    |           ├── __init__.py
+|    |           ├── test_module1.py
+|    |           ├── test_module2.py
+|    |           ├── test_service1.py
+|    |           ├── test_service2.py
+|    |       utils/
+|    |           ├── __init__.py
+|    |           ├── file_utils.py
+|    |
+|    ├── Changelog.env
+|    ├── __init__.py
+|    ├── config.py
+|    ├── main.py
+|    ├── Changelog.env
+├── setup.py           
+├── requirements.txt
+├── pyproject.toml
+├── LICENSE.txt
+└── README.md        
