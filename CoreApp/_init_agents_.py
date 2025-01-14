@@ -39,9 +39,11 @@ class AgentInitializer:
             cls._agents['Gerente_de_projeto'],
             cls._agents['Equipe_De_Solucoes'],
             cls._agents['Softwareanaysis'],
-            cls._agents['SoftwareDevelopment']
+            cls._agents['SoftwareDevelopment'],
+            cls._agents['Software_Documentation'],
         )
 
+        
     @classmethod
     def get_agent(cls, agent_name):
         """Returns an agent instance by name."""
