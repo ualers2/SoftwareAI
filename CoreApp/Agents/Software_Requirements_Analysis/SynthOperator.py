@@ -26,7 +26,7 @@ class Softwareanaysis:
         pass
 
     ##############################################################################################
-    def AI_SynthOperator(self, appfb, client,  path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto, UseVectorstoreToGenerateFiles = True):
+    def AI_SynthOperator(self, appfb, client,  path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto, repo_name, UseVectorstoreToGenerateFiles = True):
 
 
         key = "AI_SynthOperator_Software_requirements_analyst"
@@ -38,43 +38,30 @@ class Softwareanaysis:
         vectorstore_in_assistant = None
         vectorstore_in_Thread = None
         Upload_list_for_code_interpreter_in_thread = None
-        
-
 
         key_openai = OpenAIKeysteste.keys()
-        # name_app = "appx"
-        # appfb = FirebaseKeysinit._init_app_(name_app)
-        # client = OpenAIKeysinit._init_client_(key_openai)
 
+        github_username, github_token = GithubKeys.SynthOperator_github_keys()
 
         AI_SynthOperator, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionSynthOperator, nameassistant, model_select, tools_SynthOperator, vectorstore_in_assistant)
 
         if UseVectorstoreToGenerateFiles == True:
-            file_paths = [path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto]
+            file_paths = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", f"environment.txt")), path_Roadmap, cronograma_do_projeto, planilha, doc_Pre_Projeto]
             AI_SynthOperator = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_SynthOperator, "SynthOperator_Work_Environment", file_paths)
             mensaxgem = f"""
-            Analise os quatro arquivos relacionados a um projeto de software que estao armazenados em SynthOperator_Work_Environment \n
+            Analise os quatro arquivos do projeto, salve e realize o upload no GitHub (usando autosave e autoupload) Baseie-se nos documentos armazenados em `SynthOperator_Work_Environment`\n
+            repo_name: \n
+            {repo_name}\n
+            token: \n
+            {github_token}\n
+             
+             
             """
 
-        else:
-            read_path_Roadmap = python_functions.analyze_txt(path_Roadmap)
-            read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
-            read_planilha = python_functions.analyze_txt(planilha)
-            read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
-            
-            mensaxgem = f"""
-            Analise os quatro arquivos abaixo relacionados a um projeto de software \n
-            Roadmap:\n
-            {read_path_Roadmap}\n
-            cronograma_do_projeto:\n
-            {read_cronograma_do_projeto}\n
-            planilha:\n
-            {read_planilha}\n
-            doc_Pre_Projeto:\n
-            {read_doc_Pre_Projeto}\n
 
-            """
-
+        adxitional_instructionSynthOperator = f"""
+        estrutura do projeto esta armazenada em environment.txt
+        """
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensaxgem,
                                                                 agent_id=AI_SynthOperator, 
@@ -90,10 +77,8 @@ class Softwareanaysis:
                                             
         ##Agent Destilation##                   
         Agent_destilation.DestilationResponseAgent(mensaxgem, response, instructionsassistant, nameassistant)
-        
-        path__analise = os.getenv("PATH_ANALISE_ENV")
-        python_functions.save_TXT(response, path__analise, "w")
-        return str(path__analise)
+        PATH_ANALISE_ENV = os.getenv("PATH_ANALISE_ENV")
+        return str(PATH_ANALISE_ENV)
 
 
 
