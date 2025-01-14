@@ -27,14 +27,8 @@ class Pre_Project_Document:
         pass
 
 
-    def AI_1_Pre_Project_Document_Writer(self, appfb, client, mensagem):
-        """
-        Nome da IA: Tigrao \n
-        Função: Escritor de Documento Pre-Projeto De Software \n
-        Horario de trabalho: 1H\n
-        :param mensagem: str \n
-        :param output: path_name_doc_Pre_Projeto
-        """   
+    def AI_1_Pre_Project_Document_Writer(self, appfb, client, mensagem, repo_name):
+
         key = "AI_Tigrao_Escritor_de_documento_Pre_Projeto"
         nameassistant = "AI Tigrao Escritor de documento Pre-Projeto"
         model_select = "gpt-4o-mini-2024-07-18"
@@ -45,12 +39,22 @@ class Pre_Project_Document:
         vectorstore_in_Thread = None
         vectorstore_in_agent = None
         key_openai = OpenAIKeysteste.keys()
+        
+        github_username, github_token = GithubKeys.Tigrao_github_keys()
 
         AI_Tigrao, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionTigrao, nameassistant, model_select, tools_Tigrao, vectorstore_in_agent)
 
-        mensaxgem = f"crie um documento Pre-Projeto baseado nas informacoes asseguir: \n  {mensagem}"
-        format = 'Responda no formato JSON Exemplo: {"doc_Pre_Projeto": "..."},{"name_doc_Pre_Projeto": "..."} '
-        mensage3 = mensaxgem + format
+        mensaxgem = f"""
+        Crie o documento Pre-Projeto do projeto, salve e realize o upload no GitHub (usando autosave e autoupload) Baseie-se nas informacoes asseguir: \n  {mensagem}
+        repo_name: \n
+        {repo_name}\n
+        token: \n
+        {github_token}\n
+
+
+        regra: em autoupload utilize o seguinte caminho relativo para o Dcumento Pre-Projeto: AppMap/PreProject/doc.txt
+        """
+        mensage3 = mensaxgem 
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensage3,
                                                                 agent_id=AI_Tigrao, 
@@ -62,34 +66,12 @@ class Pre_Project_Document:
                                                                 aditional_instructions=adxitional_instructions_Tigrao
                                                                 )
                                                 
-         
-                                            
+                 
         ##Agent Destilation##                   
         Agent_destilation.DestilationResponseAgent(mensage3, response, instructionsassistant, nameassistant)
         
-        
-        #print(response)
-        
-        #python_functions.save_json(response, path_name_doc_Pre_Projeto)
-        try:
-            teste_dict = json.loads(response)
-            documento_Pre_Projeto = teste_dict['doc_Pre_Projeto']
-            print(documento_Pre_Projeto)
-            
-            name_doc_Pre_Projeto = teste_dict['name_doc_Pre_Projeto']
-            path_name_doc_Pre_Projeto = os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV")
-            path = os.path.dirname(path_name_doc_Pre_Projeto)
-            novo_caminho = os.path.join(path, f"{name_doc_Pre_Projeto}.txt")
-            print(name_doc_Pre_Projeto)
-            python_functions.save_TXT(documento_Pre_Projeto, novo_caminho, "w")
-            return novo_caminho
-        except Exception as E:
-            print(E)
-            path_name_doc_Pre_Projeto = os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV")
-            python_functions.save_TXT(response, path_name_doc_Pre_Projeto, "w")
-            return path_name_doc_Pre_Projeto
-
-
+        path_name_doc_Pre_Projeto = os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV")
+        return path_name_doc_Pre_Projeto
 
 
 
