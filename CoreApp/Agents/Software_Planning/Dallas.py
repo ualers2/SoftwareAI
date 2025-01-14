@@ -27,7 +27,7 @@ class Equipe_De_Solucoes:
     def __init__(self):
         pass
 
-    def Dallas_Equipe_De_Solucoes_Roadmap(self, appfb, client, cronograma_do_projeto, planilha_json, doc_Pre_Projeto, UseVectorstoreToGenerateFiles = True):
+    def Dallas_Equipe_De_Solucoes_Roadmap(self, appfb, client, cronograma_do_projeto, planilha_json, doc_Pre_Projeto, repo_name, UseVectorstoreToGenerateFiles = True):
 
         key = "AI_Dallas_Equipe_de_Solucoes"
         nameassistant = "AI Dallas Equipe de Solucoes"
@@ -43,41 +43,27 @@ class Equipe_De_Solucoes:
 
 
         key_openai = OpenAIKeysteste.keys()
-        # name_app = "appx"
-        # appfb = FirebaseKeysinit._init_app_(name_app)
-        # client = OpenAIKeysinit._init_client_(key_openai)
+
+
+        github_username, github_token = GithubKeys.DallasEquipeDeSolucoes_github_keys()
 
         AI_Dallas, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionDallas, nameassistant, model_select, tools_Dallas, vectorstore_in_assistant)
 
         if UseVectorstoreToGenerateFiles == True:
-            file_paths = [cronograma_do_projeto, planilha_json, doc_Pre_Projeto]
+            file_paths = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", f"environment.txt")), cronograma_do_projeto, planilha_json, doc_Pre_Projeto]
             AI_Dallas = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_Dallas, "Dallas_Work_Environment", file_paths)
             mensagem = f"""
-            Planeje um Roadmap do Projeto com base no Cronograma,Planilha e Documento Pre Projeto que estao armazenados em Dallas_Work_Environment:\n
+            Planeje o Roadmap do projeto, salve e realize o upload no GitHub (usando autosave e autoupload) Baseie-se no documento Cronograma,Planilha e Documento Pre Projeto armazenado em `Dallas_Work_Environment`\n
+            repo_name: \n
+            {repo_name}\n
+            token: \n
+            {github_token}\n
+             
             """
-        
-        else:    
-            read_cronograma_do_projeto = python_functions.analyze_txt(cronograma_do_projeto)
-            read_planilha_json = python_functions.analyze_txt(planilha_json)
-            read_doc_Pre_Projeto = python_functions.analyze_txt(doc_Pre_Projeto)
 
-            
-            mensagem = f"""
-            Planeje um Roadmap do Projeto com base no Cronograma,Planilha e Documento Pre Projeto asseguir:\n
-
-            Cronograma
-            \n
-            {read_cronograma_do_projeto}
-            \n
-            Planilha
-            \n
-            {read_planilha_json}
-            \n
-            Documento Pre Projeto 
-            \n
-            {read_doc_Pre_Projeto}
-            """
-        
+        adxitional_instructions_Dallas = f"""
+        estrutura do projeto esta armazenada em environment.txt
+        """
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensagem,
                                                                 agent_id=AI_Dallas, 
@@ -90,28 +76,10 @@ class Equipe_De_Solucoes:
                                                                 )
     
         path_Roadmap = os.getenv("PATH_ROADMAP_ENV")
-        python_functions.save_TXT(response, path_Roadmap, "w")
-        #python_functions.save_json(response, path_name_doc_Pre_Projeto)
-
-                                            
+                 
         ##Agent Destilation##                   
         Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
         
-        
-        try:
-            teste_dict = json.loads(response)
-
-            Roadmap = teste_dict['Roadmap']
-            nome_do_Roadmap = teste_dict['nome_do_Roadmap']
-            path_nome_do_Roadmap = f"Work_Environment/Create_Roadmap_Projeto/{nome_do_Roadmap}.txt"
-            print(Roadmap)
-            print(nome_do_Roadmap)
-
-            python_functions.save_TXT(Roadmap, path_nome_do_Roadmap, "w")
-            planilha = planilha_json
-            return str(path_Roadmap), str(cronograma_do_projeto), str(planilha), str(doc_Pre_Projeto)
-        except:
-            planilha = planilha_json
-            return str(path_Roadmap), str(cronograma_do_projeto), str(planilha), str(doc_Pre_Projeto)
+        return str(path_Roadmap), str(cronograma_do_projeto), str(planilha_json), str(doc_Pre_Projeto)
         
 
