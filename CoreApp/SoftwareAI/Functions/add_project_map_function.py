@@ -37,7 +37,7 @@ def add_projectmap_to_github(
                 relative_path = os.path.relpath(file_path, start=directory)  
                 github_path = relative_path.replace("\\", "/")  
 
-                url = f"https://api.github.com/repos/A-I-O-R-G/{repo_name}/contents/AppMap/SpreadsheetAndTimeline/{github_path}"
+                url = f"https://api.github.com/repos/{repo_name}/contents/AppMap/SpreadsheetAndTimeline/{github_path}"
 
                 response = requests.get(url, headers={"Authorization": f"token {token}"})
                 sha = response.json().get("sha") if response.status_code == 200 else None
@@ -65,7 +65,7 @@ def add_projectmap_to_github(
                 relative_path = os.path.relpath(file_path, start=directory)  
                 github_path = relative_path.replace("\\", "/")  
 
-                url = f"https://api.github.com/repos/A-I-O-R-G/{repo_name}/contents/AppMap/PreProject/{github_path}"
+                url = f"https://api.github.com/repos/{repo_name}/contents/AppMap/PreProject/{github_path}"
 
                 response = requests.get(url, headers={"Authorization": f"token {token}"})
                 sha = response.json().get("sha") if response.status_code == 200 else None
@@ -93,7 +93,7 @@ def add_projectmap_to_github(
                 relative_path = os.path.relpath(file_path, start=directory)  
                 github_path = relative_path.replace("\\", "/")  
 
-                url = f"https://api.github.com/repos/A-I-O-R-G/{repo_name}/contents/AppMap/RoadMap/{github_path}"
+                url = f"https://api.github.com/repos/{repo_name}/contents/AppMap/RoadMap/{github_path}"
 
                 response = requests.get(url, headers={"Authorization": f"token {token}"})
                 sha = response.json().get("sha") if response.status_code == 200 else None
@@ -121,7 +121,7 @@ def add_projectmap_to_github(
                 relative_path = os.path.relpath(file_path, start=directory)  
                 github_path = relative_path.replace("\\", "/")  
 
-                url = f"https://api.github.com/repos/A-I-O-R-G/{repo_name}/contents/AppMap/Analisys/{github_path}"
+                url = f"https://api.github.com/repos/{repo_name}/contents/AppMap/Analisys/{github_path}"
 
                 response = requests.get(url, headers={"Authorization": f"token {token}"})
                 sha = response.json().get("sha") if response.status_code == 200 else None
