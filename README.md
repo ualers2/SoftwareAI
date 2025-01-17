@@ -1,5 +1,5 @@
 
-![UI](Gifs/logo.jpg)
+![UI](Gifs/941fe1d3-62c7-4e8c-aa78-cfe0a6a5ca7c.jpg)
 # 👥 Your software company governed by AI
 ![Version](https://img.shields.io/badge/version-0.2.8-blue)
 ![Status](https://img.shields.io/badge/status-beta-yellow)
