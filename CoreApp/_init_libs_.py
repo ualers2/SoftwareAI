@@ -126,16 +126,89 @@ from reportlab.pdfgen import canvas
 
 import time
 import random
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, Filters
 from openai import OpenAI
 
 
 import json
 
-from telegram.ext import Updater, CommandHandler, JobQueue
-from telegram.ext import Updater, CommandHandler, Job
+from telegram import Update
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
+
+
 from firebase_admin import credentials, initialize_app, storage, db
 
 from datetime import datetime, timedelta
 from PIL import Image 
+########################################################################
+## IMPORTAÇÃO DE BIBLIOTECAS
+########################################################################
+
+# Bibliotecas padrão do Python
+
+import os
+import sys
+import json
+import time
+import random
+import re
+import subprocess
+import platform
+import tempfile
+from datetime import datetime, timedelta
+from typing import Dict, Any
+from collections import defaultdict
+from queue import Queue, Empty
+import threading
+
+# Bibliotecas de terceiros
+try:
+    import requests
+    import GPUtil
+    import shutil
+    import whisper
+    import glob
+    import math
+    import torch
+    import traceback
+    import hashlib
+    from concurrent.futures import ThreadPoolExecutor
+    import uiautomator2 as u2
+    import cv2
+    import numpy as np
+    import wave
+    import srt
+    import yt_dlp
+    import psutil
+    import schedule
+    from google.oauth2 import service_account
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaFileUpload
+
+    
+
+    import websockets
+    import asyncio
+    import av
+    import logging
+    import io
+
+
+    from dotenv import load_dotenv, find_dotenv
+    from firebase_admin import credentials, initialize_app, storage, db, delete_app
+    from transformers import (
+        AutoModelForSpeechSeq2Seq,
+        AutoTokenizer,
+        AutoFeatureExtractor,
+        pipeline,
+    )
+    from PySide2.QtCore import *
+    from PySide2.QtGui import *
+    from PySide2.QtWidgets import *
+    from PySide2 import QtWidgets, QtCore, QtGui
+    from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineProfile, QWebEngineSettings, QWebEngineScript
+
+    from proglog import ProgressBarLogger
+except ImportError as e:
+    print(f"Erro ao importar bibliotecas: {e}")
+    
 #########################################
