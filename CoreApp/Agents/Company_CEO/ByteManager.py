@@ -11,10 +11,10 @@ from softwareai.CoreApp._init_libs_ import *
 from softwareai.CoreApp._init_paths_ import *
 #########################################
 # IMPORT SoftwareAI Instructions
-from softwareai.CoreApp.SoftwareAI.Instructions._init_Instructions_ import *
+from softwareai.CoreApp._init_Instructions_ import *
 #########################################
 # IMPORT SoftwareAI Tools
-from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
+from softwareai.CoreApp._init_tools_ import *
 #########################################
 # IMPORT SoftwareAI keys
 from softwareai.CoreApp._init_keys_ import *
@@ -58,8 +58,8 @@ class ByteManager:
                                         
                                         ):
 
-        key = "AI_ByteManager_Company_Owners"
-        nameassistant = "AI ByteManager Donos da Empresa Urobotsoftware"
+        key = "AI_ByteManager_Company_CEO"
+        nameassistant = "AI ByteManager CEO da Empresa SoftwareAI Company"
         model_select = "gpt-4o-mini-2024-07-18"
 
         key_openai = OpenAIKeysteste.keys()
@@ -69,13 +69,12 @@ class ByteManager:
 
         AI_ByteManager, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionByteManager, nameassistant, model_select, tools_ByteManager, vectorstore_in_assistant)
 
-        mensaxgem = f"""decida oque o usuario esta solicitando com base na mensagem asseguir: {mensagem} \n       
-        
+        mensaxgem = """decida oque o usuario esta solicitando com base na mensagem  
+        Regra 1 - Caso seja solicitado algum script ou software Responda no formato JSON Exemplo: {'solicitadoalgumcodigo': 'solicitacao...'} 
+        Regra 2 - Caso seja solicitado alguma atualização de repositorio use a function (autoupdaterepo)
+        Regra 3 - Caso seja solicitado alguma criação de repositorio use a function (create_repo) 
         """  
-
-
-            
-        mensaxgemfinal = mensaxgem 
+        mensaxgemfinal = mensaxgem + f"mensagem:\n{mensagem}"
         
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
                                                                 mensagem=mensaxgemfinal,
@@ -88,10 +87,7 @@ class ByteManager:
                                                                 aditional_instructions=adxitional_instructions_ByteManager
                                                                 )
                                                 
-                                            
-        ##Agent Destilation##                   
-        Agent_destilation.DestilationResponseAgent(mensaxgemfinal, response, instructionsassistant, nameassistant)
-        
+                
         print(response)
         try:
             teste_dict = json.loads(response)
@@ -103,37 +99,10 @@ class ByteManager:
             resposta_AI_ByteManager = teste_dict['resposta']
             return resposta_AI_ByteManager
         
-        if 'consultarMatrixMinder' in teste_dict:
-            pergunta_ao_matrixminder = teste_dict['consultarMatrixMinder'] 
-            
-            resposta_do_matrixminder = self.Company_Managers.AI_MatrixMinder_Company_Managers(pergunta_ao_matrixminder)#invoke_matrixminder(pergunta_ao_matrixminder)
-            passando_resposta_do_matrixminder, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
-                                                                mensagem=resposta_do_matrixminder,
-                                                                agent_id=AI_ByteManager, 
-                                                                key=key,
-                                                                app1=appfb,
-                                                                client=client,
-                                                                tools=tools_ByteManager,
-                                                                model_select=model_select,
-                                                                aditional_instructions=adxitional_instructions_ByteManager)
-                                                
-            resposta_AI_ByteManager_dict = json.loads(passando_resposta_do_matrixminder)
-            resposta_AI_ByteManager = resposta_AI_ByteManager_dict['resposta']
-            return resposta_AI_ByteManager
 
-        if 'solicitadoatualizaçãoderepositoriosoftware' in teste_dict:
-
-            repo_name = teste_dict['solicitadoatualizaçãoderepositoriosoftware'] 
-
-            init_env(repo_name)
-
-            Melhorias = self.SoftwareDevelopment.QuantumCoreUpdate(
-                appfb, client, repo_name
-                )
-            
-            CloudArchitectUpdateReadme = self.Software_Documentation.CloudArchitectUpdateReadme(
-                appfb, client, repo_name, Melhorias
-            )
+        # CloudArchitectUpdateReadme = self.Software_Documentation.CloudArchitectUpdateReadme(
+        #     appfb, client, repo_name, Melhorias
+        # )
 
         if 'solicitadoalgumcodigo' in teste_dict:
 
@@ -161,10 +130,7 @@ class ByteManager:
                 pergunta_ao_tigrao = teste_dict['solicitadoalgumcodigo']    
             except Exception as e2:
                 pergunta_ao_tigrao = AI_ByteManager_response
-                                                
-            ##Agent Destilation##                   
-            Agent_destilation.DestilationResponseAgent(mensagemz, pergunta_ao_tigrao, instructionsassistant, nameassistant)
-            
+                              
 
             mensaxgem = f"""crie um nome do repositorio desse software no github com base na descricao:\n
             {pergunta_ao_tigrao}
