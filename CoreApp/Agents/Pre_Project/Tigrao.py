@@ -11,10 +11,10 @@ from softwareai.CoreApp._init_libs_ import *
 from softwareai.CoreApp._init_paths_ import *
 #########################################
 # IMPORT SoftwareAI Instructions
-from softwareai.CoreApp.SoftwareAI.Instructions._init_Instructions_ import *
+from softwareai.CoreApp._init_Instructions_ import *
 #########################################
 # IMPORT SoftwareAI Tools
-from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
+from softwareai.CoreApp._init_tools_ import *
 #########################################
 # IMPORT SoftwareAI keys
 from softwareai.CoreApp._init_keys_ import *
