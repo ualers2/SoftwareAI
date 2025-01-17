@@ -11,10 +11,10 @@ from softwareai.CoreApp._init_libs_ import *
 from softwareai.CoreApp._init_paths_ import *
 #########################################
 # IMPORT SoftwareAI Instructions
-from softwareai.CoreApp.SoftwareAI.Instructions._init_Instructions_ import *
+from softwareai.CoreApp._init_Instructions_ import *
 #########################################
 # IMPORT SoftwareAI Tools
-from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
+from softwareai.CoreApp._init_tools_ import *
 #########################################
 # IMPORT SoftwareAI keys
 from softwareai.CoreApp._init_keys_ import *
@@ -35,6 +35,51 @@ class SoftwareDevelopment:
         self.SoftwareImprovements_DataWeaver = SoftwareImprovements_DataWeaver
         self.SoftwareDevelopment_SignalMaster = SoftwareDevelopment_SignalMaster
         self.SoftwareDevelopment_NexGenCoder = SoftwareDevelopment_NexGenCoder
+
+        # key_openai = OpenAIKeysteste.keys()
+        # self.client = OpenAIKeysinit._init_client_(key_openai)
+
+        # name_app = "appx"
+        # self.appfb = FirebaseKeysinit._init_app_(name_app)
+
+
+        self.instructionQuantumCore = f""" 
+        Meu nome é QuantumCore, sou Desenvolvedor Pleno em Python na empresa urobotsoftware. Tenho como responsabilidade aprimorar o código com qualidade, respeitando a lógica e estrutura existentes.
+
+        ### **Minhas Responsabilidades:**  
+
+        1. **Analisar e Melhorar o Código:**  
+        - Examino o código original com atenção e detecto melhorias possíveis sem modificar a lógica e a estrutura do programa.  
+        - As melhorias devem incluir otimizações, correções de bugs ou implementações de novas funcionalidades, sempre de forma coesa.  
+
+        2. **Gerar o Código Completo:**  
+        - **Sempre retorno o código completo atualizado**, e não apenas as alterações feitas, para garantir consistência.  
+
+        3. **Salvar com Autosave:**  
+        - Utilizo a função **autosave** para salvar o código no caminho especificado:  
+            **{os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")}**.  
+
+        4. **Gerar Commit e Pull Request:**  
+        - Crio automaticamente:  
+            - Uma **Commit Message** adequada, seguindo o padrão:  
+            - *feat:* para novas funcionalidades.  
+            - *fix:* para correções de bugs.  
+            - *refactor:* para melhorias estruturais.  
+            - Um **Título de PR** direto e objetivo.  
+            - Uma **Descrição de PR** detalhada.  
+        - Utilizo a função **autopullrequest** para Abrir um Pull Request 
+
+        5. **Manter a Qualidade do Código:**  
+        - Garanto que o código esteja limpo, legível e documentado conforme os padrões da empresa.  
+        - Evito mudanças desnecessárias na lógica existente.  
+
+        ### **Funções Disponíveis:**  
+        - **autosave:** Salva o arquivo Python atualizado no caminho correto.  
+        - **autopullrequest:** Cria automaticamente um Pull Request com commit, título e descrição gerados.
+
+        Com esse fluxo de trabalho, asseguro melhorias eficientes e seguras, mantendo a integridade do projeto.
+
+        """
 
     def AI_QuantumCore(
                     self,
@@ -64,7 +109,7 @@ class SoftwareDevelopment:
 
         key_openai = OpenAIKeysteste.keys()
 
-        AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
+        AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, self.instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
 
         
 
@@ -354,87 +399,173 @@ class SoftwareDevelopment:
 
     def QuantumCoreUpdate(
                     self,
-                    appfb, client, repo_name,
+                    repo_name,
+                    companyname = "SoftwareAI-Company",
                     UseVectorstoreToGenerateFiles = True
                     ):
+
+        key_openai = OpenAIKeysteste.keys()
+        self.client = OpenAIKeysinit._init_client_(key_openai)
+
+        name_app = "appx"
+        self.appfb = FirebaseKeysinit._init_app_(name_app)
 
 
         key = "AI_QuantumCore_Desenvolvedor_Pleno_de_Software_em_Python"
         nameassistant = "AI QuantumCore Desenvolvedor Pleno de Software em Python"
         model_select = "gpt-4o-mini-2024-07-18"
-
+        self.companyname = companyname
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
         Upload_1_image_for_vision_in_thread = None
         vectorstore_in_assistant = None
         vectorstore_in_Thread = None
         Upload_list_for_code_interpreter_in_thread = None
-        onlyrepo_name = repo_name.replace("A-I-O-R-G/", "")
-        load_env(onlyrepo_name)
+        #repo_name = repo_name.replace(f"{self.companyname}/", "")
+        load_env(repo_name)
         
         key_openai = OpenAIKeysteste.keys()
 
         github_username, github_token = GithubKeys.QuantumCore_github_keys()
 
-        AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
+        AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(self.appfb, self.client, key, self.instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
 
-        
         branch_name = "main"  # Substitua pelo branch correto, se necessário
-
-        
-        AnalysisRequirements = self.get_file_content(repo_name, "AppMap/Analisys/AnalysisRequirements.txt", branch_name)
-        PreProject = self.get_file_content(repo_name, "AppMap/PreProject/doc.txt", branch_name)
-        RoadMap = self.get_file_content(repo_name, "AppMap/RoadMap/Roadmap.txt", branch_name)
-        Schedule = self.get_file_content(repo_name, "AppMap/SpreadsheetAndTimeline/Schedule.txt", branch_name)
-        Spreadsheet = self.get_file_content(repo_name, "AppMap/SpreadsheetAndTimeline/Spreadsheet.txt", branch_name)
-        main = self.get_file_content(repo_name, f"{onlyrepo_name}/main.py", branch_name)
-        config = self.get_file_content(repo_name, f"{onlyrepo_name}/config.py", branch_name)
-        setup = self.get_file_content(repo_name, f"setup.py", branch_name)
-        pyproject = self.get_file_content(repo_name, f"pyproject.toml", branch_name)
-
-
-        Changelog = self.get_file_content(repo_name, f"{onlyrepo_name}/Changelog.env", branch_name)
-
-        python_functions.save_TXT(AnalysisRequirements, os.getenv("PATH_ANALISE_ENV"), 'w')
-        python_functions.save_TXT(PreProject, os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV"), 'w')
-        python_functions.save_TXT(RoadMap, os.getenv("PATH_ROADMAP_ENV"), 'w')
-        python_functions.save_TXT(Spreadsheet, os.getenv("PATH_PLANILHA_PROJETO_ENV"), 'w')
-        python_functions.save_TXT(Schedule, os.getenv("PATH_NOME_DO_CRONOGRAMA_ENV"), 'w')
+        main = self.get_file_content(repo_name, f"main.py", branch_name)
         python_functions.save_TXT(main, os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV"), 'w')
-        python_functions.save_TXT(config, os.getenv("PATH_SOFTWARE_DEVELOPMENT_config_ENV"), 'w')
-        python_functions.save_TXT(setup, os.getenv("PATH_DOCUMENTACAO_setup_ENV"), 'w')
-        python_functions.save_TXT(pyproject, os.getenv("PATH_pyproject"), 'w')
-        
-        python_functions.save_TXT(Changelog, os.getenv("PATH_Changelog"), 'w')
+        # flag_repo_packages = False
+        # try:
+        #     AnalysisRequirements = self.get_file_content(repo_name, "AppMap/Analisys/AnalysisRequirements.txt", branch_name)
+        #     PreProject = self.get_file_content(repo_name, "AppMap/PreProject/doc.txt", branch_name)
+        #     RoadMap = self.get_file_content(repo_name, "AppMap/RoadMap/Roadmap.txt", branch_name)
+        #     Schedule = self.get_file_content(repo_name, "AppMap/SpreadsheetAndTimeline/Schedule.txt", branch_name)
+        #     Spreadsheet = self.get_file_content(repo_name, "AppMap/SpreadsheetAndTimeline/Spreadsheet.txt", branch_name)
+        #     config = self.get_file_content(repo_name, f"config.py", branch_name)
+        #     setup = self.get_file_content(repo_name, f"setup.py", branch_name)
+        #     pyproject = self.get_file_content(repo_name, f"pyproject.toml", branch_name)
+        #     Changelog = self.get_file_content(repo_name, f"Changelog.env", branch_name)
 
+        #     python_functions.save_TXT(AnalysisRequirements, os.getenv("PATH_ANALISE_ENV"), 'w')
+        #     python_functions.save_TXT(PreProject, os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV"), 'w')
+        #     python_functions.save_TXT(RoadMap, os.getenv("PATH_ROADMAP_ENV"), 'w')
+        #     python_functions.save_TXT(Spreadsheet, os.getenv("PATH_PLANILHA_PROJETO_ENV"), 'w')
+        #     python_functions.save_TXT(Schedule, os.getenv("PATH_NOME_DO_CRONOGRAMA_ENV"), 'w')
+
+        #     python_functions.save_TXT(config, os.getenv("PATH_SOFTWARE_DEVELOPMENT_config_ENV"), 'w')
+        #     python_functions.save_TXT(setup, os.getenv("PATH_DOCUMENTACAO_setup_ENV"), 'w')
+        #     python_functions.save_TXT(pyproject, os.getenv("PATH_pyproject"), 'w')
+            
+        #     python_functions.save_TXT(Changelog, os.getenv("PATH_Changelog"), 'w')
+        #     flag_repo_packages = True
+        # except Exception as err1:
+        #     print(err1)
+        #     flag_repo_packages = False
+
+        self.instructionQuantumCore = f""" 
+        Meu nome é QuantumCore, sou Desenvolvedor Pleno em Python na empresa urobotsoftware. Tenho como responsabilidade aprimorar o código com qualidade, respeitando a lógica e estrutura existentes.
+
+        ### **Minhas Responsabilidades:**  
+
+        1. **Analisar e Melhorar o Código:**  
+        - Examino o código original com atenção e detecto melhorias possíveis sem modificar a lógica e a estrutura do programa.  
+        - As melhorias devem incluir otimizações, correções de bugs ou implementações de novas funcionalidades, sempre de forma coesa.  
+
+        2. **Gerar o Código Completo:**  
+        - **Sempre retorno o código completo atualizado**, e não apenas as alterações feitas, para garantir consistência.  
+
+        3. **Salvar com Autosave:**  
+        - Utilizo a função **autosave** para salvar o código no caminho especificado:  
+            **{os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")}**.  
+
+        4. **Gerar Commit e Pull Request:**  
+        - Crio automaticamente:  
+            - Uma **Commit Message** adequada, seguindo o padrão:  
+            - *feat:* para novas funcionalidades.  
+            - *fix:* para correções de bugs.  
+            - *refactor:* para melhorias estruturais.  
+            - Um **Título de PR** direto e objetivo.  
+            - Uma **Descrição de PR** detalhada.  
+        - Utilizo a função **autopullrequest** para Abrir um Pull Request 
+
+        5. **Manter a Qualidade do Código:**  
+        - Garanto que o código esteja limpo, legível e documentado conforme os padrões da empresa.  
+        - Evito mudanças desnecessárias na lógica existente.  
+
+        ### **Funções Disponíveis:**  
+        - **autosave:** Salva o arquivo Python atualizado no caminho correto.  
+        - **autopullrequest:** Cria automaticamente um Pull Request com commit, título e descrição gerados.
+
+        Com esse fluxo de trabalho, asseguro melhorias eficientes e seguras, mantendo a integridade do projeto.
+
+        """
 
         if UseVectorstoreToGenerateFiles == True:
-            file_paths = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", f"environment.txt")), os.getenv("PATH_ANALISE_ENV"), os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV"), os.getenv("PATH_ROADMAP_ENV"), os.getenv("PATH_PLANILHA_PROJETO_ENV"), os.getenv("PATH_NOME_DO_CRONOGRAMA_ENV")]
-            AI_QuantumCore = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_QuantumCore, "QuantumCore_Work_Environment", file_paths)
-            mensaxgem = f"""Crie melhorias, salve e realize o upload no GitHub (usando autosave e autoupload) das melhorias para o arquivo `main.py` no repositório `{repo_name}`. 
-            Baseie-se nos arquivos armazenados em `QuantumCore_Work_Environment` para implementar melhorias no código\n
-            token: {github_token}
-            regra adicional: use execute_py para verificar se o codigo criado com as melhorias nao tem erros 
-            """
-       
+            # if flag_repo_packages == True:
+            #     file_paths = [os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", f"environment.txt")), os.getenv("PATH_ANALISE_ENV"), os.getenv("PATH_NAME_DOC_PRE_PROJETO_ENV"), os.getenv("PATH_ROADMAP_ENV"), os.getenv("PATH_PLANILHA_PROJETO_ENV"), os.getenv("PATH_NOME_DO_CRONOGRAMA_ENV")]
+            # elif flag_repo_packages == False:
+            file_paths = [os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")]
 
+            AI_QuantumCore = Agent_files_update.del_all_and_upload_files_in_vectorstore(self.appfb, self.client, AI_QuantumCore, "QuantumCore_Work_Environment2", file_paths, tools_QuantumCore)
+            # mensaxgem = f"""Crie melhorias, salve e realize o upload no GitHub (usando autosave e autoupload) das melhorias para o arquivo `main.py` no repositório `{repo_name}`. 
+            # Baseie-se nos arquivos armazenados em `QuantumCore_Work_Environment` para implementar melhorias no código\n
+            # token: {github_token}
+            # regra adicional: use execute_py para verificar se o codigo criado com as melhorias nao tem erros 
+            # """
+            mensagem = f"""
+            Analise cuidadosamente o arquivo `main.py` do repositório `{repo_name}` e implemente melhorias sem alterar a lógica e a estrutura original do código.
+
+            ### **Suas Tarefas:**  
+            1. **Identifique pontos de melhoria** no código, como otimizações de desempenho, refatorações seguras, correções de bugs ou adição de novas funcionalidades.  
+            2. **Implemente melhorias** mantendo a lógica e a estrutura atual do código. **Não altere a organização do código original**.  
+            3. **Retorne o código completo e atualizado**, incluindo as melhorias implementadas, e **não apenas as alterações feitas**.  
+            4. **Salve automaticamente** o arquivo com as melhorias usando **autosave**.  
+            - O caminho para salvar o arquivo `main.py` deve ser **{os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")}**.  
+            5. **Crie automaticamente**:  
+            - Uma **Commit Message** clara e descritiva.  
+            - Um **Título do Pull Request (PR)** conciso e objetivo.  
+            - Uma **Descrição do PR** detalhada, explicando as melhorias implementadas.  
+            6. **Abra um Pull Request** utilizando **autopullrequest**.  
+
+            ### **Detalhes do Pull Request:**  
+            - **Repo Owner:** {self.companyname}  
+            - **Repo Name:** {repo_name}  
+            - **Branch Name:** {branch_name}  
+            - **File Path:** {os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")}
+            - **Token de Autenticação:** {github_token}  
+
+            ### **Diretrizes para Geração Automática:**  
+            - A **Commit Message** deve seguir o padrão:  
+            - *feat:* para novas funcionalidades.  
+            - *fix:* para correções de bugs.  
+            - *refactor:* para melhorias sem alteração de comportamento.  
+            - O **Título do PR** deve ser direto e resumir a principal melhoria.  
+            - A **Descrição do PR** deve incluir:  
+            - O problema identificado.  
+            - As melhorias aplicadas.  
+            - O impacto da mudança.  
+
+            ### **Regras Adicionais:**  
+            - Preserve a lógica e a estrutura original do código.  
+            - Retorne o **código completo** após as melhorias.  
+            - Utilize **execute_py** para garantir que o código está funcional antes do Pull Request.  
+            - Verifique se o caminho do arquivo salvo está correto no **File Path**.  
+            """
+
+        #environment = python_functions.analyze_txt(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", f"environment.txt")))
+        #{environment}
         adxitional_instructions_QuantumCore = f"""
-        estrutura do projeto esta armazenada em environment.txt
         
         """
         response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
-                                                                mensagem=mensaxgem,
+                                                                mensagem=mensagem,
                                                                 agent_id=AI_QuantumCore, 
                                                                 key=key,
-                                                                app1=appfb,
-                                                                client=client,
+                                                                app1=self.appfb,
+                                                                client=self.client,
                                                                 tools=tools_QuantumCore,
                                                                 model_select=model_select,
                                                                 aditional_instructions=adxitional_instructions_QuantumCore
                                                                 )
-        print(response)
-        print(total_tokens)
-        Agent_destilation.DestilationResponseAgent(mensaxgem, response, instructionsassistant, nameassistant)
         return response
 
 
@@ -453,7 +584,7 @@ class SoftwareDevelopment:
         }
   
 
-        file_url = f"https://api.github.com/repos/{repo_name}/contents/{file_path}?ref={branch_name}"
+        file_url = f"https://api.github.com/repos/{self.companyname}/{repo_name}/contents/{file_path}?ref={branch_name}"
         response = requests.get(file_url, headers=headers)
         
         if response.status_code == 200:
@@ -465,6 +596,273 @@ class SoftwareDevelopment:
             print(f"Erro ao acessar {file_path}. Status: {response.status_code}  {response.content}")
             return None
         
+
+
+
+
+
+
+def QuantumCoreUpdate(
+                repo_name,
+                client,
+                appfb,
+                OpenAIKeysteste,
+                GithubKeys,
+                python_functions,
+                Agent_files_update,
+                AutenticateAgent,
+                ResponseAgent,
+                companyname = "SoftwareAI-Company",
+                UseVectorstoreToGenerateFiles = True
+                ):
+
+    key = "AI_QuantumCore_Desenvolvedor_Pleno_de_Software_em_Python"
+    nameassistant = "AI QuantumCore Desenvolvedor Pleno de Software em Python"
+    model_select = "gpt-4o-mini-2024-07-18"
+    companyname = companyname
+    Upload_1_file_in_thread = None
+    Upload_1_file_in_message = None
+    Upload_1_image_for_vision_in_thread = None
+    vectorstore_in_assistant = None
+    vectorstore_in_Thread = None
+    Upload_list_for_code_interpreter_in_thread = None
+    load_env(repo_name)
+    key_openai = OpenAIKeysteste.keys()
+    github_username, github_token = GithubKeys.QuantumCore_github_keys()
+
+    instructionQuantumCore = f""" 
+    Meu nome é **QuantumCore**, sou Desenvolvedor Pleno em Python na empresa **urobotsoftware**. Minha responsabilidade é aprimorar o código com qualidade, respeitando a estrutura existente do projeto.
+
+    ### **Minhas Responsabilidades:**  
+
+    1. **Analisar a Estrutura Completa do Projeto:**  
+    - Acesso a toda a **estrutura do repositório** usando a função **get_repo_structure**, que retorna um dicionário com todos os arquivos e diretórios.  
+    - Utilizo a função **autogetfilecontent** para acessar o **conteúdo completo de qualquer arquivo**, conforme necessário.
+
+    2. **Analisar e Melhorar o Código:**  
+    - Examino cuidadosamente o código e **identifico melhorias sem modificar a estrutura do programa**.  
+    - As melhorias podem incluir:  
+        - **Otimizações de desempenho**  
+        - **Correções de bugs**  
+        - **Refatorações seguras**  
+        - **Implementação de novas funcionalidades**  
+    - **Preservo a lógica e a organização original do código**.
+
+    3. **Garantir o Retorno Completo do Código:**  
+    - **É obrigatório retornar o código completo e atualizado**, com todas as melhorias implementadas.  
+    - **Nunca** envie apenas trechos de código ou mensagens de continuação.  
+    - O código deve ser completo, claro e totalmente funcional.
+
+    4. **Gerar Commit e Pull Request:**  
+    - Crio automaticamente:  
+        - Uma **Commit Message** clara e descritiva.  
+        - Um **Título de PR** direto e objetivo.  
+        - Uma **Descrição de PR** completa, explicando as melhorias.  
+        - Um **Branch Name** claro e relacionado à melhoria principal.  
+    - Utilizo a função **autopullrequest** para abrir um Pull Request com as melhorias aplicadas.
+
+    5. **Manter a Qualidade do Código:**  
+    - Garanto um código **limpo, legível e documentado**.  
+    - Evito mudanças desnecessárias na lógica existente.  
+
+    ---
+
+    ### **Funções Disponíveis:**  
+    - **get_repo_structure** → Retorna a estrutura completa do repositório.  
+    - **autogetfilecontent** → Retorna o conteúdo completo de um arquivo específico.  
+    - **autopullrequest** → Cria automaticamente um Pull Request com commit, título e descrição gerados.  
+
+    Com esse fluxo de trabalho, asseguro melhorias eficientes, seguras e de alta qualidade, mantendo a integridade do projeto.
+    """
+    AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
+
+    branch_name = "main" 
+    #main = get_file_content(repo_name, f"main.py", branch_name, companyname, GithubKeys)
+    #python_functions.save_TXT(main, os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV"), 'w')
+    #repo_structure = get_repo_structure(repo_name, companyname, github_token, branch_name)
+
+    # if UseVectorstoreToGenerateFiles == True:
+
+        # file_paths = [os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")]
+
+        #AI_QuantumCore = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_QuantumCore, "QuantumCore_Work_Environment2", file_paths, tools_QuantumCore)
+        
+
+    mensagem = f"""
+    ### **Missão:**  
+    Analise automaticamente o repositório `{repo_name}`, identifique e implemente melhorias no arquivo `main.py` sem alterar a estrutura original do projeto.
+
+    ### **Fluxo de Trabalho Automatizado:**  
+
+    1. **Obtenha a Estrutura Completa do Repositório:**  
+    - Utilize a função **get_repo_structure** para acessar a **estrutura completa** do repositório.  
+    - **Localize automaticamente** o arquivo `main.py` em qualquer diretório.
+
+    2. **Leia o Conteúdo Completo do Arquivo:**  
+    - Após localizar o `main.py`, utilize a função **autogetfilecontent** para obter o **conteúdo completo** do arquivo.  
+    - **Nunca** retorne apenas trechos de código ou mensagens de continuação.  
+
+    3. **Analise e Implemente Melhorias:**  
+    - **Identifique pontos de melhoria**, como:  
+        - Otimizações de desempenho  
+        - Correções de bugs  
+        - Refatorações seguras  
+        - Implementação de novas funcionalidades  
+    - **Mantenha a estrutura e a lógica do código inalteradas**.  
+
+    4. **Gere o Código Completo:**  
+    - **Retorne o código completo e atualizado**, incluindo todas as melhorias implementadas.  
+    - **Não envie respostas incompletas ou parciais**.  
+
+    5. **Automatize o Pull Request:**  
+    - **Crie automaticamente**:  
+        - Uma **Commit Message** clara e descritiva.  
+        - Um **Título do Pull Request (PR)** direto e objetivo.  
+        - Uma **Descrição detalhada** explicando as melhorias.  
+        - Um **Branch Name** relacionado à principal melhoria.  
+    - Utilize a função **autopullrequest()** para abrir o PR.
+
+    ---
+
+    ### **Detalhes do Pull Request:**  
+    - **Repo Owner:** {companyname}  
+    - **Repo Name:** {repo_name}  
+    - **Branch Name:** Defina um nome relacionado à melhoria aplicada.  
+    - **File Path:** Caminho do arquivo a ser analisado (via **get_repo_structure**)  
+    - **Commit Message:** Clara e descritiva.  
+    - **Improvements:** **Código completo** com todas as melhorias.  
+    - **PR Title:** Um título direto e objetivo.  
+    - **Token de Autenticação:** {github_token}  
+
+    ---
+
+    ### **Detalhes do autogetfilecontent:**  
+    - **Repo Name:** {repo_name}  
+    - **File path:** Caminho do arquivo a ser analisado obtido atraves de get_repo_structure
+    - **Branch Name:** main 
+    - **Company name:** {companyname}  
+    - **Github Token:** {github_token}  
+
+    ---
+    
+    ### **Detalhes do get_repo_structure:**  
+    - **Repo Name:** {repo_name}  
+    - **Repo Owner:** {companyname}  
+    - **Github Token:** {github_token}  
+    - **Branch Name:** main  
+
+
+    ---
+
+    ### **Diretrizes para Geração Automática:**  
+
+    #### **Commit Message:**  
+    - **feat:** Para novas funcionalidades.  
+    - Exemplo: **feat:** Adiciona autenticação de usuário com OAuth 2.0.  
+    - **fix:** Para correções de bugs.  
+    - Exemplo: **fix:** Corrige erro na autenticação via API.  
+    - **refactor:** Para melhorias sem alteração de comportamento.  
+    - Exemplo: **refactor:** Refatora classes para melhorar a legibilidade.
+
+    #### **Título do PR:**  
+    - Deve ser direto e refletir a principal melhoria.  
+    - Exemplo: **Refatora autenticação de usuário**
+
+    #### **Descrição do PR:**  
+    - **Problema:** Explique o problema identificado.  
+    - **Solução:** Detalhe as melhorias implementadas.  
+    - **Impacto:** Informe como a mudança afeta o sistema.
+
+    #### **Branch Name:**  
+    - **feat/nome-da-funcionalidade**  
+    - **fix/correcao-do-bug**  
+    - **refactor/ajuste-no-codigo**  
+    - Exemplo: **fix/authentication-error**
+
+    ---
+
+    ### **Regras Rígidas:**  
+    - **É obrigatório retornar o código completo e atualizado.**  
+    - **Nunca enviar apenas trechos de código ou mensagens incompletas.**  
+    - **Mantenha a estrutura e a lógica original do código.**  
+    """
+
+    adxitional_instructions_QuantumCore = f"""
+    """
+    response, total_tokens, prompt_tokens, completion_tokens = ResponseAgent.ResponseAgent_message_with_assistants(
+                                                            mensagem=mensagem,
+                                                            agent_id=AI_QuantumCore, 
+                                                            key=key,
+                                                            app1=appfb,
+                                                            client=client,
+                                                            tools=tools_QuantumCore,
+                                                            model_select=model_select,
+                                                            aditional_instructions=adxitional_instructions_QuantumCore,
+                                                            streamflag=False
+                                                            )
+    return response
+
+
+
+
+
+
+
+def get_repo_structure(repo_name, repo_owner, github_token, branch_name, path=""):
+    headers = {
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    # Adiciona autenticação apenas se o token for informado
+    if github_token:
+        headers["Authorization"] = f"Bearer {github_token}"
+
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}?ref={branch_name}"
+    response = requests.get(url, headers=headers)
+    structure = {}
+    
+    if response.status_code == 200:
+        items = response.json()
+        for item in items:
+            if item['type'] == 'dir':
+                structure[item['name']] = get_repo_structure(repo_name, repo_owner, github_token, branch_name, item['path'])
+            else:
+                structure[item['name']] = item['path']
+    else:
+        print(f"Erro ao acessar {path}. Status: {response.status_code} {response.content}")
+    return structure
+
+
+def save_structure_to_json(repo_name, repo_owner, github_token, branch_name):
+    output_file = os.path.join(os.path.dirname(__file__), "repo_structure.json")
+    structure = get_repo_structure(repo_name, repo_owner, github_token, branch_name)
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(structure, f, indent=4, ensure_ascii=False)
+    print(f"Estrutura do repositório salva em {output_file}")
+
+
+def get_file_content(repo_name, file_path, branch_name, companyname, GithubKeys):
+
+    github_username, github_token = GithubKeys.QuantumCore_github_keys()
+
+    headers = {
+        "Authorization": f"token {github_token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+
+    file_url = f"https://api.github.com/repos/{companyname}/{repo_name}/contents/{file_path}?ref={branch_name}"
+    response = requests.get(file_url, headers=headers)
+    
+    if response.status_code == 200:
+        file_data = response.json()
+        import base64
+        content = base64.b64decode(file_data['content']).decode('utf-8')
+        return content
+    else:
+        print(f"Erro ao acessar {file_path}. Status: {response.status_code}  {response.content}")
+        return None
+    
 
 
 
