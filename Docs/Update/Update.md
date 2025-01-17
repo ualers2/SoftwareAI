@@ -3,15 +3,9 @@
 ### NexGenCoder: V 0.3.82
 ***(01/01/2025)***
 Updates for version 0.3.82:
-* **NexGenCoder**: Changelog para cada versao do codigo do repositorio
-```python
-
-incrementar_versao_em_arquivo(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../", "Work_Environment", f"{repo_name}", "SoftwareDevelopment", f"{repo_name}","Changelog.env")))
-version = os.getenv("version")
-self.load_env("Changelog.env")
-
-```
-
+- [X] Changelog para cada versao do codigo do repositorio
+- [X] CoreApp_path em `create_github_function` é anulado e no lugar é adicionado cada argumento individualmente
+- [X] adicionar armazenamento avançando de vetores ``reduzindo 40% do consumo`` dos tokens de input
 
 
 ### QuantumCore: V 0.3.45
