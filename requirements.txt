@@ -1,0 +1,11 @@
+git+https://github.com/KhamisiKibet/QT-PyQt-PySide-Custom-Widgets.git
+git+https://github.com/anjalp/PySide2extn.git
+firebase-admin
+asyncio
+pandas
+tiktoken
+PyGithub
+requests
+python-dotenv
+gitpython
+openai
