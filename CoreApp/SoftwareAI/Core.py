@@ -1,13 +1,10 @@
 ######################################### SoftwareAI Core #########################################
 
 # IMPORT SoftwareAI Functions
-from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
+from softwareai.CoreApp._init_functions_ import *
 #########################################
 # IMPORT SoftwareAI Functions Submit Outputs
-from softwareai.CoreApp.SoftwareAI.Functions_Submit_Outputs._init_submit_outputs_ import _init_output_
-#########################################
-# IMPORT SoftwareAI Agents 
-from softwareai.CoreApp._init_agents_ import *
+from softwareai.CoreApp._init_submit_outputs_ import _init_output_
 #########################################
 # IMPORT SoftwareAI Libs 
 from softwareai.CoreApp._init_libs_ import *
@@ -17,15 +14,43 @@ from softwareai.CoreApp._init_keys_ import *
 #########################################
 # IMPORT Formatmessage
 from softwareai.CoreUi.Chat.Chat.Formatmessage import format_message
+# IMPORT SoftwareAI keys
+from softwareai.CoreApp._init_keys_ import *
+#########################################
+
+from pydantic import BaseModel
+from firebase_admin import App
+
+import importlib
+
+class TitleAndPreface(BaseModel):
+    title: str
+    preface: str
+
 
 
 class FirebaseKeysinit:
+    @staticmethod
     def _init_app_(name_app):
         module_path = "softwareai.CoreApp.KeysFirebase.keys"
+        
+        # Importa o módulo dinamicamente
         keys_module = importlib.import_module(module_path)
-        imported_name_app = getattr(keys_module, name_app)
-        appfb = imported_name_app()
-        return appfb
+
+        # Verifica se o atributo (função ou classe) existe no módulo
+        if hasattr(keys_module, name_app):
+            # Obtém o atributo com base no nome dinâmico
+            imported_name_app = getattr(keys_module, name_app)
+
+            # Verifica se é uma função ou classe e chama ou instância
+            if callable(imported_name_app):
+                appfb = imported_name_app()  # Chama a função
+            else:
+                appfb = imported_name_app  # Atribui diretamente se for outro tipo (como uma classe)
+
+            return appfb
+        else:
+            raise AttributeError(f"O módulo '{module_path}' não contém o atributo '{name_app}'.")
 
 class OpenAIKeysinit:
     
@@ -95,7 +120,8 @@ class AutenticateAgent:
         tools: Optional[List] = [{"type": "file_search"},{"type": "code_interpreter"}],
         vectorstore: Optional[List] = None,
         codeinterpreter: Optional[List] = None,
-        typejson: Optional[bool] = False,
+        response_format: Optional[str] = "text",
+
         
         ):
         """ 
@@ -110,21 +136,77 @@ class AutenticateAgent:
         :param tools: This argument is the agent's tools  There can be a maximum of 128 tools per assistant. Tools can be of types code_interpreter, file_search, vectorstore, or function.
             
         :param vectorstore: This argument is the vector storage id desired when creating or authenticating the agent
-            
+        response_format: Optional[str] = "json_object",
+        response_format: Optional[str] = "json_schema_TitleAndPreface",
+        response_format: Optional[str] = "text",
         """
 
-
+        
         try:
             ref1 = db.reference(f'ai_org_assistant_id/User_{key}', app=app1)
             data1 = ref1.get()
-            assistant_id = data1['assistant_id']
-            instructionsassistant = data1['instructionsassistant']
-            nameassistant = data1['nameassistant']
-            model_select = data1['model_select']
+            assistant_iddb = data1['assistant_id']
+            instructionsassistantdb = data1['instructionsassistant']
+            nameassistantdb = data1['nameassistant']
+            model_selectdb = data1['model_select']
             
-            if tools:
+            if instructionsassistant:
                 client.beta.assistants.update(
-                    assistant_id=str(assistant_id),
+                    assistant_id=str(assistant_iddb),
+                    instructions=instructionsassistant
+                    
+                )
+                ref1 = db.reference(f'ai_org_assistant_id', app=app1)
+                controle_das_funcao2 = f"User_{key}"
+                controle_das_funcao_info_2 = {
+                    "assistant_id": f'{assistant_iddb}',
+                    "instructionsassistant": f'{instructionsassistant}',
+                    "nameassistant": f'{nameassistantdb}',
+                    "model_select": f'{model_selectdb}',
+                    "tools": f'{tools}',
+                    "key": f'{key}',
+                }
+                ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
+
+            if response_format == "json_object":
+                client.beta.assistants.update(
+                    assistant_id=str(assistant_iddb),
+                    response_format={ "type": "json_object" }
+                    
+                )
+            elif response_format == "json_schema_TitleAndPreface":
+                client.beta.assistants.update(
+                    assistant_id=str(assistant_iddb),
+                    response_format={
+                        "type": "json_schema",
+                        "json_schema": {
+                            "name": "book_schema",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Título do Livro"
+                                    },
+                                    "preface": {
+                                        "type": "string",
+                                        "description": "Texto detalhado do prefácio, com no mínimo 500 palavras."
+                                    }
+                                },
+                                "required": [
+                                    "title",
+                                    "preface"
+                                ],
+                                "additionalProperties": False  # Deve ser booleano
+                            },
+                            "strict": True  # Deve ser booleano
+                        }
+                    }
+                )
+            elif response_format == "text":
+
+                client.beta.assistants.update(
+                    assistant_id=str(assistant_iddb),
                     tools=tools
                     
                 )
@@ -132,7 +214,7 @@ class AutenticateAgent:
 
             if vectorstore:
                 client.beta.assistants.update(
-                    assistant_id=str(assistant_id),
+                    assistant_id=str(assistant_iddb),
                     tool_resources={"file_search": {"vector_store_ids": vectorstore}},
                 )
 
@@ -146,37 +228,64 @@ class AutenticateAgent:
                     list_file_id.append(file.id)
                 code_interpreter_in_agent = list_file_id
                 client.beta.assistants.update(
-                    assistant_id=str(assistant_id),
+                    assistant_id=str(assistant_iddb),
                     tool_resources={
                     "code_interpreter": {
                         "file_ids": code_interpreter_in_agent
                         }
                     }
                 )
-            if typejson:
-                client.beta.assistants.update(
-                    assistant_id=str(assistant_id),
-                    response_format={ "type": "json_object" }
-                    
-                )
-            return str(assistant_id), str(instructionsassistant), str(nameassistant), str(model_select)
+                
+
+            return str(assistant_iddb), str(instructionsassistantdb), str(nameassistantdb), str(model_selectdb)
         except Exception as err234:
             if tools:
-                if typejson:
-                    assistant = client.beta.assistants.create(
-                        name=nameassistant,
-                        tools=tools,
-                        instructions=instructionsassistant,
-                        model=model_select,
+           
+                assistant = client.beta.assistants.create(
+                    name=nameassistant,
+                    instructions=instructionsassistant,
+                    model=model_select
+                )
+
+
+                if response_format == "json_object":
+                    client.beta.assistants.update(
+                        assistant_id=assistant.id,
                         response_format={ "type": "json_object" }
+                        
                     )
-                else:
-                    assistant = client.beta.assistants.create(
-                        name=nameassistant,
-                        tools=[{"type": "file_search"},{"type": "code_interpreter"}],
-                        instructions=instructionsassistant,
-                        model=model_select
+                elif response_format == "json_schema_TitleAndPreface":
+                    client.beta.assistants.update(
+                        assistant_id=assistant.id,
+                        response_format={
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "book_schema",
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Título do Livro"
+                                        },
+                                        "preface": {
+                                            "type": "string",
+                                            "description": "Texto detalhado do prefácio, com no mínimo 500 palavras."
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "preface"
+                                    ],
+                                    "additionalProperties": False  # Deve ser booleano
+                                },
+                                "strict": True  # Deve ser booleano
+                            }
+                        }
+                        
                     )
+                elif response_format == "text":
+                 
                     client.beta.assistants.update(
                         assistant_id=assistant.id,
                         tools=tools
@@ -206,21 +315,55 @@ class AutenticateAgent:
                             }
                         }
                     )
+            
             else:
-                if typejson:
-                    assistant = client.beta.assistants.create(
-                        name=nameassistant,
-                        instructions=instructionsassistant,
-                        model=model_select,
+                assistant = client.beta.assistants.create(
+                    name=nameassistant,
+                    instructions=instructionsassistant,
+                    model=model_select,
+                )
+                if response_format == "json_object":
+                    client.beta.assistants.update(
+                        assistant_id=assistant.id,
                         response_format={ "type": "json_object" }
+                        
                     )
-                else:    
-                    assistant = client.beta.assistants.create(
-                        name=nameassistant,
+                elif response_format == "json_schema_TitleAndPreface":
+                    client.beta.assistants.update(
+                        assistant_id=assistant.id,
+                        response_format={
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "book_schema",
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Título do Livro"
+                                        },
+                                        "preface": {
+                                            "type": "string",
+                                            "description": "Texto detalhado do prefácio, com no mínimo 500 palavras."
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "preface"
+                                    ],
+                                    "additionalProperties": False  # Deve ser booleano
+                                },
+                                "strict": True  # Deve ser booleano
+                            }
+                        }
+                        
+                    )
+                elif response_format == "text":
+                    client.beta.assistants.update(
+                        assistant_id=assistant.id,
                         tools=[{"type": "file_search"}, {"type": "code_interpreter"}],
-                        instructions=instructionsassistant,
-                        model=model_select,
                     )
+
                 if vectorstore:
                     client.beta.assistants.update(
                         assistant_id=assistant.id,
@@ -310,16 +453,16 @@ class AutenticateAgent:
                 )
 
                 ref1 = db.reference(f'ai_org_thread_Id', app=app1)
-                controle_das_funcao2 = f"User_{key}"
+                controle_das_funcao2 = f"User_{user_id}"
                 controle_das_funcao_info_2 = {
                     "thread_id": f'{thread.id}',
-                    "key": f'{key}'
+                    "user_id": f'{user_id}'
                 }
                 ref1.child(controle_das_funcao2).set(controle_das_funcao_info_2)
 
                 return str(thread.id)
         
-        elif user_id == None:
+        else:
                 
             try:
                 ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
@@ -370,6 +513,7 @@ class AutenticateAgent:
 
                 return str(thread.id)
 
+
 class ResponseAgent:
 
     def ResponseAgent_message_completions(prompt, 
@@ -379,7 +523,7 @@ class ResponseAgent:
                                         Debug: Optional[bool] = True,
                                         json_format: Optional[bool] = True, 
                                         store: Optional[bool] = True, 
-                                        AgentDestilation: Optional[bool] = True,
+                                        AgentDestilation: Optional[bool] = False,
                                         AgentName: Optional[str] = None,
                                         AgentInstruction: Optional[str] = ""
                                         ):
@@ -476,23 +620,24 @@ class ResponseAgent:
                         f'🔥 Exception during request: {str(e)}', 'red', bold=True)
             return None
         
-
     def ResponseAgent_message_with_assistants(
                                             mensagem: str,
                                             agent_id: str,
                                             key: str,
                                             app1, 
                                             client,
+                                            app_product: Optional[App] = None,
                                             user_id: Optional[str] = None,
                                             tools: Optional[List] = None,
                                             model_select: Optional[str] = None,
                                             aditional_instructions: Optional[str] = None,
-                                            stream: bool = False,
-                                            streamLogger: Optional[Signal] = None,
-                                            streamLoggerCode: Optional[Signal] = None,
+                                            streamflag: bool = False,
+                                            QstreamLogger: Optional[Signal] = None,
+                                            QstreamLoggerCode: Optional[Signal] = None,
                                             Debug: Optional[bool] = True,
                                             DebugTokens: Optional[bool] = True,
                                             AgentDestilation: Optional[bool] = True,
+                                            Moderation: Optional[bool] = False,
                                             lang: Optional[str] = "pt",
                                             Upload_multiples_file_in_thread: Optional[List[str]] = None,
                                             Upload_1_file_in_message: Optional[str] = None,
@@ -504,20 +649,63 @@ class ResponseAgent:
                                                                         
                                         ):
 
+
         def log_message(message_pt, message_en, color, bold=False):
             if Debug:
                 attrs = ['bold'] if bold else []
                 cprint(message_pt if lang == "pt" else message_en, color, attrs=attrs)
 
+
         if Upload_1_image_for_vision_in_thread is not None and Upload_1_image_for_vision_in_thread != "":
             log_message("🖼️ Iniciando upload de imagem para visão computacional...", "🖼️ Starting image upload for computer vision...", "blue")
+            for i in range(8):
+                    
+                code_interpreter_in_thread = None
+                with open(Upload_1_image_for_vision_in_thread, "rb") as image_file:
+                    file = client.files.create(file=image_file, purpose="vision")
 
-            code_interpreter_in_thread = None
-            with open(Upload_1_image_for_vision_in_thread, "rb") as image_file:
-                file = client.files.create(file=image_file, purpose="vision")
+                    log_message(f"📤 Imagem enviada com sucesso. ID do arquivo: {file.id}",
+                                f"📤 Image uploaded successfully. File ID: {file.id}", "green")
+                    if user_id is not None:
+                        threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
+                    else:
+                        threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
 
-                log_message(f"📤 Imagem enviada com sucesso. ID do arquivo: {file.id}",
-                            f"📤 Image uploaded successfully. File ID: {file.id}", "green")
+                    log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
+                                f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
+
+                    try:
+                        message = client.beta.threads.messages.create(
+                            thread_id=threead_id,
+                            role="user",
+                            content=[
+                                {"type": "text", "text": f"""{mensagem}"""},
+                                {"type": "image_file", "image_file": {"file_id": file.id}}
+                            ]
+                        )
+
+                        log_message("✅ Mensagem com imagem enviada com sucesso.",
+                                    "✅ Message with image sent successfully.", "green")
+                        break
+                    except Exception as e:
+                        try:
+                            ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                            ref1.delete()                                
+                            client.beta.threads.delete(threead_id)
+                        except Exception as e2:
+                            print(e2)
+                        continue
+
+        elif Upload_1_file_in_message is not None :
+            log_message("📄 Iniciando upload de arquivo para a mensagem...",
+                        "📄 Starting file upload for the message...", "blue")
+            for i in range(8):
+                    
+                code_interpreter_in_thread = None
+                message_file = client.files.create(file=open(Upload_1_file_in_message, "rb"), purpose="assistants")
+
+                log_message(f"📤 Arquivo enviado. ID do arquivo: {message_file.id}",
+                            f"📤 File uploaded. File ID: {message_file.id}", "green")
                 if user_id is not None:
                     threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
                 else:
@@ -526,150 +714,184 @@ class ResponseAgent:
                 log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
                             f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-                message = client.beta.threads.messages.create(
-                    thread_id=threead_id,
-                    role="user",
-                    content=[
-                        {"type": "text", "text": f"""{mensagem}"""},
-                        {"type": "image_file", "image_file": {"file_id": file.id}}
-                    ]
-                )
 
-                log_message("✅ Mensagem com imagem enviada com sucesso.",
-                            "✅ Message with image sent successfully.", "green")
-
-        elif Upload_1_file_in_message is not None :
-            log_message("📄 Iniciando upload de arquivo para a mensagem...",
-                        "📄 Starting file upload for the message...", "blue")
-
-            code_interpreter_in_thread = None
-            message_file = client.files.create(file=open(Upload_1_file_in_message, "rb"), purpose="assistants")
-
-            log_message(f"📤 Arquivo enviado. ID do arquivo: {message_file.id}",
-                        f"📤 File uploaded. File ID: {message_file.id}", "green")
-            if user_id is not None:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
-            else:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
-
-            log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
-                        f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
-
-            message = client.beta.threads.messages.create(
-                thread_id=threead_id,
-                role="user",
-                content=mensagem,
-                attachments=[{"file_id": message_file.id, "tools": [{"type": "file_search"}]}]
-            )
-
-            log_message("✅ Mensagem com arquivo enviada com sucesso.",
-                        "✅ Message with file sent successfully.", "green")
+                try:
+                    message = client.beta.threads.messages.create(
+                        thread_id=threead_id,
+                        role="user",
+                        content=mensagem,
+                        attachments=[{"file_id": message_file.id, "tools": [{"type": "file_search"}]}]
+                    )
+                    
+                    log_message("✅ Mensagem com arquivo enviada com sucesso.",
+                                "✅ Message with file sent successfully.", "green")
+                    break
+                except Exception as e:
+                    try:
+                        ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                        ref1.delete()                                
+                        client.beta.threads.delete(threead_id)
+                    except Exception as e2:
+                        print(e2)
+                    continue
 
         elif Upload_multiples_file_in_thread is not None :
             log_message("📂 Iniciando upload de múltiplos arquivos para a thread...",
                         "📂 Starting upload of multiple files to the thread...", "blue")
+            for i in range(8):
+                    
+                code_interpreter_in_thread = None
+                list_as_string = json.dumps(Upload_multiples_file_in_thread)
+                namehash = hashlib.sha256(list_as_string.encode()).hexdigest()
+                vector_store = client.beta.vector_stores.create(name=f"Upload_{namehash[:5]}")
 
-            code_interpreter_in_thread = None
-            list_as_string = json.dumps(Upload_multiples_file_in_thread)
-            namehash = hashlib.sha256(list_as_string.encode()).hexdigest()
-            vector_store = client.beta.vector_stores.create(name=f"Upload_{namehash[:5]}")
+                log_message(f"📦 Vector store criado: {vector_store.id}",
+                            f"📦 Vector store created: {vector_store.id}", "cyan")
 
-            log_message(f"📦 Vector store criado: {vector_store.id}",
-                        f"📦 Vector store created: {vector_store.id}", "cyan")
+                file_streams = [open(path, "rb") for path in Upload_multiples_file_in_thread]
+                file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
+                    vector_store_id=vector_store.id, files=file_streams
+                )
 
-            file_streams = [open(path, "rb") for path in Upload_multiples_file_in_thread]
-            file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
-                vector_store_id=vector_store.id, files=file_streams
-            )
+                log_message(f"📤 Arquivos enviados: {file_batch.status}",
+                            f"📤 Files uploaded: {file_batch.status}", "green")
+                if user_id is not None:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  [vector_store.id], code_interpreter_in_thread, user_id)
+                else:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  [vector_store.id], code_interpreter_in_thread)
 
-            log_message(f"📤 Arquivos enviados: {file_batch.status}",
-                        f"📤 Files uploaded: {file_batch.status}", "green")
-            if user_id is not None:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  [vector_store.id], code_interpreter_in_thread, user_id)
-            else:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key,  [vector_store.id], code_interpreter_in_thread)
+                log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
+                            f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
-                        f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
+                try:
+                    message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
 
-            log_message("✅ Mensagem com múltiplos arquivos enviada com sucesso.",
-                        "✅ Message with multiple files sent successfully.", "green")
+                        
+                    log_message("✅ Mensagem com múltiplos arquivos enviada com sucesso.",
+                                "✅ Message with multiple files sent successfully.", "green")
+
+                    break
+                except Exception as e:
+                    try:
+                        ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                        ref1.delete()                                
+                        client.beta.threads.delete(threead_id)
+                    except Exception as e2:
+                        print(e2)
+                    continue
 
         elif Upload_list_for_code_interpreter_in_thread is not None:
             log_message("📁 Iniciando upload de arquivos para o interpretador de código...",
                         "📁 Starting file upload for the code interpreter...", "blue")
+            for i in range(8):
+                        
+                list_file_id = []
+                for path in Upload_list_for_code_interpreter_in_thread:
+                    file = client.files.create(file=open(path, "rb"), purpose='assistants')
+                    list_file_id.append(file.id)
 
-            list_file_id = []
-            for path in Upload_list_for_code_interpreter_in_thread:
-                file = client.files.create(file=open(path, "rb"), purpose='assistants')
-                list_file_id.append(file.id)
+                    log_message(f"📤 Arquivo enviado. ID: {file.id}",
+                                f"📤 File uploaded. ID: {file.id}", "green")
 
-                log_message(f"📤 Arquivo enviado. ID: {file.id}",
-                            f"📤 File uploaded. ID: {file.id}", "green")
+                code_interpreter_in_thread = list_file_id
+                if user_id is not None:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
+                else:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
 
-            code_interpreter_in_thread = list_file_id
-            if user_id is not None:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
-            else:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
+                log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
+                            f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
-                        f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
-
-            message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
-
-            log_message("✅ Mensagem com arquivos para o interpretador de código enviada com sucesso.",
-                        "✅ Message with files for the code interpreter sent successfully.", "green")
+                try:
+                    message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
+                    log_message("✅ Mensagem com arquivos para o interpretador de código enviada com sucesso.",
+                                "✅ Message with files for the code interpreter sent successfully.", "green")
+                    break
+                except Exception as e:
+                    try:
+                        ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                        ref1.delete()                                
+                        client.beta.threads.delete(threead_id)
+                    except Exception as e2:
+                        print(e2)
+                    continue
 
         elif Upload_1_file_for_code_interpreter_in_message is not None:
             log_message("📄 Iniciando upload de arquivo para o interpretador de código na mensagem...",
                         "📄 Starting file upload for the code interpreter in the message...", "blue")
+            for i in range(8):
+                            
+                code_interpreter_in_thread = None
+                file = client.files.create(file=open(Upload_1_file_for_code_interpreter_in_message, "rb"), purpose='assistants')
 
-            code_interpreter_in_thread = None
-            file = client.files.create(file=open(Upload_1_file_for_code_interpreter_in_message, "rb"), purpose='assistants')
+                log_message(f"📤 Arquivo enviado. ID: {file.id}",
+                            f"📤 File uploaded. ID: {file.id}", "green")
+                if user_id is not None:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
+                else:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
 
-            log_message(f"📤 Arquivo enviado. ID: {file.id}",
-                        f"📤 File uploaded. ID: {file.id}", "green")
-            if user_id is not None:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
-            else:
-                threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
+                log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
+                            f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
-                        f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            message = client.beta.threads.messages.create(
-                thread_id=threead_id,
-                role="user",
-                content=mensagem,
-                attachments=[{"file_id": file.id, "tools": [{"type": "code_interpreter"}]}]
-            )
+                try:
+                    message = client.beta.threads.messages.create(
+                        thread_id=threead_id,
+                        role="user",
+                        content=mensagem,
+                        attachments=[{"file_id": file.id, "tools": [{"type": "code_interpreter"}]}]
+                    )
+                    log_message("✅ Mensagem com arquivo para interpretador de código enviada com sucesso.",
+                                "✅ Message with file for the code interpreter sent successfully.", "green")
 
-            log_message("✅ Mensagem com arquivo para interpretador de código enviada com sucesso.",
-                        "✅ Message with file for the code interpreter sent successfully.", "green")
+                    break
+                except Exception as e:
+                    try:
+                        ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                        ref1.delete()                                
+                        client.beta.threads.delete(threead_id)
+                    except Exception as e2:
+                        print(e2)
+                    continue
 
-        elif Upload_1_image_for_vision_in_thread is None and Upload_1_image_for_vision_in_thread != "" and Upload_1_file_in_message is None and Upload_multiples_file_in_thread is None and Upload_list_for_code_interpreter_in_thread is None and user_id is None:
+        else:
             log_message("📝 Enviando mensagem sem anexos...",
                         "📝 Sending message without attachments...", "blue")
+            for i in range(8):
+                                
+                code_interpreter_in_thread = None
+                if user_id is not None:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread, user_id)
+                else:
+                    threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
 
-            code_interpreter_in_thread = None
-            threead_id = AutenticateAgent.create_or_auth_thread(app1, client, key, vectorstore_in_Thread, code_interpreter_in_thread)
+                log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
+                            f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            log_message(f"🧵 Thread criada/autenticada. ID da thread: {threead_id}",
-                        f"🧵 Thread created/authenticated. Thread ID: {threead_id}", "cyan")
 
-            message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
+                try:
 
-            log_message("✅ Mensagem enviada com sucesso.",
-                        "✅ Message sent successfully.", "green")
+                    message = client.beta.threads.messages.create(thread_id=threead_id, role="user", content=mensagem)
+                    log_message("✅ Mensagem enviada com sucesso.",
+                                "✅ Message sent successfully.", "green")
+                    break
+                except Exception as e:
+                    try:
+                        ref1 = db.reference(f'ai_org_thread_Id/User_{key}', app=app1)
+                        ref1.delete()                                
+                        client.beta.threads.delete(threead_id)
+                    except Exception as e2:
+                        print(e2)
+                    continue
+
 
                         
         code_buffer = None 
         formatted_output = ""
 
-        if stream == True:
+        if streamflag == True:
             log_message('🚀 Iniciando execução em modo streaming...',
                         '🚀 Starting execution in streaming mode...', 'blue')
 
@@ -679,11 +901,13 @@ class ResponseAgent:
             log_message('📡 Conectando ao stream...',
                         '📡 Connecting to the stream...', 'cyan')
 
+
             with client.beta.threads.runs.stream(
                 thread_id=threead_id,
                 assistant_id=agent_id,
                 event_handler=EventHandler(),
-                tools=[{"type": "file_search"}],
+                tools=tools,
+                additional_instructions=aditional_instructions,
                 model=model_select
             ) as stream:
 
@@ -691,87 +915,90 @@ class ResponseAgent:
                             '✅ Connected to the stream. Receiving data...', 'green')
 
                 for text in stream.text_deltas:
-                    log_message(f'📥 Texto recebido: {text}',
-                                f'📥 Text received: {text}', 'cyan')
 
-                    accumulated_text += text
                     total_text += text
+                    if QstreamLogger is not None:
+                        accumulated_text += text
+                        while len(accumulated_text) >= 100:
+                            match = re.search(r"[ \n.,!?]+", accumulated_text[100:])
+                            cut_index = 100 + match.start() if match else len(accumulated_text)
+                            chunk = accumulated_text[:cut_index]
+                            accumulated_text = accumulated_text[cut_index:]
 
-                    while len(accumulated_text) >= 100:
-                        match = re.search(r"[ \n.,!?]+", accumulated_text[100:])
-                        cut_index = 100 + match.start() if match else len(accumulated_text)
-                        chunk = accumulated_text[:cut_index]
-                        accumulated_text = accumulated_text[cut_index:]
+                            log_message(f'✂️ Processando chunk: {chunk[:50]}...',
+                                        f'✂️ Processing chunk: {chunk[:50]}...', 'yellow')
 
-                        log_message(f'✂️ Processando chunk: {chunk[:50]}...',
-                                    f'✂️ Processing chunk: {chunk[:50]}...', 'yellow')
+                            if code_buffer is not None:
+                                code_buffer += chunk
+                                if "```" in code_buffer:
+                                    code_content, _, remainder = code_buffer.partition("```")
+                                    QstreamLoggerCode.emit(code_content.strip())
 
-                        if code_buffer is not None:
-                            code_buffer += chunk
-                            if "```" in code_buffer:
-                                code_content, _, remainder = code_buffer.partition("```")
-                                streamLoggerCode.emit(code_content.strip())
+                                    log_message(f'💻 Código detectado no buffer: {code_content[:50]}...',
+                                                f'💻 Code detected in the buffer: {code_content[:50]}...', 'magenta')
 
-                                log_message(f'💻 Código detectado no buffer: {code_content[:50]}...',
-                                            f'💻 Code detected in the buffer: {code_content[:50]}...', 'magenta')
+                                    formatted_output += '<pre style="margin: 0; padding: 0; white-space: pre-wrap; background-color: #F7F7F7; color: #0e6303;"><b>[CÓDIGO NO QUADRO]</b>'
+                                    code_buffer = None
+                                    chunk = remainder
+                                else:
+                                    continue
 
-                                formatted_output += '<pre style="margin: 0; padding: 0; white-space: pre-wrap; background-color: #F7F7F7; color: #0e6303;"><b>[CÓDIGO NO QUADRO]</b>'
-                                code_buffer = None
-                                chunk = remainder
-                            else:
-                                continue
+                            while "```python" in chunk:
+                                pre_code, _, rest = chunk.partition("```python")
 
-                        while "```python" in chunk:
-                            pre_code, _, rest = chunk.partition("```python")
+                                log_message('🔎 Bloco de código Python detectado.',
+                                            '🔎 Python code block detected.', 'magenta')
 
-                            log_message('🔎 Bloco de código Python detectado.',
-                                        '🔎 Python code block detected.', 'magenta')
+                                formatted_output += ""  # format_message(pre_code)
+                                chunk = rest
 
-                            formatted_output += ""  # format_message(pre_code)
-                            chunk = rest
+                                if "```" in chunk:
+                                    code_content, _, remainder = chunk.partition("```")
+                                    QstreamLoggerCode.emit(code_content.strip())
 
-                            if "```" in chunk:
-                                code_content, _, remainder = chunk.partition("```")
-                                streamLoggerCode.emit(code_content.strip())
+                                    log_message(f'📄 Emitindo código Python: {code_content[:50]}...',
+                                                f'📄 Emitting Python code: {code_content[:50]}...', 'magenta')
 
-                                log_message(f'📄 Emitindo código Python: {code_content[:50]}...',
-                                            f'📄 Emitting Python code: {code_content[:50]}...', 'magenta')
+                                    formatted_output += ""  # python_functions.ignore_python_code(code_content)
+                                    chunk = remainder
+                                else:
+                                    code_buffer = chunk
+                                    break
 
-                                formatted_output += ""  # python_functions.ignore_python_code(code_content)
-                                chunk = remainder
-                            else:
-                                code_buffer = chunk
-                                break
+                            formatted_output += format_message(chunk)
+                            QstreamLogger.emit(
+                                f'<div style="display: flex; justify-content: flex-start;">'
+                                f'<div style="color: black; padding: 8px; border-radius: 8px; margin: 5px; max-width: 70%;">'
+                                f'{formatted_output}</div></div>'
+                            )
 
-                        formatted_output += format_message(chunk)
-                        streamLogger.emit(
-                            f'<div style="display: flex; justify-content: flex-start;">'
-                            f'<div style="color: black; padding: 8px; border-radius: 8px; margin: 5px; max-width: 70%;">'
-                            f'{formatted_output}</div></div>'
-                        )
+                            log_message('📤 Chunk emitido para a interface.',
+                                        '📤 Chunk sent to the interface.', 'green')
 
-                        log_message('📤 Chunk emitido para a interface.',
-                                    '📤 Chunk sent to the interface.', 'green')
+                            formatted_output = ""
 
-                        formatted_output = ""
 
-                if accumulated_text:
-                    log_message('📄 Processando texto restante no buffer...',
-                                '📄 Processing remaining text in buffer...', 'cyan')
+                        if accumulated_text:
+                            log_message('📄 Processando texto restante no buffer...',
+                                        '📄 Processing remaining text in buffer...', 'cyan')
 
-                    formatted_output += format_message(accumulated_text)
-                    streamLogger.emit(
-                        f'<div style="display: flex; justify-content: flex-start;">'
-                        f'<div style="color: black; padding: 8px; border-radius: 8px; margin: 5px; max-width: 70%;">'
-                        f'{formatted_output}</div></div>'
-                    )
+                            formatted_output += format_message(accumulated_text)
+                            QstreamLogger.emit(
+                                f'<div style="display: flex; justify-content: flex-start;">'
+                                f'<div style="color: black; padding: 8px; border-radius: 8px; margin: 5px; max-width: 70%;">'
+                                f'{formatted_output}</div></div>'
+                            )
+
+                    else:
+                        sys.stdout.write(text)
+                        sys.stdout.flush()  # Garante que o texto seja exibido imediatamente
 
                 log_message(f'✅ Transmissão concluída. Total de texto processado: {len(total_text)} caracteres.',
                             f'✅ Transmission completed. Total text processed: {len(total_text)} characters.', 'green')
 
                 return total_text, 0, 0, 0
        
-        elif stream == False:
+        elif streamflag == False:
             log_message('🚀 Iniciando execução sem streaming...', '🚀 Starting execution without streaming...', 'blue')
 
             if tools:
@@ -813,16 +1040,14 @@ class ResponseAgent:
 
             contador = 0
             log_message('⏳ Monitorando status da execução...', '⏳ Monitoring execution status...', 'cyan')
-
-            while True:
+            i = 0
+            for irg in range(900):
                 time.sleep(2)
+                
                 run_status = client.beta.threads.runs.retrieve(
                     thread_id=threead_id,
                     run_id=run.id
                 )
-
-                log_message(f'📊 Status atual: {run_status.status}',
-                            f'📊 Current status: {run_status.status}', 'cyan')
     
                 if run_status.status == 'requires_action':
                     log_message('⚙️ Ação requerida. Processando chamadas de ferramentas...',
@@ -839,8 +1064,42 @@ class ResponseAgent:
                             log_message(f'🆔 Tool Call ID: {tool_call.id}',
                                         f'🆔 Tool Call ID: {tool_call.id}', 'yellow')
 
-                            _init_output_(function_name, function_arguments, tool_call, threead_id, client, run)
 
+                            if app_product:
+                                _init_output_(
+                                    function_name,
+                                    function_arguments,
+                                    tool_call,
+                                    threead_id,
+                                    client,
+                                    run,
+                                    app1,
+                                    OpenAIKeysinit,
+                                    OpenAIKeysteste,
+                                    GithubKeys,
+                                    python_functions,
+                                    Agent_files_update,
+                                    AutenticateAgent,
+                                    ResponseAgent,
+                                    app_product,
+                                )
+                            else:
+                                _init_output_(
+                                    function_name,
+                                    function_arguments,
+                                    tool_call,
+                                    threead_id,
+                                    client,
+                                    run,
+                                    app1,
+                                    OpenAIKeysinit,
+                                    OpenAIKeysteste,
+                                    GithubKeys,
+                                    python_functions,
+                                    Agent_files_update,
+                                    AutenticateAgent,
+                                    ResponseAgent,
+                                )
                 elif run_status.status == 'completed':
                     log_message('✅ Execução concluída com sucesso.',
                                 '✅ Execution completed successfully.', 'green')
@@ -850,8 +1109,11 @@ class ResponseAgent:
                                 '❌ Execution failed.', 'red')
                     break
                 elif run_status.status == 'in_progress':
-                    log_message('💭 Processando... Pensando...',
-                                '💭 Processing... Thinking...', 'cyan')
+                    pontos = '.' * i 
+                    log_message(f'💭 Pensando{pontos}',
+                                f'💭 Thinking{pontos}', 'cyan')
+                    i = i + 1 if i < 3 else 1  # Reinicia o contador após 3
+
                 else:
                     contador += 1
                     if contador == 15:
@@ -877,13 +1139,13 @@ class ResponseAgent:
                     valor_texto = mensagem_contexto.text.value
 
                     if DebugTokens:
-                        valor_min, valor_max = ResponseAgent.calculate_dollar_value(run_status.usage.total_tokens)
+                        price = ResponseAgent.calculate_dollar_value(run_status.usage.prompt_tokens, run_status.usage.completion_tokens)
                         if lang == "en":
-                            log_message(f'📜 Tokens consumed in the document: {run_status.usage.total_tokens} 💸${valor_max:.4f}',
-                                        f'📜 Tokens consumed in the document: {run_status.usage.total_tokens} 💸${valor_max:.4f}', 'yellow', bold=True)
+                            log_message(f'📜 Tokens consumed : {run_status.usage.total_tokens} 💸${price:.4f}',
+                                        f'📜 Tokens consumed : {run_status.usage.total_tokens} 💸${price:.4f}', 'yellow', bold=True)
                         elif lang == "pt":
-                            log_message(f'📜 Tokens Consumidos no documento: {run_status.usage.total_tokens} Media em💸 ${valor_min:.4f} a ${valor_max:.4f}',
-                                        f'📜 Tokens Consumidos no documento: {run_status.usage.total_tokens} Media em💸 ${valor_min:.4f} a ${valor_max:.4f}', 'yellow', bold=True)
+                            log_message(f'📜 Tokens Consumidos: {run_status.usage.total_tokens} 💸 ${price:.4f}',
+                                        f'📜 Tokens Consumidos: {run_status.usage.total_tokens} 💸 ${price:.4f}', 'yellow', bold=True)
 
                     if AgentDestilation == True: 
 
@@ -900,19 +1162,30 @@ class ResponseAgent:
                     return valor_texto, run_status.usage.total_tokens, run_status.usage.prompt_tokens, run_status.usage.completion_tokens
                 
                 
-    def calculate_dollar_value(tokens_str):
-        # Converter a string de tokens para um número inteiro
-        tokens = int(tokens_str)
+    def calculate_dollar_value(tokens_entrada, tokens_saida, tokens_cache=0):
+        """
+        Calcula o custo total com base nos tokens de entrada, cache (opcional) e saída.
         
-        # Custo por 1 milhão de tokens
-        custo_por_milhao_min = 0.15
-        custo_por_milhao_max = 0.20
+        :param tokens_entrada: Quantidade de tokens de entrada.
+        :param tokens_saida: Quantidade de tokens de saída.
+        :param tokens_cache: Quantidade de tokens de entrada em cache (padrão é 0).
+        :return: Custo total em dólares.
+        """
+        # Custos por 1 milhão de tokens
+        custo_por_milhao_entrada = 0.150
+        custo_por_milhao_cache = 0.075
+        custo_por_milhao_saida = 0.600
         
-        # Calcular o valor em dólares
-        valor_min = (tokens / 1_000_000) * custo_por_milhao_min
-        valor_max = (tokens / 1_000_000) * custo_por_milhao_max
+        # Cálculo dos custos individuais
+        custo_entrada = (tokens_entrada / 1_000_000) * custo_por_milhao_entrada
+        custo_cache = (tokens_cache / 1_000_000) * custo_por_milhao_cache
+        custo_saida = (tokens_saida / 1_000_000) * custo_por_milhao_saida
         
-        return valor_min, valor_max
+        # Cálculo do custo total
+        custo_total = custo_entrada + custo_cache + custo_saida
+        
+        return round(custo_total, 6)
+    
     
 class Agent_files_update:
 
