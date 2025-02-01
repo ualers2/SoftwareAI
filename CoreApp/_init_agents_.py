@@ -9,7 +9,7 @@ from softwareai.CoreApp.Agents.Software_Development.QuantumCore import SoftwareD
 from softwareai.CoreApp.Agents.Software_Development.SignalMaster import SoftwareDevelopment_SignalMaster
 from softwareai.CoreApp.Agents.Software_Requirements_Analysis.SynthOperator import Softwareanaysis
 from softwareai.CoreApp.Agents.Pre_Project.Tigrao import Pre_Project_Document
-from softwareai.CoreApp.Agents.Software_Development.NexGenCoder import SoftwareDevelopment_NexGenCoder
+from softwareai.CoreApp.Agents.Software_Development_Testing.NexGenCoder import SoftwareDevelopment_NexGenCoder
 
 class AgentInitializer:
     _agents = {}
