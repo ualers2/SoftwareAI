@@ -1,0 +1,62 @@
+Termos de Serviço do Nord Auto Rotate
+Última atualização: 15/06/2024
+
+Bem-vindo ao Nord Auto Rotate. Ao usar nosso aplicativo, você concorda com os seguintes Termos de Serviço. Por favor, leia atentamente antes de utilizar o aplicativo.
+
+1. Aceitação dos Termos
+
+Ao acessar e utilizar o Nord Auto Rotate, você concorda em cumprir e estar vinculado a estes Termos de Serviço, juntamente com nossa Política de Privacidade. Se você não concorda com qualquer parte dos termos, não utilize nosso aplicativo.
+
+2. Descrição do Serviço
+
+O Nord Auto Rotate é um aplicativo que automatiza a rotação de servidores VPN da NordVPN para garantir a segurança e a privacidade online. O uso do aplicativo requer uma assinatura ativa da NordVPN, seja mensal ou anual.
+
+3. Licença e Limitação de Dispositivos
+
+Cada licença do Nord Auto Rotate permite a instalação e uso em até dois computadores diferentes. Esta limitação é imposta para prevenir o uso indevido e a revenda não autorizada do aplicativo.
+
+4. Coleta de Informações
+
+Para fornecer nossos serviços e garantir a segurança e autenticidade do uso do aplicativo, coletamos as seguintes informações do seu dispositivo:
+
+Número de Série do Disco: Utilizamos a função get_disk_serial_number() para obter o número de série do disco rígido do seu computador.
+Informações da CPU: Utilizamos a função get_cpu_info() para obter detalhes sobre a CPU do seu dispositivo, incluindo sistema, nome do nó, versão, máquina e processador.
+Nome da Máquina: Informações sobre o nome do seu dispositivo.
+Estas informações são utilizadas para gerar um serial único e garantir que a licença seja usada conforme permitido.
+
+5. Uso Aceitável
+
+Você concorda em utilizar o Nord Auto Rotate apenas para fins legais e de acordo com estes Termos de Serviço. Você não deve:
+
+Revender ou distribuir o aplicativo para terceiros.
+Usar o aplicativo para qualquer atividade ilegal ou não autorizada.
+Tentar descompilar, fazer engenharia reversa ou hackear o aplicativo.
+6. Validade da Licença
+
+A licença do Nord Auto Rotate é vinculada a um único código de pedido, que deve ser usado para gerar um serial único. Este serial é necessário para ativar o aplicativo em seus dispositivos. A licença possui validade de 30 dias a partir da data de registro inicial. Após esse período, será necessária uma renovação da licença.
+
+7. Atualizações e Modificações
+
+Reservamo-nos o direito de modificar ou descontinuar, temporária ou permanentemente, o aplicativo ou qualquer parte dele, com ou sem aviso prévio. Também podemos alterar estes Termos de Serviço a qualquer momento, e a continuação do uso do aplicativo após tais alterações constitui a aceitação dos novos termos.
+
+8. Limitação de Responsabilidade
+
+Em nenhuma circunstância seremos responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais, consequenciais ou exemplares, incluindo, mas não se limitando a, danos por perda de lucros, boa vontade, uso, dados ou outras perdas intangíveis resultantes do uso ou da incapacidade de usar o aplicativo.
+
+9. Rescisão
+
+Reservamo-nos o direito de rescindir ou suspender seu acesso ao aplicativo imediatamente, sem aviso prévio ou responsabilidade, por qualquer motivo, incluindo, sem limitação, se você violar os Termos de Serviço.
+
+10. Lei Aplicável
+
+Estes Termos de Serviço serão regidos e interpretados de acordo com as leis do Pais, sem considerar suas disposições sobre conflitos de leis.
+
+11. Contato
+
+Se você tiver alguma dúvida sobre estes Termos de Serviço, por favor, entre em contato conosco em blocodesense@gmail.com.
+
+12. Política de Privacidade
+
+Para obter informações sobre como coletamos, usamos e protegemos suas informações pessoais, consulte nossa Política de Privacidade.
+
+Ao utilizar o Nord Auto Rotate, você reconhece que leu, entendeu e concorda em ficar vinculado a estes Termos de Serviço.
