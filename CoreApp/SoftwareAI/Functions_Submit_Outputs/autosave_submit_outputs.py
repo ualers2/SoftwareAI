@@ -4,7 +4,7 @@
 from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Functions
-from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
+from softwareai.CoreApp._init_functions_ import *
 #########################################
 
 def submit_output_autosave(function_name,
@@ -23,7 +23,7 @@ def submit_output_autosave(function_name,
                 )
 
         try:
-            run = client.beta.threads.runs.submit_tool_outputs_and_poll(
+            run = client.beta.threads.runs.submit_tool_outputs(
             thread_id=threead_id,
             run_id=run.id,
             tool_outputs=[{
