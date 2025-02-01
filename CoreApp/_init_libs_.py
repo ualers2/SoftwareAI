@@ -13,6 +13,8 @@ from openai import OpenAI
 import time
 import pandas as pd
 import shutil
+import inspect
+import json
 import tiktoken
 from github import Github
 import re
@@ -35,8 +37,19 @@ import concurrent.futures
 from PySide2extn.RoundProgressBar import roundProgressBar #IMPORT THE EXTENSION LIBRARY
 from PySide2.QtCore import QTimer, Signal, QThread
 from PySide2.QtWidgets import QFileDialog
+from flask import Flask, jsonify, render_template, request, redirect, url_for, session
+from flask_cors import CORS
+import pandas as pd
+import os
+from firebase_admin import credentials, initialize_app, storage, db, delete_app
+from werkzeug.security import generate_password_hash, check_password_hash
+import json
+from collections import defaultdict
 import sys
 import json
+import discord
+import sys
+from discord.ext import commands
 import time
 import os
 import subprocess
@@ -50,7 +63,12 @@ from typing_extensions import override
 from openai import AssistantEventHandler, OpenAI
 from openai.types.beta.threads import Text, TextDelta
 from openai.types.beta.threads.runs import ToolCall, ToolCallDelta
-
+from flask import Flask, request, jsonify
+import hmac
+import hashlib
+import requests
+import urllib.parse
+import json
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
