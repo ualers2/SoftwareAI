@@ -9,6 +9,12 @@ from softwareai.CoreApp.SoftwareAI.Tools.Software_Documentation.CloudArchitect_t
 from softwareai.CoreApp.SoftwareAI.Tools.Software_Planning.Bob_tools import *
 from softwareai.CoreApp.SoftwareAI.Tools.Software_Planning.Dallas_tools import *
 from softwareai.CoreApp.SoftwareAI.Tools.Software_Requirements_Analysis.SynthOperator_tools import *
+from softwareai.CoreApp.SoftwareAI.Tools.Software_Support.Alfred_tools import *
+from softwareai.CoreApp.SoftwareAI.Tools.Software_Technical_Support.GearAssist_tools import *
+from softwareai.CoreApp.SoftwareAI.Tools.Software_Development_Testing.NexGenCoder_tools import *
 
                 
                 
+                
+from softwareai.CoreApp.SoftwareAI.Tools.ControlSupport.CalculateAverageCSAT import *
+            
