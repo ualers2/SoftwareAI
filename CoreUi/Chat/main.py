@@ -231,7 +231,7 @@ class MainWindow(QMainWindow):
         self.app1 = FirebaseKeysinit._init_app_(name_app)
 
         #self.load_config()
-    
+        
 
         ########################################################################
 
@@ -786,10 +786,6 @@ class MainWindow(QMainWindow):
             pass
         
         event.accept()
-
-
-
-
 
 ########################################################################
 ## EXECUTE APP
