@@ -4,7 +4,7 @@
 from softwareai.CoreApp._init_libs_ import *
 #########################################
 # IMPORT SoftwareAI Functions
-from softwareai.CoreApp.SoftwareAI.Functions._init_functions_ import *
+from softwareai.CoreApp._init_functions_ import *
 #########################################
 
 def submit_output_create_repo(function_name,
