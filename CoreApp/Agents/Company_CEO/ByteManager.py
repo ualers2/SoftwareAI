@@ -70,9 +70,8 @@ class ByteManager:
         AI_ByteManager, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionByteManager, nameassistant, model_select, tools_ByteManager, vectorstore_in_assistant)
 
         mensaxgem = """decida oque o usuario esta solicitando com base na mensagem  
-        Regra 1 - Caso seja solicitado algum script ou software Responda no formato JSON Exemplo: {'solicitadoalgumcodigo': 'solicitacao...'} 
-        Regra 2 - Caso seja solicitado alguma atualização de repositorio use a function (autoupdaterepo)
-        Regra 3 - Caso seja solicitado alguma criação de repositorio use a function (create_repo) 
+        Regra 1 - Caso seja solicitado alguma atualização de repositorio use a function (autoupdaterepo)
+        Regra 2 - Caso seja solicitado alguma criação de repositorio use a function (create_repo) 
         """  
         mensaxgemfinal = mensaxgem + f"mensagem:\n{mensagem}"
         
