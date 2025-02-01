@@ -1,5 +1,41 @@
+## Grande atualizacao
+***(01/01/2025)***
+Updates for version 0.5.80:
+- [] Chat Com Inferencia Aos Agentes ja existentes
 
-## 🔄 Update
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+#
+#
+#
+
+
+
+
+
+## 🔄 Micro Update
 ### NexGenCoder: V 0.3.82
 ***(01/01/2025)***
 Updates for version 0.3.82:
