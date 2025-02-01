@@ -631,15 +631,19 @@ def QuantumCoreUpdate(
     github_username, github_token = GithubKeys.QuantumCore_github_keys()
 
     instructionQuantumCore = f""" 
-    Meu nome é **QuantumCore**, sou Desenvolvedor Pleno em Python na empresa **urobotsoftware**. Minha responsabilidade é aprimorar o código com qualidade, respeitando a estrutura existente do projeto.
+    Meu nome é **QuantumCore**, sou Desenvolvedor Pleno em Python na empresa **{companyname}**. Minha responsabilidade é aprimorar o código com qualidade, respeitando a estrutura existente do projeto.
 
     ### **Minhas Responsabilidades:**  
 
     1. **Analisar a Estrutura Completa do Projeto:**  
     - Acesso a toda a **estrutura do repositório** usando a função **get_repo_structure**, que retorna um dicionário com todos os arquivos e diretórios.  
-    - Utilizo a função **autogetfilecontent** para acessar o **conteúdo completo de qualquer arquivo**, conforme necessário.
+    - Utilizo a função **autogetfilecontent** para acessar o **conteúdo completo de qualquer arquivo** conforme necessário.
 
-    2. **Analisar e Melhorar o Código:**  
+    2. **Selecionar Arquivos Estratégicos para Melhoria:**  
+    - **Tenho autonomia total** para escolher de **1 arquivo** que apresentem maior potencial de melhoria.  
+    - A escolha é baseada na **análise da estrutura** e no **conteúdo dos arquivos**.
+
+    3. **Analisar e Melhorar o Código:**  
     - Examino cuidadosamente o código e **identifico melhorias sem modificar a estrutura do programa**.  
     - As melhorias podem incluir:  
         - **Otimizações de desempenho**  
@@ -648,12 +652,12 @@ def QuantumCoreUpdate(
         - **Implementação de novas funcionalidades**  
     - **Preservo a lógica e a organização original do código**.
 
-    3. **Garantir o Retorno Completo do Código:**  
+    4. **Garantir o Retorno Completo do Código:**  
     - **É obrigatório retornar o código completo e atualizado**, com todas as melhorias implementadas.  
-    - **Nunca** envie apenas trechos de código ou mensagens de continuação.  
+    - **Nunca** enviar apenas trechos de código ou mensagens de continuação.  
     - O código deve ser completo, claro e totalmente funcional.
 
-    4. **Gerar Commit e Pull Request:**  
+    5. **Gerar Commit e Pull Request:**  
     - Crio automaticamente:  
         - Uma **Commit Message** clara e descritiva.  
         - Um **Título de PR** direto e objetivo.  
@@ -661,7 +665,11 @@ def QuantumCoreUpdate(
         - Um **Branch Name** claro e relacionado à melhoria principal.  
     - Utilizo a função **autopullrequest** para abrir um Pull Request com as melhorias aplicadas.
 
-    5. **Manter a Qualidade do Código:**  
+    6. **Verificar Comentários no Pull Request:**  
+    - Após criar o PR, utilizo a função **checkcommentspr** para verificar e retornar o review do PR.  
+    - Caso existam comentários, analiso e implemento ajustes necessários.
+
+    7. **Manter a Qualidade do Código:**  
     - Garanto um código **limpo, legível e documentado**.  
     - Evito mudanças desnecessárias na lógica existente.  
 
@@ -671,35 +679,27 @@ def QuantumCoreUpdate(
     - **get_repo_structure** → Retorna a estrutura completa do repositório.  
     - **autogetfilecontent** → Retorna o conteúdo completo de um arquivo específico.  
     - **autopullrequest** → Cria automaticamente um Pull Request com commit, título e descrição gerados.  
+    - **checkcommentspr** → Verifica e retorna o review do pr 
 
     Com esse fluxo de trabalho, asseguro melhorias eficientes, seguras e de alta qualidade, mantendo a integridade do projeto.
     """
+        
+        
     AI_QuantumCore, instructionsassistant, nameassistant, model_select = AutenticateAgent.create_or_auth_AI(appfb, client, key, instructionQuantumCore, nameassistant, model_select, tools_QuantumCore, vectorstore_in_assistant)
 
-    branch_name = "main" 
-    #main = get_file_content(repo_name, f"main.py", branch_name, companyname, GithubKeys)
-    #python_functions.save_TXT(main, os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV"), 'w')
-    #repo_structure = get_repo_structure(repo_name, companyname, github_token, branch_name)
-
-    # if UseVectorstoreToGenerateFiles == True:
-
-        # file_paths = [os.getenv("PATH_SOFTWARE_DEVELOPMENT_PY_ENV")]
-
-        #AI_QuantumCore = Agent_files_update.del_all_and_upload_files_in_vectorstore(appfb, client, AI_QuantumCore, "QuantumCore_Work_Environment2", file_paths, tools_QuantumCore)
-        
-
     mensagem = f"""
-    ### **Missão:**  
-    Analise automaticamente o repositório `{repo_name}`, identifique e implemente melhorias no arquivo `main.py` sem alterar a estrutura original do projeto.
+    ### **Missão:** 
+    Analise automaticamente o repositório `{repo_name}`, selecione de **1 arquivo** estratégicos e implemente melhorias sem alterar a estrutura original do projeto.
 
     ### **Fluxo de Trabalho Automatizado:**  
 
     1. **Obtenha a Estrutura Completa do Repositório:**  
     - Utilize a função **get_repo_structure** para acessar a **estrutura completa** do repositório.  
-    - **Localize automaticamente** o arquivo `main.py` em qualquer diretório.
+    - **Analise automaticamente** quais arquivos apresentam maior potencial de melhoria.
 
-    2. **Leia o Conteúdo Completo do Arquivo:**  
-    - Após localizar o `main.py`, utilize a função **autogetfilecontent** para obter o **conteúdo completo** do arquivo.  
+    2. **Selecione e Leia o Conteúdo dos Arquivos:**  
+    - Selecione de **1 arquivo** com base em sua relevância.  
+    - Utilize a função **autogetfilecontent** para obter o **conteúdo completo** desses arquivos.  
     - **Nunca** retorne apenas trechos de código ou mensagens de continuação.  
 
     3. **Analise e Implemente Melhorias:**  
@@ -711,7 +711,7 @@ def QuantumCoreUpdate(
     - **Mantenha a estrutura e a lógica do código inalteradas**.  
 
     4. **Gere o Código Completo:**  
-    - **Retorne o código completo e atualizado**, incluindo todas as melhorias implementadas.  
+    - **Retorne o código completo e atualizado** de todos os arquivos modificados, incluindo todas as melhorias implementadas.  
     - **Não envie respostas incompletas ou parciais**.  
 
     5. **Automatize o Pull Request:**  
@@ -721,6 +721,7 @@ def QuantumCoreUpdate(
         - Uma **Descrição detalhada** explicando as melhorias.  
         - Um **Branch Name** relacionado à principal melhoria.  
     - Utilize a função **autopullrequest()** para abrir o PR.
+    - Após a criação do PR, utilize a função **checkcommentspr()** para verificar o review do pr
 
     ---
 
@@ -733,6 +734,14 @@ def QuantumCoreUpdate(
     - **Improvements:** **Código completo** com todas as melhorias.  
     - **PR Title:** Um título direto e objetivo.  
     - **Token de Autenticação:** {github_token}  
+
+    ---
+
+    ### **Detalhes do checkcommentspr:**  
+    - **Repo Name:** {repo_name}  
+    - **Branch Name:** Branch utilizada no PR  
+    - **Company Name:** {companyname}  
+    - **Github Token:** {github_token}  
 
     ---
 
@@ -806,39 +815,6 @@ def QuantumCoreUpdate(
 
 
 
-
-
-def get_repo_structure(repo_name, repo_owner, github_token, branch_name, path=""):
-    headers = {
-        "Accept": "application/vnd.github.v3+json"
-    }
-    
-    # Adiciona autenticação apenas se o token for informado
-    if github_token:
-        headers["Authorization"] = f"Bearer {github_token}"
-
-    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{path}?ref={branch_name}"
-    response = requests.get(url, headers=headers)
-    structure = {}
-    
-    if response.status_code == 200:
-        items = response.json()
-        for item in items:
-            if item['type'] == 'dir':
-                structure[item['name']] = get_repo_structure(repo_name, repo_owner, github_token, branch_name, item['path'])
-            else:
-                structure[item['name']] = item['path']
-    else:
-        print(f"Erro ao acessar {path}. Status: {response.status_code} {response.content}")
-    return structure
-
-
-def save_structure_to_json(repo_name, repo_owner, github_token, branch_name):
-    output_file = os.path.join(os.path.dirname(__file__), "repo_structure.json")
-    structure = get_repo_structure(repo_name, repo_owner, github_token, branch_name)
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(structure, f, indent=4, ensure_ascii=False)
-    print(f"Estrutura do repositório salva em {output_file}")
 
 
 def get_file_content(repo_name, file_path, branch_name, companyname, GithubKeys):
