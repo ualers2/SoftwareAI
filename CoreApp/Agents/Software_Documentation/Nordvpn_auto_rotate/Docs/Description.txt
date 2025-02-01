@@ -1,0 +1,26 @@
+Nord Auto Rotate is a robust and secure application designed to automate the rotation of NordVPN's VPN servers. With an intuitive interface and advanced features, the app ensures its users maintain privacy and security online by automatically switching between different VPN servers at set intervals.
+
+https://www.youtube.com/watch?v=E4fbZUVMMEI
+
+AI-Supported Group:
+https://t.me/+dpGofyMuGUszY2Rh
+
+Requirements
+NordVPN Subscription: To use Nord Auto Rotate, you must have an active NordVPN subscription. The application only works when the subscription is active, whether for 1 month or 1 year.
+
+
+Main Features:
+
+Automatic Server Rotation: Automatically switch between different NordVPN VPN servers to ensure online security and privacy.
+Custom Configuration: Set custom time intervals for server rotation.
+Monitoring and Reporting: Track VPN performance and view detailed usage reports.
+Integration with NordVPN: You must have an active subscription to NordVPN, either monthly or annually.
+
+Device Limitation: The Nord Auto Rotate license allows installation and use on up to 2 different computers. This limit is imposed to prevent misuse and unauthorized resale of the application.
+License Validity: The license is linked to the order serial. This serial is generated automatically after purchase.
+
+Security and Authentication:
+
+Unique Serial: Each license generates a unique serial that is checked against the CPU and disk serial number of the devices. This serial must be used to register the application on up to two computers.
+Serial Validity: The generated serial is valid for 30 days from the initial registration date. After this period, a license renewal will be required to continue using the application.
+Nord Auto Rotate is the ideal solution for those who want to keep their connection secure and anonymous with NordVPN, ensuring automatic and efficient rotation of VPN servers for continuous protection.
