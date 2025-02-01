@@ -1,5 +1,5 @@
 tools_Tigrao = [
-
+    {"type": "file_search"},
     {
         "type": "function",
         "function": {
@@ -9,6 +9,31 @@ tools_Tigrao = [
                 "type": "object",
                 "properties": {},
                 "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "autoupload",
+            "description": "Realiza o upload ou update de um arquivo",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "softwarepypath": {
+                        "type": "string",
+                        "description": "caminho do arquivo"
+                    },
+                    "repo_name": {
+                        "type": "string",
+                        "description": "Nome do repositorio "
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "Token do github de que realiza o upload ou update"
+                    }
+                },
+                "required": ["softwarepypath","repo_name","token"]
             }
         }
     }
