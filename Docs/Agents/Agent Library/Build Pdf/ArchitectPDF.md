@@ -1,0 +1,13 @@
+## 📖 Sobre ArchitectPDF 
+- **Sobre**  
+  - Architect PDF é uma Inteligencia desenvolvida Com objetivo de Criar Pdf sobre temas 
+  - 
+  - 
+- **Caracteristicas**  
+  - Criação de conteudo com framework SoftwareAI
+  - 
+  - 
+- **Objetivos**  
+  - Venda em plataformas como hotmart e etc
+  - Compilação de todos os .md das documentacoes de um software em um pdf
+  - 
