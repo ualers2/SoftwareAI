@@ -17,7 +17,12 @@ def autosave(code, path):
     -------
     None
     """
-    with open(path, 'w', encoding="utf-8") as file:
-        file.write(code)
-
-    return True
+    try:
+        with open(path, 'w', encoding="utf-8") as file:
+            file.write(code)
+        return True
+    except Exception as e:
+        print(e)
+        with open(path, 'x', encoding="utf-8") as file:
+            file.write(code)
+        return True
