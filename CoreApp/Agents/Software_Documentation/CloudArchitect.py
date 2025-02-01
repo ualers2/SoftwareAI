@@ -11,10 +11,10 @@ from softwareai.CoreApp._init_libs_ import *
 from softwareai.CoreApp._init_paths_ import *
 #########################################
 # IMPORT SoftwareAI Instructions
-from softwareai.CoreApp.SoftwareAI.Instructions._init_Instructions_ import *
+from softwareai.CoreApp._init_Instructions_ import *
 #########################################
 # IMPORT SoftwareAI Tools
-from softwareai.CoreApp.SoftwareAI.Tools._init_tools_ import *
+from softwareai.CoreApp._init_tools_ import *
 #########################################
 # IMPORT SoftwareAI keys
 from softwareai.CoreApp._init_keys_ import *
@@ -276,7 +276,9 @@ class Software_Documentation:
 
 
 
-    def CloudArchitectUpdateReadme(self, appfb, client, repo_name, Melhorias):
+    def CloudArchitectUpdateReadme(self, appfb, client, repo_name, Melhorias,
+                                    companyname = "SoftwareAI-Company"
+                                   ):
 
         branch_name = "main"
         Readme = self.get_file_content(repo_name, f"README.md", branch_name)
@@ -286,7 +288,7 @@ class Software_Documentation:
         key = "AI_CloudArchitect_Software_Documentation"
         nameassistant = "AI CloudArchitect Software Documentation"
         model_select = "gpt-4o-mini-2024-07-18"
-        
+        self.companyname = companyname
         Upload_1_file_in_thread = None
         Upload_1_file_in_message = None
         Upload_1_image_for_vision_in_thread = None
@@ -327,11 +329,6 @@ class Software_Documentation:
                                                                 aditional_instructions=adxitional_instructions_CloudArchitect
                                                                 )
 
-        ##Agent Destilation##                   
-        Agent_destilation.DestilationResponseAgent(mensagem, response, instructionsassistant, nameassistant)
-        
-        print(response)
-        
 
 
 
@@ -346,7 +343,7 @@ class Software_Documentation:
         }
   
 
-        file_url = f"https://api.github.com/repos/{repo_name}/contents/{file_path}?ref={branch_name}"
+        file_url = f"https://api.github.com/repos/{self.companyname}/{repo_name}/contents/{file_path}?ref={branch_name}"
         response = requests.get(file_url, headers=headers)
         
         if response.status_code == 200:
