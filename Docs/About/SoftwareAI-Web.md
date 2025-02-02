@@ -7,10 +7,14 @@
 
 
 # 📖 Caracteristicas
-## Chat Com Inferencia Aos Agentes ja existentes
+
+## Recursos
+- ✅ Chat Com Inferencia Aos Agentes ja existentes
+
+## Desing
 - ✅ ``Chat com desing de conversa`` do usuario a direita e com backgroud verde, conversa do agente a esquerda e com backgroud vermelho claro
 - ✅ ``Chat com Detecção de codigo`` do agente ao responder o usuario, semelhante ao chat do chatgpt voce ve o codigo destacado e com a linguagem do codigo seguido de um botao para copia-lo
-- ✅ 
+- 
 #
 ## Seção de Controle de agentes de suporte
 - ✅ Criar uma seção no side-menu que ao botao control-support ser clickado exiba todos nossos agentes exiba os agentes operantes com uma bolinha verde ao lado direito do agente agentes em descanço com uma bolinha amarelo ao lado direito do agente e os em desenvolvimento com uma bolinha azul ao lado direito do agente  , ao clickar em cima de um agente operante é aberto um menu lateral direito que exibe uma barra informativa com informacoes cruciais como
