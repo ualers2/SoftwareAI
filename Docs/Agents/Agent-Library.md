@@ -23,8 +23,8 @@
 - [AI Team Production in Software Development](#AI-Team-Production-in-Software-Development)
 - [AI Team Monthly Report](#AI-Team-Monthly-Report)
 - [AI Team Weekly Report](#AI-Team-Weekly-Report)
-
-
+#
+#
 # AI Team Support
 * **💭Concept**:
  The concept of an AI team within the company/organization in the support category is to replace the need to hire people to provide support and answer customer questions and problems
@@ -43,7 +43,7 @@
 # AI Team Technical Support
 * **💭Concept**:
 The concept of an AI team within the company/organization in the technical support category is to replace the need to hire people to track and propose solutions to problems reported by support teammate Alfred
-- [📖 About GearAssist ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Technical-Support/Alfred.md)
+- [📖 About GearAssist ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Technical-Support/GearAssist.md)
 #
 * **💭 What products is the team working on?**:
 - The technical support team always works on the same products as the support team
