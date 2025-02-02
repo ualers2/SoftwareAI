@@ -1,19 +1,43 @@
 ## Grande atualizacao
-***(01/01/2025)***
+***inicio (01/01/2025) lancamento (09/01/2025)***
 Updates for version 0.5.80:
-- [] Chat Com Inferencia Aos Agentes ja existentes
+### [📖 SoftwareAI Web](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/About/SoftwareAI-Web.md)
+#### Recursos
+- ✅ Chat Com Inferencia Aos Agentes ja existentes
+#### Desing
+- ✅ SoftwareAI Web: ``Chat com desing de conversa`` do usuario a direita e com backgroud verde, conversa do agente a esquerda e com backgroud vermelho claro
+- ✅ SoftwareAI Web: ``Chat com Detecção de codigo`` do agente ao responder o usuario, semelhante ao chat do chatgpt voce ve o codigo destacado e com a linguagem do codigo seguido de um botao para copia-lo
+#### Seção de Controle de agentes de suporte
+- ✅ SoftwareAI Web: Criar uma seção no side-menu que ao botao control-support ser clickado exiba todos nossos agentes exiba os agentes operantes com uma bolinha verde ao lado direito do agente agentes em descanço com uma bolinha amarelo ao lado direito do agente e os em desenvolvimento com uma bolinha azul ao lado direito do agente  , ao clickar em cima de um agente operante é aberto um menu lateral direito que exibe uma barra informativa com informacoes cruciais
+#### Métricas de Atendimento
+- ✅ SoftwareAI Web: Numero de tickes abertos e fechados 
 
 
 
 
+### 📖[ SoftwareAI Cli](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/About/CLI/softwareai-cli.md)
+#### Gerenciamento de Configurações
+- ✅ SoftwareAI CLI: Configurar e armazenar credenciais de banco de dados da empresa de forma simples e segura
+- ✅ SoftwareAI CLI: Configurar facilmente conexões de banco de dados para aplicações gerenciadas
+#### Integrações de APIs e Serviços
+- ✅ SoftwareAI CLI: Configuração rápida para Credenciais da OpenAI
+- ✅ SoftwareAI CLI: Configuração rápida para Chaves de API da Hugging Face
+- ✅ SoftwareAI CLI: Configuração de Credenciais do Github
+#### OpenAI Tools
+- ✅ SoftwareAI CLI: Criar uma tool para um agente com base em um arquivo de função e categoria 
+#### Inferencia via Api local
+- ✅ SoftwareAI CLI: Ao inves de solicitar agente de forma estatica podemos inferir via Api , ajudando em trabalhos de Multi-Agentes controlados por um lider
+#### Iniciando Servidor de controle de compania
+- ✅ SoftwareAI CLI: Aqui podemos iniciar de maneira absurdamente simples todos os scripts e agentes da compania 
 
 
 
+### [📖 SoftwareAI Biblioteca de Agentes](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library.md)
+#### 
 
 
 
-
-
+- ✅ SoftwareAI Agent-Library: 
 
 
 
