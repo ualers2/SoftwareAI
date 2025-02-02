@@ -2,7 +2,7 @@
 
 ## 👥 IndexTeam in Workforce 
 - [AI Team Support](#AI-Team-Support)
-
+- [AI Team Technical Support](#AI-Team-Technical-Support)
 
 
 
@@ -23,6 +23,33 @@
 - [AI Team Production in Software Development](#AI-Team-Production-in-Software-Development)
 - [AI Team Monthly Report](#AI-Team-Monthly-Report)
 - [AI Team Weekly Report](#AI-Team-Weekly-Report)
+
+
+# AI Team Support
+* **💭Concept**:
+ The concept of an AI team within the company/organization in the support category is to replace the need to hire people to provide support and answer customer questions and problems
+- [📖 About Alfred ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md)
+
+#
+* **💭 What products is the team working on?**:
+1)  Nord Auto Rotate
+- [Product](https://softwareai-company.com/shop/nord-auto-rotate)
+- [Moderated Group With the agent ](https://t.me/+dpGofyMuGUszY2Rh)
+
+
+2) [Urobot Navegador Tiktok]()
+
+
+# AI Team Technical Support
+* **💭Concept**:
+The concept of an AI team within the company/organization in the technical support category is to replace the need to hire people to track and propose solutions to problems reported by support teammate Alfred
+- [📖 About GearAssist ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Technical-Support/Alfred.md)
+#
+* **💭 What products is the team working on?**:
+- The technical support team always works on the same products as the support team
+
+
+
 
 #
 # AI Team Company Owners
@@ -611,17 +638,6 @@ The concept of an AI team within the company/organization in the Software Develo
     - in developing
 * **SignalMaster**: 
     - in developing
-
-
-
-# AI Team Support
-* **💭Concept**:
- The concept of an AI team within the company/organization in the support category is to replace the need to hire people to provide support and answer customer questions and problems
-- [📖 About Alfred ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md)
-- [📖 About GearAssist ](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Technical-Support/GearAssist.md)
-* **💭 What products is the team working on?**:
-1) [Nord Auto Rotate](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md)
-2) [Urobot Navegador Tiktok](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md)
 
 
 
