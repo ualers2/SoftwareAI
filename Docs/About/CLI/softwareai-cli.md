@@ -69,7 +69,23 @@ softwareai-cli select-agent-mode-api --name-agent "GearAssist" --category-agent 
 - Aqui podemos iniciar de maneira absurdamente simples todos os scripts e agentes da compania 
 
 ```bash
-softwareai-cli initialize-company --execute-multiples-agents "True" --names-agents ["GearAssist"] --category-agents ["Software_Technical_Support"] --agents-execute-port ["100"] --run-alfred "True" --path-to-inicializer-alfred "C:\Users\ualer\OneDrive\Área de Trabalho\init_alfred.py"
+softwareai-cli initialize-company --execute-multiples-agents "True" --names-agents ["GearAssist"] --category-agents ["Software_Technical_Support"] --agents-execute-port ["100"] --run-alfred "True" --path-to-inicializer-alfred "C:\Users\ualer\OneDrive\Área de Trabalho\init_alfred.py" --run-web-company "True"
 ```
+### Argumentos: 
+#### --execute-multiples-agents: 
+- Valor str booleano que Define se voce quer executar multiplos agentes 
+#### --names-agents:
+- uma lista de str com os nomes de cada agente a ser executado com o modo execute-multiples-agents
+#### --category-agents: 
+- uma lista de str com as categorias de cada agente a ser executado com o modo execute-multiples-agents
+#### --agents-execute-port: 
+- uma lista de str com as portas de cada agente a ser executado em modo api e com o modo execute-multiples-agents
+#### --run-alfred: 
+- Valor str booleano que Define se voce quer executar o agente de supporte alfred
+#### --path-to-inicializer-alfred: 
+- caminho str onde esta o inicializador do alfred caso run-alfred seja definido
+#### --run-web-company: 
+- Valor str booleano que Define se voce quer executar a interface web da compania/framework
+
 
 #
