@@ -39,7 +39,7 @@
 
 2) [Urobot Navegador Tiktok]()
 
-
+#
 # AI Team Technical Support
 * **💭Concept**:
 The concept of an AI team within the company/organization in the technical support category is to replace the need to hire people to track and propose solutions to problems reported by support teammate Alfred
