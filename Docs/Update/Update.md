@@ -1,5 +1,10 @@
 ## Grande atualizacao
 ***inicio (01/01/2025) lancamento (09/01/2025)***
+Capabilities for version 0.5.80:
+- ✅ Agente de suporte de software com moderação de palavras [📖 SoftwareAI Biblioteca de Agentes](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md)
+
+
+
 Updates for version 0.5.80:
 ### [📖 SoftwareAI Web](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/About/SoftwareAI-Web.md)
 #### Recursos
@@ -35,9 +40,10 @@ Updates for version 0.5.80:
 ### [📖 SoftwareAI Biblioteca de Agentes](https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library.md)
 #### 
 
+- ✅ SoftwareAI Agent-Library: Alfred é o primeiro agente softwareai a entrar na força de trabalho da compania, o agente substitui a contratação de humanos para o suporte de duvidas e problemas dos usuarios , o agente pode ser inferido pelo usuario via `telegram` e `discord`
 
-
-- ✅ SoftwareAI Agent-Library: 
+Alfred Docs:\n
+https://github.com/SoftwareAI-Company/SoftwareAI/blob/main/Docs/Agents/Agent-Library/Software-Support/Alfred.md
 
 
 
