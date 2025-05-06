@@ -1,5 +1,3 @@
-# 👥 specialized AI Agents for Every Coding Task
-Boost your development workflow with AI assistants trained specifically for code documentation, refactoring, reviews, and more 
 
 ![Status](https://img.shields.io/badge/status-ReleaseCandidate-yellow)
 ![License](https://img.shields.io/badge/license-Apache-green)
