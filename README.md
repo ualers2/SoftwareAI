@@ -1,39 +1,12 @@
-# 👥 specialized AI Agents for Every Coding Task
-Boost your development workflow with AI assistants trained specifically for code documentation, refactoring, reviews, and more 
-
+# 👥 Your software company governed by AI
 ![Status](https://img.shields.io/badge/status-ReleaseCandidate-yellow)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![License](https://img.shields.io/badge/license-Apache-green)
-![Demonstração](Gifs/giff2.gif)
 
+# 📜 Table of Contents
+- [📖 Agent Library](#-agent-library)
+- [📖 Index Docs](#-indexdocs)
+- [🚀 Starting SoftwareAI Engine](#-start-softwareai-engine)
 
-[📖 Library Pip](https://pypi.org/project/softwareai-engine-library)
-```bash
-pip install softwareai-engine-library
-```
-### Code Location: 
--   https://github.com/SoftwareAI-Company/SoftwareAI/tree/main/Softwareai_Package
-
-
-- [🚀 SoftwareAI Chat](softwareai.rshare.io)
-### Code Location: -   coming soon
-
-
-[📖 Library Web](softwareai-library-hub.rshare.io)
-### Code Location: -   coming soon
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#
+⚠️ **Note**: SoftwareAI has completed its public and private studies as well as public and private testing and is now in the development phase for real production of applications. Some SaaS such as lovable.dev already do something on a smaller scale than what we propose.
