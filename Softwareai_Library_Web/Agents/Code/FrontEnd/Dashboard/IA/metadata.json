@@ -1,0 +1,17 @@
+{
+    "id": "code-front-end-dashboard-ai-platform",
+    "type_plan": "free",
+    "name": "Code Front End Dashboard AI Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-tachometer-alt text-xl",
+    "shortDescription": "A user dashboard with a clean, responsive interface, designed for efficient management of user functions and data.",
+    "fullDescription": "This agent generates a comprehensive user dashboard (`dashboard.html`) built with HTML5, embedded CSS, and vanilla JavaScript. The dashboard features a responsive layout with a sidebar for navigation, a header for displaying user details, and a dynamic main content area that loads actual functionalities. The dashboard is designed to be scalable and easily integrated with backend data or APIs. It includes smooth navigation transitions and supports automatic dark mode via `prefers-color-scheme`. The layout is mobile-friendly and adapts to different screen sizes, providing an intuitive and modern user experience.",
+    "UseCases": "1. A business or platform needing a user-friendly, responsive dashboard for managing user profiles, settings, and interactions. 2. A service where users require access to a range of features through an easy-to-navigate interface. 3. A developer looking to integrate dynamic content into a dashboard while ensuring a smooth user experience across devices."
+}
