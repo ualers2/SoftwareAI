@@ -10,15 +10,16 @@ pip install softwareai-engine-library
 ```
 ### Code Location: 
 -   https://github.com/SoftwareAI-Company/SoftwareAI/tree/main/Softwareai_Package
-
+#
+#
 
 [🚀 SoftwareAI Chat](https://softwareai.rshare.io)
 ### Code Location: -   coming soon
-
-
+#
+#
 [📖 Library Web](https://softwareai-library-hub.rshare.io)
-### Code Location: -   coming soon
-
+### Code Location:
+-   https://github.com/SoftwareAI-Company/SoftwareAI/tree/main/Softwareai_Library_Web
 
 
 
