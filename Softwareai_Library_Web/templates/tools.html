@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tools and Functions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a2e00f6b06.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <link rel="icon" href="{{ static_url }}IMGS/icon.jpg" type="image/x-icon">
+
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto p-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <img src="{{ static_url }}IMGS/icon.jpg" alt="Logo" class="h-6 w-6">
+        <span class="text-xl font-bold">SoftwareAI Library Hub</span>
+      </div>
+    </div>
+  </header>
+  
+  <nav class="bg-white p-4 shadow">
+    <ul class="flex space-x-6 text-sm font-medium">
+      <li><a href="index.html" class="text-gray-600 hover:text-gray-800">Agents</a></li>
+      <li><a href="tools.html" class="text-blue-600 hover:text-gray-800">Tools</a></li>
+      <li><a href="https://softwareai.rshare.io/dashboard" class="text-gray-600 hover:text-gray-800">Chat</a></li>
+      <li><a href="#" class="text-gray-600 hover:text-gray-800">Documentation</a></li>
+    </ul>
+  </nav> 
+ 
+
+  <!-- Conteúdo -->
+  <section class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+      <h1 class="text-3xl font-bold">Available Tools</h1>
+      <div class="flex items-center space-x-2">
+        <!-- Search Bar -->
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search tool..."
+          class="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
+        />
+        <!-- Plan Filter -->
+        <select
+          id="plan-filter"
+          class="border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300">
+          <option value="all">All</option>
+          <option value="free">Free</option>
+          <option value="premium">Premium</option>
+        </select>
+      </div>
+    </div>
+  
+    <div id="tools-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+  </section>
+
+  <script src="{{ static_url }}js/list-tools.js"></script>
+  <script src="{{ static_url }}js/inicializer/init-tools.js"></script>
+</body>
+</html>
