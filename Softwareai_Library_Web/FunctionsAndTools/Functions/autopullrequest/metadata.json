@@ -1,0 +1,60 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autopullrequest",
+        "description": "cria um novo pull request no repositorio GitHub.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_owner": {
+                    "type": "string",
+                    "description": "Nome do dono do repositorio no GitHub."
+                },
+                "repo_name": {
+                    "type": "string",
+                    "description": "Nome do repositorio no GitHub."
+                },
+                "branch_name": {
+                    "type": "string",
+                    "description": "Nome da branch onde o codigo ser atualizado."
+                },
+                "file_paths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Lista de caminhos dos arquivos no repositório."
+                },
+                "commit_message": {
+                    "type": "string",
+                    "description": "Mensagem de commit descrevendo as melhorias."
+                },
+                "improvements": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Lista de melhorias no código."
+                },
+                "pr_title": {
+                    "type": "string",
+                    "description": "Titulo do Pull request."
+                },
+                "github_token": {
+                    "type": "string",
+                    "description": "Token de autentica\u00e7\u00e3o do GitHub."
+                }
+            },
+            "required": [
+                "repo_owner",
+                "repo_name",
+                "branch_name",
+                "file_paths",
+                "commit_message",
+                "improvements",
+                "pr_title",
+                "github_token"
+            ]
+        }
+    }
+}
