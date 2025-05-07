@@ -1,0 +1,17 @@
+{
+    "id": "code-front-end-dashboard-supply-chain",
+    "type_plan": "free",
+    "name": "Code Front End Dashboard Supply Chain Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-truck-loading text-xl",
+    "shortDescription": "Generates a standalone HTML dashboard for supply chain monitoring.",
+    "fullDescription": "This agent creates a single responsive HTML file for a Supply Chain Monitoring Dashboard, displaying inventory levels across locations, supplier order statuses, lead times, logistical bottlenecks, and efficiency KPIs. It is built without external libraries and styled to match an existing landing page.",
+    "UseCases": "• Building lightweight supply chain dashboards\n• Visualizing inventory levels and order statuses\n• Monitoring lead times and identifying bottlenecks\n• Tracking efficiency KPIs like Fill Rate and OTIF\n• Integrating a frontend with backend APIs for supply chain systems"
+}
