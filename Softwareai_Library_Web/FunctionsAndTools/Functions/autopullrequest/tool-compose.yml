@@ -1,0 +1,10 @@
+version: "0.1"
+
+tool_compose:
+  id: "autopullrequest"
+  type_plan: premium
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Criem pull requests no seu perfil/organizacao com multiplos arquivos"
+  fullDescription: "Digamos que voce/agentes cheguem a uma feature ou correção e entao se o repositorio git sincronizado os agentes podem subir essa nova feature/correção no repositorio"
+  UseCases: ""
+ 
