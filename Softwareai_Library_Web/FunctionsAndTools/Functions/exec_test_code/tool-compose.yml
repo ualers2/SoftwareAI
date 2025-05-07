@@ -1,0 +1,9 @@
+version: "0.1"
+
+tool_compose:
+  id: "autounittests"
+  type_plan: free
+  icon: "fas fa-terminal text-xl"
+  shortDescription: "Executa trechos de código Python"
+  fullDescription: "Esta ferramenta permite a execução segura de código Python gerado dinamicamente, como scripts de teste em Selenium. O código deve definir um dicionário `result` com chaves 'status' e 'details', que serão retornadas como feedback da execução."
+  UseCases: "Executar testes Selenium gerados por LLMs e verificar se os fluxos funcionam."
