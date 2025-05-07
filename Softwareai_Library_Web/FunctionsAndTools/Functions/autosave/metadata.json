@@ -1,0 +1,32 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autosave",
+        "description": "Salva um codigo python em um caminho",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "codigo"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Caminho do codigo"
+                }
+            },
+            "required": ["code","path"]
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
