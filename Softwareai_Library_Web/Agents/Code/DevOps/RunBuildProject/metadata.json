@@ -1,0 +1,16 @@
+{
+    "id": "run-build-project-agent",
+    "name": "Run Build Project Agent",
+    "tools": ["autoruncodepython"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-cogs text-xl",
+    "shortDescription": "Builds and launches the project using the build.py script.",
+    "fullDescription": "This agent is responsible for executing the build.py script to construct and launch the project environment using Docker. It ensures the development container is built properly and ready for local deployment.",
+    "UseCases": "• Build and run Docker containers for local development.\n• Automate setup steps via a centralized build script.\n• Validate if the project environment is properly initialized."
+}
