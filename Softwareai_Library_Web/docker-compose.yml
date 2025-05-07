@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  agent_library_hub:
+    build: .
+    container_name: agent_library_hub
+    restart: always
+    ports:
+      - "821:821"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock  # <-- Acesso ao Docker
+    command: > 
+      sh -c "python library_hub_app.py"
+    mem_limit: 900MB
+    cpus: "2.5"
+    networks:
+      - rede_externa
+
+  agent_library_webhook:
+    build: .
+    container_name: agent_library_webhook
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      sh -c "python webhook.py"
+    mem_limit: 500MB
+    cpus: "1.5"
+    networks:
+      - rede_externa
+
+  library_tools_watcher:
+    build: .
+    container_name: library_tools_watcher
+    restart: always
+    ports:
+      - "825:825"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock  
+    command: > 
+      sh -c "python observers_tools.py"
+    mem_limit: 500MB
+    cpus: "1.5"
+    networks:
+      - rede_externa
+
+  library_agents_watcher:
+    build: .
+    container_name: library_agents_watcher
+    restart: always
+    ports:
+      - "826:826"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock  
+    command: > 
+      sh -c "python observers_agents.py"
+    mem_limit: 500MB
+    cpus: "1.5"
+    networks:
+      - rede_externa
+
+networks:
+  rede_externa:
+    external: true
