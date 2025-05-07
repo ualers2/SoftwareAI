@@ -1,0 +1,10 @@
+version: "0.1"
+
+tool_compose:
+  id: "autoconversationpullrequest"
+  type_plan: premium
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Comente em um pull request de forma facilitada"
+  fullDescription: "Digamos Que CodeReview receba um pr e logo em seguida CodeUnittests é executado para testes unitarios e entao precisa apenas notificar o que foi feito entao o faz com a ferramenta e repassa os testes unitarios para CodeReview que entao atualiza pull request com os testes e a analise"
+  UseCases: ""
+ 
