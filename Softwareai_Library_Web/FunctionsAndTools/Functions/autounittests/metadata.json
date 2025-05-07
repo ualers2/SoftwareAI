@@ -1,0 +1,19 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autounittests",
+        "description": "\nHere\u2019s a description for the code function arguments:\n\nThe `autounittests` function reads test files and executes the tests contained within. It returns an exit code from `pytest.main([test_file])`, indicating whether all tests passed (exit code 0) or some failed (exit code > 0). The function takes a single parameter, `test_file`, which is the path to the test file.\n\n```python\ndef autounittests(test_file: str) -> int:\n    \"\"\"\n    Execute test files and returns the exit code from pytest.\n\n    Args:\n        test_file: Path to the test file to run.\n\n    Returns:\n        int: Exit code from pytest. 0 if all tests passed, >0 if some failed.\n    \"\"\"\n```",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "test_file": {
+                    "type": "string",
+                    "description": "Descri\u00e7\u00e3o do argumento test_file."
+                }
+            },
+            "required": [
+                "test_file"
+            ]
+        }
+    }
+}
