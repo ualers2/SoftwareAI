@@ -1,0 +1,17 @@
+{
+    "id": "code-login-frontend",
+    "type_plan": "free",
+    "name": "Code Login FrontEnd Agent",
+    "tools": ["autosave"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-pen-fancy text-xl",
+    "shortDescription": "Generates a modern and responsive login and registration page based on an existing landing page's style.",
+    "fullDescription": "This agent creates a new login and registration page (`loginAndRegistrer.html`) and a corresponding JavaScript file (`loginAndRegistrer.js`), following the visual identity and styling from the landing page (`index.html`). It ensures form alternation with smooth animations, basic input validation, API integration for login and registration endpoints, and user feedback through styled status messages. The project structure and behavior align with modern frontend development practices and responsivity requirements.",
+    "UseCases": "1. Quickly generating fully-styled and functional authentication pages based on an existing frontend style.\n2. Implementing smooth login/register form toggling with animations and password visibility toggles.\n3. Streamlining frontend setups for SaaS platforms, portals, and web apps requiring user authentication."
+}
