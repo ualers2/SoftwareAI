@@ -1,0 +1,9 @@
+version: "0.1"
+
+tool_compose:
+  id: "autoapprovepullrequest"
+  type_plan: premium
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Aprove pull request de forma autonoma"
+  fullDescription: "Essa ferramenta possibilita a aprovação autonoma de pull requests por meio da junção entre agentes softwareai e api do github"
+  UseCases: "### 📥 autoapprovepullrequest\n- **approval_message:** mensagem de aprovacao do pr\n- **merge_message:** nome curto para a branch do pull request\n- **repo_name:** {repo_name}\n- **repo_owner:** {repo_owner}\n- **pull_number:** numero do pull request criado com a ferramenta autopullrequest\n- **githubtoken_aprove:** {githubtoken}\n- **githubtoken_merge:** {githubtoken}"
