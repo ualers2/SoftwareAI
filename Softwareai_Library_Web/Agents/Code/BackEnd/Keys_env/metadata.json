@@ -1,0 +1,17 @@
+{
+    "id": "code-flask-back-end-keys-env",
+    "type_plan": "free",
+    "name": "Code Flask Back End Keys Env Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-key text-xl",
+    "shortDescription": "Integrates environment variables into the Flask backend.",
+    "fullDescription": "This agent is responsible for integrating essential environment variables into the Flask backend application. It creates or updates the Keys/keys.env file with the necessary environment configurations required for secure and smooth operation of the app.",
+    "UseCases": "1. Securely manage sensitive environment variables.\n2. Automate the creation of .env configurations for Flask projects.\n3. Centralize environment setup for consistent backend deployments."
+}
