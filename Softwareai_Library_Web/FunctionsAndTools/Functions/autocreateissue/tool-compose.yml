@@ -1,0 +1,10 @@
+version: "0.1"
+
+tool_compose:
+  id: "autocreateissue"
+  type_plan: premium
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Criacao de issue nos seus repositorios git tudo de forma autonoma"
+  fullDescription: "Digamos que voce tem um problema com o desing no html ou endpoint flask e entao comunica via chat o problema se o repositorio git tiver sincronizado o agente entao pensa no nucleo do problema e entao cria um issue no repositorio de forma autonoma"
+  UseCases: ""
+ 
