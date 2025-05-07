@@ -1,0 +1,40 @@
+
+{
+    "type": "function",
+    "function": {
+        "name": "autocreateissue",
+        "description": "Realiza A criacao de um novo no problema (issue) no repositorio github",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_owner": {
+                    "type": "string",
+                    "description": "Nome do dono do repositorio no GitHub."
+                },
+                "repo_name": {
+                    "type": "string",
+                    "description": "Nome do repositório no GitHub."
+                },
+                "issue_title": {
+                    "type": "string",
+                    "description": "titulo do problema"
+                },
+                "issue_body": {
+                    "type": "string",
+                    "description": "Descricao do problema"
+                },
+                "githubtoken": {
+                    "type": "string",
+                    "description": "Token de autenticação do GitHub para realizar operações na API."
+                }
+            },
+            "required": [
+                "repo_owner",
+                "repo_name",
+                "issue_title",
+                "issue_body",
+                "githubtoken"
+            ]
+        }
+    }
+}
