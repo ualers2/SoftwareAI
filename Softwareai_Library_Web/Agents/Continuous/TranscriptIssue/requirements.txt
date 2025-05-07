@@ -1,0 +1,8 @@
+openai
+openai-agents
+flask
+flask-cors
+flask-limiter
+flask-socketio
+python-dotenv
+pydantic
