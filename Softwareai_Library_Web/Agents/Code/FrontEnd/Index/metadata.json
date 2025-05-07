@@ -1,0 +1,17 @@
+{
+    "id": "code-index-frontend",
+    "type_plan": "free",
+    "name": "Code Index FrontEnd Agent",
+    "tools": ["autosave"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-laptop-code text-xl",
+    "shortDescription": "Autonomous agent for generating high-conversion landing pages in a single HTML file.",
+    "fullDescription": "This agent autonomously creates a modern, responsive, and visually polished landing page using pure HTML, CSS, and JavaScript, without external frameworks. It ensures a professional structure with smooth interactions, embedded styling, and seamless user experience. After completing the page generation, it automatically transfers control to the Agent Transfer Delegate without requiring manual interventions.",
+    "UseCases": "• Building fast, standalone landing pages for product launches\n• Creating polished MVP websites without backend dependencies\n• Generating presentation pages for startups, services, or events"
+}
