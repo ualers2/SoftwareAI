@@ -1,0 +1,38 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autoconversationissue",
+        "description": "responde ao usuario no pull request.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "owner": {
+                    "type": "string",
+                    "description": "Dono repositorio no GitHub."
+                },
+                "repo": {
+                    "type": "string",
+                    "description": "repositorio no GitHub."
+                },
+                "response_message": {
+                    "type": "string",
+                    "description": "mensagem."
+                },
+                "issue_number": {
+                    "type": "string",
+                    "description": "issue numbe"
+                },
+                "github_token": {
+                    "type": "string",
+                    "description": "Token de autentica\u00e7\u00e3o do GitHub."
+                }
+            },
+            "required": [
+                "repo",
+                "response_message",
+                "issue_number",
+                "github_token"
+            ]
+        }
+    }
+}
