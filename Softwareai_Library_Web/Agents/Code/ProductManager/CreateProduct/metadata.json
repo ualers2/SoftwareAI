@@ -1,0 +1,17 @@
+{
+    "id": "agent-product-manager-create-product",
+    "type_plan": "premium",
+    "name": "Agent Product Manager Create Product",
+    "tools": ["autosave", "autogetlocalfilecontent", "autocreatestripeproduction"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-cube text-xl",
+    "shortDescription": "Cria o produto Stripe com base no pré-planejamento.",
+    "fullDescription": "Este agente é responsável por ler o documento de pré-planejamento, extrair informações como nome do produto, valor da assinatura, moeda e intervalo de cobrança, e criar automaticamente um produto e um preço de assinatura na plataforma Stripe. Após a criação, ele atualiza o arquivo de chaves com os identificadores retornados.",
+    "UseCases": "• Automatizar a criação de produtos de assinatura na Stripe.\n• Garantir consistência entre pré-projeto e configuração financeira.\n• Atualizar dinamicamente o arquivo de chaves com os dados do Stripe."
+}
