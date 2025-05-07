@@ -1,0 +1,17 @@
+{
+    "id": "code-requirements-txt",
+    "type_plan": "free",
+    "name": "Code Requirements Txt Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-cogs text-xl",
+    "shortDescription": "Generates the requirements.txt file based on the libraries used in app.py.",
+    "fullDescription": "This agent automatically analyzes the app.py file to identify all libraries and dependencies used within the project, then generates the corresponding requirements.txt file. The generated requirements.txt ensures that the project can be easily set up with the necessary dependencies for any environment or deployment.",
+    "UseCases": "1. Create a requirements.txt file for Python projects. \n2. Analyze app.py to gather all required libraries. \n3. Generate the requirements.txt file for easy environment setup"
+}
