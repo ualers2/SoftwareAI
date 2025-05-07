@@ -1,0 +1,33 @@
+{
+    "type": "function",
+    "function": {
+      "name": "autogetlocalfilecontent",
+      "description": "Obtém o conteúdo de um arquivo localizado no sistema de arquivos local, com base em nomes preferenciais e alternativos.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "search_dir": {
+            "type": "string",
+            "description": "Diretório local base onde a busca pelo arquivo deve começar. A busca é feita de forma recursiva."
+          },
+          "preferred_name": {
+            "type": "string",
+            "description": "Nome preferido do arquivo a ser encontrado, como 'nome-do-documento.md'."
+          },
+          "fallback_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Lista de nomes alternativos para o arquivo, que serão usados caso o nome preferido não seja encontrado."
+          }
+        },
+        "required": [
+          "search_dir",
+          "preferred_name",
+          "fallback_names"
+        ]
+      }
+    }
+  }
+  

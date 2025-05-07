@@ -1,0 +1,17 @@
+{
+    "id": "code-flask-back-end-api-register",
+    "type_plan": "free",
+    "name": "Code Flask Back End Api Register Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-user-plus text-xl",
+    "shortDescription": "Creates the /api/register endpoint for user registration.",
+    "fullDescription": "This agent is responsible for implementing the /api/register endpoint in the Flask backend. It handles the registration of new users based on the provided base logic, ensuring that user data is correctly processed and stored.",
+    "UseCases": "1. Enable new users to register into the system.\n2. Validate and store user registration data securely.\n3. Integrate initial authentication flow into the backend."
+}

@@ -1,0 +1,39 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autocreaterepo",
+        "description": "Realiza A criacao de um novo repositorio no github",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_owner": {
+                    "type": "string",
+                    "description": "Nome do dono do repositorio no GitHub."
+                },
+                "repo_name": {
+                    "type": "string",
+                    "description": "Nome do repositório no GitHub."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Descricao de 250 caracteres do projeto."
+                },
+                "githubtoken": {
+                    "type": "string",
+                    "description": "Token de autenticação do GitHub para realizar operações na API."
+                },
+                "private": {
+                    "type": "boolean",
+                    "description": "o repositorio deve ser publico com true e privado com false"
+                }
+            },
+            "required": [
+                "repo_owner",
+                "repo_name",
+                "description",
+                "githubtoken",
+                "private"
+            ]
+        }
+    }
+}

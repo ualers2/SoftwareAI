@@ -1,0 +1,16 @@
+{
+    "id": "agent-qa-autonomous-unittest-user-login-by-ui",
+    "type_plan": "premium",
+    "name": "Agent QA Autonomous Unittest User Login by ui",
+    "tools": ["exec_test_code", "fetch_dom"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-sign-in-alt text-xl",
+    "shortDescription": "Valida o login de usuários via interface.",
+    "fullDescription": "Este agente executa testes automatizados para verificar se o processo de login na interface do usuário está funcionando corretamente, autenticando contas existentes de forma segura.",
+    "UseCases": "• Testar login de usuários após alterações no front ou back-end.\n• Validar integração com Firebase no processo de autenticação.\n• Garantir que erros de login sejam tratados adequadamente na UI."
+}

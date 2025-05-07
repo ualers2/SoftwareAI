@@ -1,0 +1,50 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autoapprovepullrequest",
+        "description": "Aprova e mergea o pull request",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_owner": {
+                    "type": "string",
+                    "description": "Nome do dono do repositorio no GitHub."
+                },
+                "repo_name": {
+                    "type": "string",
+                    "description":  "Nome do repositório no GitHub."
+                },
+                "pull_number": {
+                    "type": "string",
+                    "description":  "numero do pull request"
+                },
+                "githubtoken_aprove": {
+                    "type": "string",
+                    "description": "Token de autenticação do GitHub para realizar operações de aprovar o pull request."
+                },
+                "githubtoken_merge": {
+                    "type": "string",
+                    "description": "Token de autenticação do GitHub para realizar operações de mergear o pull request."
+                },
+                "approval_message": {
+                    "type": "string",
+                    "description": "mensagem de aprovacao do pr"
+                },
+                "merge_message": {
+                    "type": "string",
+                    "description": "mensagem de merge do pr"
+                }
+            },
+            "required": [
+                "repo_owner",
+                "repo_name",
+                "pull_number",
+                "githubtoken_aprove",
+                "githubtoken_merge",
+                "approval_message",
+                "merge_message"
+
+                ]
+        }
+    }
+}

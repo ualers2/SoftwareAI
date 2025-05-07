@@ -1,0 +1,39 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autogetfilecontent",
+        "description": "Obtem o conteudo do arquivo em um repositorio GitHub.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_name": {
+                    "type": "string",
+                    "description": "Nome do repositorio no GitHub."
+                },
+                "file_path": {
+                    "type": "string",
+                    "description": "Caminho relativo junto ao arquivo"
+                },
+                "branch_name": {
+                    "type": "string",
+                    "description": "Nome da branch principal geralmente main."
+                },
+                "companyname": {
+                    "type": "string",
+                    "description": "Nome da organizacao/compania"
+                },
+                "github_token": {
+                    "type": "string",
+                    "description": "Token de autenticacao "
+                }
+            },
+            "required": [
+                "repo_name",
+                "file_path",
+                "branch_name",
+                "companyname",
+                "github_token"
+            ]
+        }
+    }
+}

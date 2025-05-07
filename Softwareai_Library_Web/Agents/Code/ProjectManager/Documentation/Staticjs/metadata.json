@@ -1,0 +1,18 @@
+{
+    "id": "code-documentation-static-js",
+    "type_plan": "premium",
+    "name": "Code Documentation Static js Agent",
+    "tools": ["autosave", "autolistlocalproject"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-code text-xl",
+    "shortDescription": "Generates documentation for all JavaScript files located in the static/js directory.",
+    "fullDescription": "This agent creates a Staticjs.md file that documents all scripts found within the static/js folder. It autonomously lists the JavaScript files and produces a comprehensive markdown file, saving it automatically without user intervention.",
+    "UseCases": "Ideal for projects needing clear documentation of frontend scripts, ensuring developers have an organized reference of all JavaScript functionalities."
+      
+}

@@ -1,0 +1,9 @@
+version: "0.1"
+
+tool_compose:
+  id: "make_httprequest"
+  type_plan: free
+  "icon": "fas fa-code text-xl"
+  "shortDescription": "Executes a Python script with specified arguments in a given Python environment."
+  "fullDescription": "This function runs a Python script using a specified Python environment and a set of arguments. It handles any errors during execution and provides feedback on whether the script ran successfully or encountered issues."
+  "UseCases": "1. Automating script executions with dynamic parameters.\n2. Running Python scripts within specific environments.\n3. Handling errors and capturing output from external Python script execution."

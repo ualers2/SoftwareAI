@@ -1,0 +1,16 @@
+{
+    "id": "code-requirements-and-timeline",
+    "type_plan": "free",
+    "name": "Code Requirements And Timeline Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-calendar-check text-xl",
+    "shortDescription": "Creates realistic and structured weekly development schedules based on pre-project documents and detailed requirements.",
+    "fullDescription": "OpRequirements is a specialized AI agent responsible for generating precise and actionable development timelines. It transforms pre-project documents into a clear weekly schedule, prioritizing deliverables to ensure the launch of a functional MVP. With full autonomy, it focuses on organizing tasks efficiently without requiring additional validations or delays, supporting fast and structured project execution.",
+    "UseCases": "- Structuring weekly development plans for MVPs\n- Prioritizing tasks based on pre-project and requirement documents\n- Assisting project managers with actionable delivery timelines\n- Transforming high-level project specifications into detailed execution schedules "
+}

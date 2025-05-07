@@ -1,0 +1,29 @@
+{
+    "type": "function",
+    "function": {
+        "name": "send_to_webhook_func",
+        "description": "Envia uma menssagem para um usuario em expecifico do webhook",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "type": "string",
+                    "description": "user to message"
+                },
+                "type": {
+                    "type": "string",
+                    "description": "type e.g 'info' "
+                },
+                "message": {
+                    "type": "string",
+                    "description": "message "
+                },
+                "cor": {
+                    "type": "string",
+                    "description": "cor e.g blue "
+                }
+            },
+            "required": ["user","type", "message", "cor"]
+        }
+    }
+}

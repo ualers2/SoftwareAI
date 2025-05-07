@@ -1,0 +1,17 @@
+{
+    "id": "code-upload-git",
+    "type_plan": "free",
+    "name": "Code Upload Git Agent",
+    "tools": ["autogetlocalfilecontent", "autocreaterepo", "autolistlocalproject", "autoupload"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-upload text-xl",
+    "shortDescription": "Creates a GitHub repository and uploads all project files to it.",
+    "fullDescription": "This agent automates the process of creating a new GitHub repository for the project and uploading all local project files to the newly created repository. It fetches the project name and description from the provided 'cronograma.md', creates the repository with the necessary settings, and uploads the complete set of project files.",
+    "UseCases": "1. Create a new GitHub repository for the project. \n2. Upload all local project files to the repository. \n3. Automate the process of setting up a GitHub repository and syncing local files."
+}

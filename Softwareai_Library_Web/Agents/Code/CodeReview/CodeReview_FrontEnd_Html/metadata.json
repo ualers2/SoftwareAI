@@ -1,0 +1,18 @@
+{
+    "id": "code-review-front-end-html-agent",
+    "type_plan": "premium",
+    "name": "Code Review Front End Html Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-file-code text-xl",
+    "shortDescription": "Validates core HTML files and routes missing files to the appropriate agents.",
+    "fullDescription": "This agent checks for the presence of essential frontend HTML files—checkout.html, dashboard.html, index.html, and loginAndRegistrer.html. If any file is missing, it reads preplanning documentation and intelligently forwards the task to the correct specialized agent for file generation or correction.",
+    "UseCases": "• Validate existence of important HTML files.\n• Forward missing HTML file tasks to the correct frontend agent.\n• Ensure project structure consistency before development."
+}

@@ -1,0 +1,17 @@
+{
+    "id": "code-docker-build-container",
+    "type_plan": "free",
+    "name": "Code Docker Build Container Agent",
+    "tools": ["autosave"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-cubes text-xl",
+    "shortDescription": "Creates a build.py script based on the provided base code to automate Docker image builds.",
+    "fullDescription": "This agent generates a build.py script using a given base template. It automates the process of building Docker images from the project’s Dockerfile, handling command execution and error management programmatically. It ensures seamless containerization workflows for development and deployment.",
+    "UseCases": "1. Automatically build Docker images directly from Python scripts.\n2. Streamline the container build process in CI/CD pipelines.\n3. Programmatically control and log Docker build operations for better automation and debugging."
+}

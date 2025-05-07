@@ -1,0 +1,17 @@
+{
+    "id": "code-docker-file",
+    "type_plan": "free",
+    "name": "Code Docker File Agent",
+    "tools": ["autosave"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-cogs text-xl",
+    "shortDescription": "Generates a Dockerfile based on the provided base code to containerize the application.",
+    "fullDescription": "This agent automates the creation of a Dockerfile based on a provided base code. It ensures that the Dockerfile is properly configured to containerize the application, making it easy to deploy in different environments. The agent follows best practices for creating a functional Dockerfile, ensuring compatibility and efficiency.",
+    "UseCases": "1. Generate a Dockerfile for containerizing a project. \n2. Automate the process of preparing an application for deployment in Docker containers. \n3. Ensure that the Dockerfile is correctly configured with the necessary dependencies and build steps."
+}

@@ -1,0 +1,14 @@
+{
+    "id": "transcript-issue-agent",
+    "type_plan": "premium",
+    "name": "Transcript Issue Agent",
+    "tools": [],
+    "model": "gpt-4.1-nano",
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "instruction_property": "None",
+    "icon": "fas fa-language text-xl",
+    "shortDescription": "A transcription agent that converts issues from Portuguese to English without altering or adding any text.",
+    "fullDescription": "This agent is responsible for transcribing issues reported in Portuguese into English. It ensures that the content is faithfully translated without any modifications or additions to the original text, providing an accurate representation of the issue in another language.",
+    "UseCases": "1. Translating issues reported in Portuguese into English without changes. \n2. Facilitating bilingual communication in repositories by transcribing issues while maintaining their original content."
+  }

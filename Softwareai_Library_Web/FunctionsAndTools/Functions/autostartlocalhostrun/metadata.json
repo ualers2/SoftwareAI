@@ -1,0 +1,18 @@
+{
+    "type": "function",
+    "function": {
+      "name": "autostartlocalhostrun",
+      "description": "Inicia um túnel com localhost.run para expor uma aplicação Flask local via URL pública.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "port": {
+            "type": "integer",
+            "description": "Porta local onde a aplicação está rodando, geralmente 5000."
+          }
+        },
+        "required": ["port"]
+      }
+    }
+  }
+  

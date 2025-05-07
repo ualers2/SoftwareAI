@@ -1,0 +1,39 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autocreatestripeproduction",
+        "description": "Cria um Produto na stripe de forma autonoma",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "description": "Nome do produto "
+                },
+                "valor": {
+                    "type": "string",
+                    "description":  "Valor da assinatura em unidades monetárias (exemplo: 19.99)"
+                },
+                "moeda": {
+                    "type": "string",
+                    "description":  "Código da moeda (ex: brl ou usd), padrão brl"
+                },
+                "intervalo": {
+                    "type": "string",
+                    "description":  "Intervalo de cobrança (day, week, month, year) padrão month (mensal)"
+                },
+                "STRIPE_SECRET_KEY": {
+                    "type": "string",
+                    "description":  "Chave secreta de teste da stripe"
+                }
+            },
+            "required": [
+                "nome",
+                "valor",
+                "moeda",
+                "intervalo",
+                "STRIPE_SECRET_KEY"
+                ]
+        }
+    }
+}

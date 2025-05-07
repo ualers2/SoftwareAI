@@ -1,0 +1,17 @@
+{
+    "id": "agent-product-manager-create-webhook",
+    "type_plan": "premium",
+    "name": "Agent Product Manager Create Webhook",
+    "tools": ["autosave", "autogetlocalfilecontent", "autocreatestripewebhook"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-plug text-xl",
+    "shortDescription": "Cria e salva o webhook da Stripe.",
+    "fullDescription": "Este agente cria automaticamente um webhook na plataforma Stripe para escutar eventos específicos relacionados ao produto, e salva o ID e o segredo de assinatura no arquivo de chaves do sistema.",
+    "UseCases": "• Criar webhooks Stripe para monitorar eventos de assinatura.\n• Automatizar a configuração de callbacks Stripe.\n• Garantir persistência segura de chaves de integração."
+}

@@ -1,0 +1,28 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autolistlocalproject",
+        "description": "Lista o projeto local e retorna 2 lista uma com o arquivos e outra com o conteudo dos arquivos",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path_project": {
+                    "type": "string",
+                    "description": "Caminho do projeto local"
+                }
+            },
+            "required": ["path_project"]
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

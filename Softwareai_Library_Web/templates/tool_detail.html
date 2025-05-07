@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalhes da Ferramenta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a2e00f6b06.js" crossorigin="anonymous"></script>
+  <!-- Prism.js CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+
+  <!-- Prism.js Script -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <link rel="icon" href="{{ static_url }}IMGS/icon.jpg" type="image/x-icon">
+
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Navbar -->
+  <nav class="bg-white p-4 shadow">
+    <ul class="flex space-x-6 text-sm font-medium">
+      <li><a href="/" class="text-gray-600 hover:text-gray-800">Agents</a></li>
+      <li><a href="/tools.html" class="text-blue-600 hover:text-blue-800">Tools</a></li>
+      <li><a href="https://softwareai.rshare.io/dashboard" class="text-gray-600 hover:text-gray-800">Chat</a></li>
+    </ul>
+  </nav>
+
+  <section class="max-w-4xl mx-auto px-4 py-8">
+    <h1 id="tool-name" class="text-3xl font-bold mb-4">Loading...</h1>
+    <button id="show-metadata-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+        View Code function tool and metadata 
+      </button>
+  
+    <p id="tool-description" class="mb-4 text-gray-700"></p>
+    <h1 id="tool-count-properties" class="text-3xl font-bold mb-4">The tool has x properties</h1>
+    <p id="tool-description-properties" class="mb-4 text-gray-700">Please note the tool properties below</p>
+    <div id="parameters-container" class="mt-6 space-y-2"></div>
+
+
+    <!-- Modal -->
+    <div id="metadata-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden">
+      <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-6xl relative">
+        <button id="close-modal" class="absolute top-2 right-4 text-gray-500 hover:text-black text-xl">&times;</button>
+        <h2 class="text-xl font-semibold mb-4">Code function tool and metadata</h2>
+
+        <!-- Container lado a lado com rolagem -->
+        <div class="flex gap-4 max-h-[500px] overflow-hidden">
+
+          <!-- Bloco Python + botão copiar -->
+          <div class="w-1/2 flex flex-col">
+            <button id="copy-code-btn" class="mb-2 self-end text-sm text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded">Copiar Código</button>
+            <pre class="overflow-y-auto max-h-[500px] rounded-lg border border-gray-200"><code id="code-content" class="language-python"></code></pre>
+          </div>
+
+          <!-- Bloco JSON + botão copiar -->
+          <div class="w-1/2 flex flex-col">
+            <button id="copy-metadata-btn" class="mb-2 self-end text-sm text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded">Copiar Metadata</button>
+            <pre class="overflow-y-auto max-h-[500px] rounded-lg border border-gray-200"><code id="metadata-content" class="language-json"></code></pre>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+  <script>
+    const TOOL_ID = "{{ tool_id }}";
+  </script>
+  <script src="{{ static_url }}js/tool_detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+    "id": "agent-qa-autonomous-unittest-user-register-by-ui",
+    "type_plan": "premium",
+    "name": "Agent QA Autonomous Unittest User Checkout by ui",
+    "tools": ["exec_test_code", "fetch_dom"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-credit-card text-xl",
+    "shortDescription": "Valida o processo completo de compra com Stripe via UI.",
+    "fullDescription": "Este agente executa testes ponta-a-ponta simulando uma compra com integração Stripe. Ele interage com a interface, preenche os dados de pagamento simulados e valida no Firebase se a transação resultou no upgrade de plano para 'premium'.",
+    "UseCases": "• Garantir que o fluxo de pagamento está funcionando corretamente.\n• Testar se upgrades no plano do usuário estão sendo corretamente registrados no Firebase.\n• Verificar a integração visual com Stripe em ambiente de produção ou staging."
+}

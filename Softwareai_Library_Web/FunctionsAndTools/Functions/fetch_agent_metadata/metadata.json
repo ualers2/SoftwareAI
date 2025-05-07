@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "fetch_agent_metadata",
+    "description": "Busca metadados de múltiplos agentes no Firebase Realtime Database",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "firebase_json_path": {
+          "type": "string",
+          "description": "Caminho para o arquivo JSON de credenciais do Firebase"
+        },
+        "firebase_db_url": {
+          "type": "string",
+          "description": "URL do Firebase Realtime Database"
+        },
+        "agent_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Lista de IDs dos agentes cujos metadados serão buscados"
+        }
+      },
+      "required": [
+        "firebase_json_path",
+        "firebase_db_url",
+        "agent_ids"
+      ]
+    }
+  }
+}

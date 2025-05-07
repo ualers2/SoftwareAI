@@ -1,0 +1,17 @@
+{
+    "id": "code-review-keys-agent",
+    "type_plan": "premium",
+    "name": "Code Review Keys Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-key text-xl",
+    "shortDescription": "Validates critical keys files and forwards missing ones to specialized agents.",
+    "fullDescription": "This agent verifies the presence of essential key files, including fb.py and keys.env. If any file is missing, it automatically forwards the task to the appropriate agent responsible for recreating the missing file, ensuring system security and integrity.",
+    "UseCases": "• Validate the existence of essential key files.\n• Automatically route missing key file tasks to the correct backend agent.\n• Ensure environment security setup is complete."
+}

@@ -1,0 +1,16 @@
+{
+    "id": "code-documentation-technich",
+    "type_plan": "premium",
+    "name": "Code Documentation Technich Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-file-alt text-xl",
+    "shortDescription": "Creates a comprehensive README.md file based on the project schedule and technical guidelines.",
+    "fullDescription": "This agent generates a full README.md for the project, following clear documentation standards. It structures the content logically, highlights functionalities, installation procedures, troubleshooting steps, and maintenance records. The README serves as a quick reference and user guide, ensuring clarity and accessibility for all audiences.",
+    "UseCases": "Essential for projects requiring well-organized and professional technical documentation, supporting developers, users, and maintenance teams with structured guidance."
+}

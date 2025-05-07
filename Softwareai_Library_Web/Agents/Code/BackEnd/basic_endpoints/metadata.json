@@ -1,0 +1,17 @@
+{
+    "id": "code-flask-back-end-basic-endpoints",
+    "type_plan": "free",
+    "name": "Code Flask Back End Basic Endpoints Agent",
+    "tools": ["autosave", "autogetlocalfilecontent"],
+    "model": "o3-mini",
+    "instruction_property": {
+        "doc_md": "/app/LocalProject/doc_md",
+        "path_js": "/app/LocalProject/static/js"
+    },
+    "instruction_path": "instruction.md",
+    "tutorial_path": "tutorial.md",
+    "icon": "fas fa-directions text-xl",
+    "shortDescription": "Creates initial navigation endpoints for the Flask app.",
+    "fullDescription": "This agent is responsible for creating the initial navigation routes in the Flask backend. It sets up endpoints for the landing page, login, checkout, and checkout result pages, providing the foundational structure for user navigation across the web application.",
+    "UseCases": "1. Set up navigation flow in a Flask application.\n2. Create main pages like landing, login, and checkout.\n3. Ensure structured user navigation from the start of the project."
+}

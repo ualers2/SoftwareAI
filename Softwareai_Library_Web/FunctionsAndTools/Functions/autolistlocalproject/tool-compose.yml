@@ -1,0 +1,10 @@
+version: "0.1"
+
+tool_compose:
+  id: "autolistlocalproject"
+  type_plan: free
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Lista o projeto local e retorna 2 lista uma com o arquivos e outra com o conteudo dos arquivos"
+  fullDescription: "Digamos que voce/agente crie um novo projeto web e o salve no ambiente local entao o agente de integracao utiliza a ferramenta para contruir o pr"
+  UseCases: ""
+ 

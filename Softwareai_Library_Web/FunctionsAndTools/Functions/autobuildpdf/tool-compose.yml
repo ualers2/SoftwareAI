@@ -1,0 +1,10 @@
+version: "0.1"
+
+tool_compose:
+  id: "autobuildpdf"
+  type_plan: premium
+  icon: "fas fa-pen-fancy text-xl"
+  shortDescription: "Criacao autonoma de pdf com foco em documento tecnico"
+  fullDescription: "Essa ferramenta possibilita a criacao autonoma de pdf de documento tecnico, digamos que voce entre no chat e quer tornar sua ideia em um produto real quando documentation-architect-agent (Tigrao) pensa no pre planejamento agora é possivel que ele crie alem de um simples .md crie tambem .pdf no thema documento tecnico"
+  UseCases: ""
+ 
