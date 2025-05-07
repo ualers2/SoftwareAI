@@ -1,0 +1,35 @@
+
+{
+    "type": "function",
+    "function": {
+        "name": "autogetstructure",
+        "description": "Obtem o a estrutura do repositorio GitHub.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo_name": {
+                    "type": "string",
+                    "description": "Nome do repositorio no GitHub."
+                },
+                "repo_owner": {
+                    "type": "string",
+                    "description": "Nome do dono do repositorio no GitHub."
+                },
+                "github_token": {
+                    "type": "string",
+                    "description": "Token de autenticacao "
+                },
+                "branch_name": {
+                    "type": "string",
+                    "description": "Nome da branch principal geralmente main."
+                }
+            },
+            "required": [
+                "repo_name",
+                "repo_owner",
+                "github_token",
+                "branch_name"
+            ]
+        }
+    }
+}
