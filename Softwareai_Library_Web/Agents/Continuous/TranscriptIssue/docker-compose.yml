@@ -1,0 +1,20 @@
+
+version: '3.8'
+services:
+  transcriptissue:
+    build: .
+    volumes:
+      - .:/app  
+    restart: always
+    ports:
+      - "129:129"
+    command: > 
+      sh -c "python api.py"
+    mem_limit: 500MB
+    cpus: "1.25"   
+    networks:
+      - rede_externa
+
+networks:
+  rede_externa:
+    external: true
