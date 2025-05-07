@@ -1,0 +1,44 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autochangesrequestedinpullrequest",
+        "description": "atualiza um pull request no repositorio GitHub.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "repo": {
+                    "type": "string",
+                    "description": "Nome do repositorio no GitHub."
+                },
+                "file_update": {
+                    "type": "string",
+                    "description": "arquivo a ser atualizado"
+                },
+                "new_content": {
+                    "type": "string",
+                    "description": "novo conteudo"
+                },
+                "branch": {
+                    "type": "string",
+                    "description": "branch do pr"
+                },
+                "commit_message": {
+                    "type": "string",
+                    "description": "Mensagem de commit descrevendo as melhorias."
+                },
+                "github_token": {
+                    "type": "string",
+                    "description": "Token de autentica\u00e7\u00e3o do GitHub."
+                }
+            },
+            "required": [
+                "repo",
+                "file_update",
+                "new_content",
+                "branch",
+                "commit_message",
+                "github_token"
+            ]
+        }
+    }
+}
