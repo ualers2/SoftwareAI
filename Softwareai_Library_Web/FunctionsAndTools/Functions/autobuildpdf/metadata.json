@@ -1,0 +1,29 @@
+{
+    "type": "function",
+    "function": {
+        "name": "autobuildpdf",
+        "description": "Cria um pdf apartir de um documento md",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "input_md_content": {
+                    "type": "string",
+                    "description": "input de conteudo md."
+                },
+                "output_pdf_path": {
+                    "type": "string",
+                    "description":  "saida do .pdf"
+                },
+                "theme_name": {
+                    "type": "string",
+                    "description":  "Tema do pdf"
+                }
+            },
+            "required": [
+                "input_md_content",
+                "output_pdf_path",
+                "theme_name"
+            ]
+        }
+    }
+}
