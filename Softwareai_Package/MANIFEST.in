@@ -1,4 +1,0 @@
-include Readme.md
-include requirements.txt
-recursive-include softwareai_engine_library *
-recursive-include softwareai_engine_library/FunctionsAndTools/Functions *
