@@ -1,9 +1,0 @@
-version: "0.1"
-
-tool_compose:
-  id: "autostartlocalhostrun"
-  type_plan: premium
-  icon: "fas fa-pen-fancy text-xl"
-  shortDescription: "Inicia um túnel para expor a aplicação Flask com localhost.run."
-  fullDescription: "Essa função automatiza a criação de um túnel usando localhost.run para expor uma aplicação Flask local na porta especificada, gerando uma URL pública que pode ser usada para acessar a aplicação de qualquer lugar, sem a necessidade de configuração adicional de servidores externos."
-  UseCases: "Expor uma aplicação Flask local em um ambiente de desenvolvimento para acesso remoto."
