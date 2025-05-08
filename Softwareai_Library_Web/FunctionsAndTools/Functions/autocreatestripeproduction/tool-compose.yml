@@ -1,9 +1,0 @@
-version: "0.1"
-
-tool_compose:
-  id: "autocreatestripeproduction"
-  type_plan: premium
-  icon: "fas fa-pen-fancy text-xl"
-  shortDescription: "Crie seus produtos na plataforma financeira stripe de forma autonoma"
-  fullDescription: "Essa ferramenta possibilita agentes softwareai crie webhooks apos colocar o aplicativo para producao "
-  UseCases: "### 📥 autocreatestripeproduction\n- **STRIPE_SECRET_KEY:** {STRIPE_SECRET_KEY}\n- **intervalo:** {intervalo}\n- **valor:** {valor} \n- **nome:** {nome}"

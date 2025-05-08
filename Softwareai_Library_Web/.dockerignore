@@ -1,6 +1,0 @@
-save/
-run-git-commit.py
-ngrok.exe
-__pycache__
-*.pyc
-.gitignore

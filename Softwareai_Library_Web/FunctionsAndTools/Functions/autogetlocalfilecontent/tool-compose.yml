@@ -1,9 +1,0 @@
-version: "0.1"
-
-tool_compose:
-  id: "autogetlocalfilecontent"
-  type_plan: free
-  icon: "fas fa-file-alt text-xl"
-  shortDescription: "Recupere conteúdo de arquivos locais"
-  fullDescription: "Se você estiver enfrentando um problema em um arquivo, como o index.html, basta informar o nome ao chat. Os agentes, ao utilizarem esta ferramenta, conseguem localizar e ler automaticamente o conteúdo do arquivo nos diretórios locais do projeto, mesmo que o nome exato não seja conhecido, permitindo uma análise precisa da situação com base no conteúdo real."
-  UseCases: ""

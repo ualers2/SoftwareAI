@@ -1,9 +1,0 @@
-version: "0.1"
-
-tool_compose:
-  id: "fetch_dom"
-  type_plan: free
-  icon: "fas fa-pen-fancy text-xl"
-  shortDescription: "Captura o HTML bruto de uma página para análise ou testes automatizados."
-  fullDescription: "Esta ferramenta abre uma página da web em modo headless, extrai o HTML bruto via Selenium e retorna esse conteúdo. É útil para agentes que precisam inspecionar a estrutura DOM de uma página dinamicamente."
-  UseCases: "Realizar inspeções automatizadas em páginas web para validação visual."
