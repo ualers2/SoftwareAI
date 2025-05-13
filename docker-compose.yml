@@ -1,0 +1,39 @@
+# docker-compose.yml otimizado (sem o 'version:')
+services:
+  redis:
+    image: redis:6
+
+  api:
+    build: .
+    command: python server.py
+    volumes:
+      - .:/app
+      # monte o cache do Playwright para evitar conflito de FS
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "5100:5100"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A server.celery_app worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_WORKER_CONCURRENCY=4
+    depends_on:
+      - redis
+
+  beat:
+    build: .
+    command: celery -A server.celery_app beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+volumes:
+  playwright_cache:
