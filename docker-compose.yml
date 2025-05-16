@@ -1,14 +1,40 @@
-# docker-compose.yml otimizado (sem o 'version:')
 services:
   redis:
     image: redis:6
 
-  api:
+  app:
     build: .
-    command: python server.py
+    working_dir: /app  
+    command: > 
+      sh -c "python app.py"
     volumes:
       - .:/app
-      # monte o cache do Playwright para evitar conflito de FS
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "889:889"
+
+  app_api:
+    build: .
+    working_dir: /app
+    command: > 
+      sh -c "python api_app.py"
+    volumes:
+      - .:/app
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "859:859"
+
+  scheduling_api:
+    build: .
+    working_dir: /app
+    command: > 
+      sh -c "python api_scheduling.py"
+    volumes:
+      - .:/app
       - playwright_cache:/playwright_cache
     environment:
       - FIREBASE_CRED=/app/Keys/firebase.json
@@ -19,7 +45,7 @@ services:
 
   worker:
     build: .
-    command: celery -A server.celery_app worker --loglevel=info
+    command: celery -A api_scheduling.celery_app worker --loglevel=info -I api_scheduling_tasks
     volumes:
       - .:/app
     environment:
@@ -29,7 +55,7 @@ services:
 
   beat:
     build: .
-    command: celery -A server.celery_app beat --loglevel=info
+    command: celery -A api_scheduling.celery_app beat --loglevel=info
     volumes:
       - .:/app
     depends_on:

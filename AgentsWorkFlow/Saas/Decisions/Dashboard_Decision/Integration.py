@@ -15,8 +15,6 @@ from AgentsWorkFlow.Saas.Code.FrontEnd.Dashboard.Dashboard_Learning_Management_A
 from AgentsWorkFlow.Saas.Code.FrontEnd.Dashboard.Dashboard_Supply_Chain_Agent.Integration import Dashboard_Supply_Chain_Agent
 
 
-from modules.modules import *
-
 
 class Data(BaseModel):
     Content: str
