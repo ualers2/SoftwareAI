@@ -1,22 +1,34 @@
 # SoftwareAI Skeleton Engine
 
-**Transforme suas ideias em projetos Python prontos e agende agentes automaticamente, economizando tempo e recursos.**
+> **Transforme suas ideias em projetos Python prontos e agende agentes autônomos para executar tarefas programadas.**
 
-Este pacote atua como uma **CLI** e **engine** para:
+**SoftwareAI Skeleton Engine** é um pacote que combina uma **CLI** e um **motor de orquestração** para:
 
-* **Escalonamento de Agentes**: Agende execuções programadas de agentes (via Flask/Celery) diretamente do terminal.
-* **Scaffold de Projetos**: Crie esqueletos completos de aplicações Python (Flask) com templates e containers Docker.
+* 🚀 **Programar Agentes para Trabalho**: agende agentes autônomos (via Flask/Celery) diretamente do terminal com o comando `schedule-task`.
+* 📦 **Scaffold de Projetos**: crie esqueletos completos de aplicações Python (Flask) com templates pré-configurados e suporte a Docker.
+
+---
+
+## About
+
+SoftwareAI é um framework cujo objetivo é permitir que uma organização governada por IA funcione como uma verdadeira empresa de desenvolvimento de software. Não se trata apenas de criar código: o SoftwareAI gerencia atualizações, documentação, agendamentos, planilhas e automatiza processos de toda a equipe.
+
+---
 
 ## Funcionalidades Principais
 
-| Comando         | Descrição                                                                                    |
-| --------------- | -------------------------------------------------------------------------------------------- |
-| `create-py-app` | Cria um novo projeto Flask com tema predefinido (`flask-web-product`).                       |
-| `schedule-task` | Agenda um agente para execução futura, informando nome do agente, horário e repositório Git. |
+| Comando         | Descrição                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
+| `create-py-app` | Cria um novo projeto Flask com tema predefinido (`flask-web-product`).                                  |
+| `schedule-task` | Programa um agente autônomo para execução futura, informando nome do agente, horário e repositório Git. |
+
+---
 
 ## Esqueletos Disponíveis
 
-* **flask-web-product**: Projeto Flask com telas de login, checkout Stripe, dashboard e Docker.
+* **flask-web-product**: Projeto Flask com telas de login, checkout Stripe, dashboard responsivo e Docker.
+
+---
 
 ## Quickstart
 
@@ -29,100 +41,73 @@ Este pacote atua como uma **CLI** e **engine** para:
 
 ### Instalação
 
-Via NPM:
+Instale o pacote globalmente usando NPM ou Yarn:
 
 ```bash
 npm install -g @ualers/softwareai-skeleton-engine
-```
-
-Ou via Yarn:
-
-```bash
+# ou
 yarn global add @ualers/softwareai-skeleton-engine
 ```
 
-### Scaffold de Projeto
+### Passo 1: Scaffold de Projeto
+
+Gere um novo esqueleto Flask com Docker e funcionalidades prontas:
 
 ```bash
-# Gera esqueleto Flask no diretório `meu-projeto`
 create-py-app meu-projeto --theme flask-web-product
 ```
 
-Se não informar `--theme`, o padrão `flask-web-product` será utilizado.
+Se nenhum tema for informado, o padrão `flask-web-product` será usado.
 
-### Agendamento de Agentes
+### Passo 2: Programando Agentes (schedule-task)
+
+Com o servidor Flask/Celery rodando (endpoint `/schedule-agent`), use este comando para agendar um agente:
 
 ```bash
-# Agenda um agente para rodar em data/hora específica
 create-py-app schedule-task \
   --agent "AgentsWorkFlow.Saas.teams.ProjectManager" \
   --email "usuario@exemplo.com" \
   --runAt "2025-05-20T15:30:00" \
-  --repo "https://github.com/usuario/meu-projeto.git" \
-  --params '{"session_id":"abc123","user_message":"Iniciar projeto"}'
+  --repo "https://github.com/usuario/projeto.git" \
+  --params '{"session_id":"xyz","user_message":"Iniciar projeto"}'
 ```
 
-Esse comando envia ao servidor:
+Isso enviará o payload JSON:
 
 ```json
 {
   "agent": "AgentsWorkFlow.Saas.teams.ProjectManager",
   "run_at": "2025-05-20T15:30:00-03:00",
-  "repo_git": "https://github.com/usuario/meu-projeto.git",
+  "repo_git": "https://github.com/usuario/projeto.git",
   "params": {
     "user_email": "usuario@exemplo.com",
-    "session_id": "abc123",
+    "session_id": "xyz",
     "user_message": "Iniciar projeto"
   }
 }
 ```
 
-### Executando Localmente
+## Freemium Product Landing
 
-1. Entre no diretório do projeto:
+\[**Specialized AI Agents for Every Coding Task**]\([https://softwareai.rshare.io](https://softwareai.rshare.io))
 
-   ```bash
-   cd meu-projeto
-   ```
-2. (Opcional) Crie e ative um virtualenv:
+Acelere seu fluxo de desenvolvimento com assistentes de IA treinados especificamente para:
 
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Instale dependências:
+* Documentação de código
+* Refatoração e otimização
+* Revisões e auditorias
+* Geração de testes e exemplos
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Inicie a aplicação:
-
-   ```bash
-   python app.py
-   ```
-
-Ou com Docker Compose:
-
-```bash
-docker-compose up --build
-```
-
-Acesse em: `http://localhost:5000`
-
-## Configuração da API de Agendamento
-
-Defina a URL do servidor de agendamento (opcional, padrão: `http://localhost:5100`):
-
-```bash
-export SCHEDULER_API_URL=https://seu-servidor.com
-```
+---
 
 ## Contribuição
 
-1. Faça um fork
-2. Crie uma branch (`git checkout -b feature/x`)
+1. Fork deste repositório
+2. Crie uma branch: `git checkout -b feature/x`
 3. Commit e push
 4. Abra um Pull Request
+
+---
 
 ## Licença
 
