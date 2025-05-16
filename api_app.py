@@ -91,6 +91,124 @@ limiter = Limiter(
 limit = "10 per minute"
 
 
+@app.route('/api/AgentsWorkFlow/Saas', methods=['POST'])
+@limiter.limit(lambda: dynamic_rate_limit(appcompany))
+def api_AgentsWorkFlow_Saas():
+    data = request.get_json()
+    session_id = data.get("session_id")
+    user_email = data.get("user_email")
+    user_message = data.get("user_message")
+    name_project = data.get("name_project")
+    type_stream = "agentworkflow"
+
+    usuario, erro = autenticar_usuario(appcompany=appcompany)
+    if erro:
+        return erro
+    
+    if not user_email:
+        return jsonify({"error": "user_email is required"}), 400
+
+    refuser = db.reference(f'users/{user_email.replace(".", "_")}', app=appcompany)
+    data_user = refuser.get()
+    refsettings = db.reference(f'users/{user_email.replace(".", "_")}/settings', app=appcompany)
+    data_user_settings = refsettings.get()
+    refdashboard = db.reference(f'users/{user_email.replace(".", "_")}/settings/dashboard', app=appcompany)
+    data_user_dashboard = refdashboard.get()
+    refgithub = db.reference(f'users/{user_email.replace(".", "_")}/settings/github', app=appcompany)
+    data_user_github = refgithub.get()
+    github_token = data_user_github.get("github_token")
+    githubCompany = data_user_dashboard.get("githubCompany")
+    STRIPE_SECRET_KEY = data_user_dashboard.get("STRIPE_SECRET_KEY")
+    NEXT_PUBLIC_STRIPE_PUB_KEY = data_user_dashboard.get("NEXT_PUBLIC_STRIPE_PUB_KEY")
+    STRIPE_WEBHOOK_EVENTS = "payout.paid customer.subscription.deleted checkout.session.async_payment_failed checkout.session.async_payment_succeeded checkout.session.expired checkout.session.completed checkout.session.expired invoice.payment_succeeded invoice.paid invoice.finalized invoice.updated payment_intent.created payment_intent.succeeded charge.succeeded"
+    user_credentials_arg = data_user_settings.get("firebase_config")
+
+
+    prompt_continuous = "Siga Com os objetivos da instrucao"
+    path_ProjectWeb = f"/app/LocalProject/{name_project}"
+    os.makedirs(path_ProjectWeb, exist_ok=True)
+    os.chdir(path_ProjectWeb)
+    path_html = f"templates"
+    path_js = f"static/js"
+    path_css = f"static/css"
+    doc_md = f"doc_md"
+    Keys_path = f"Keys"
+    path_Keys = Keys_path
+    githubtoken = github_token
+    repo_owner = githubCompany
+    user_credentials = user_credentials_arg
+    os.makedirs(path_html, exist_ok=True)
+    os.makedirs(path_js, exist_ok=True)
+    os.makedirs(path_css, exist_ok=True)
+    os.makedirs(doc_md, exist_ok=True)
+    os.makedirs(Keys_path, exist_ok=True)
+    
+    os.chdir(os.path.join(os.path.dirname(__file__)))
+
+    # Comando da CLI que foi instalada globalmente
+    command = ["create-py-app", "--project", name_project]
+
+    # Executar o comando no diretório do projeto
+    try:
+        result = subprocess.run(
+            command,
+            cwd=path_ProjectWeb,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True
+        )
+        print("CLI output:", result.stdout)
+    except subprocess.CalledProcessError as e:
+        print("Erro ao rodar CLI:", e.stderr)
+        return jsonify({"error": "Falha ao rodar create-py-app", "details": e.stderr}), 500
+
+    async def generate_response():
+        print("🧠 Enviando mensagem ao agente de triagem...")
+
+        # /api/AgentsWorkFlow/Saas/teams/ProjectManager V
+
+        # /api/AgentsWorkFlow/Saas/teams/FrontEnd V
+
+        # /api/AgentsWorkFlow/Saas/teams/BackEnd V
+
+        # /api/AgentsWorkFlow/Saas/teams/DevOps/Docker V
+
+        # /api/AgentsWorkFlow/Saas/teams/Documentation V
+
+        # /api/AgentsWorkFlow/Saas/teams/DevOps/RunBuild V
+
+        # /api/AgentsWorkFlow/Saas/teams/DevOps/EasyDeploy V
+
+        # /api/AgentsWorkFlow/Saas/teams/DevOps/UploadGit V
+
+        # /api/AgentsWorkFlow/Saas/teams/QA 
+
+        # /api/AgentsWorkFlow/Saas/teams/ProductManager
+
+
+    # # Evita conflito de loops com interpretador
+    # def run_async():
+    #     try:
+    #         loop = asyncio.new_event_loop()
+    #         asyncio.set_event_loop(loop)
+    #         loop.run_until_complete(generate_response())
+    #     except Exception as e:
+    #         print(f"Erro ao rodar stream do agente: {e}")
+
+
+    # thread = threading.Thread(target=run_async, daemon=True)
+    # thread.start()
+
+    def runner():
+        asyncio.run(generate_response())
+
+    threading.Thread(target=runner).start()
+    
+    return jsonify({
+        "session_id": session_id,
+    }), 201
+
 
 @app.route('/api/me')
 def get_current_user():
@@ -532,7 +650,6 @@ def github_status():
         "selectedAgents": selectedAgents,
     })
 
-
 @app.route('/api/release/deploy', methods=['POST'])
 def deploy_to_release():
     data = request.get_json()
@@ -580,9 +697,6 @@ def connect_release():
     session["releaseToken"] = release_token
 
     return jsonify({"success": True})
-
-
-
 
 @app.route('/api/response-conversation', methods=['POST'])
 @limiter.limit(lambda: dynamic_rate_limit(appcompany))
@@ -672,9 +786,6 @@ Regra 2 - Caso usuario esteja conversando e ou escrevendo apenas converse respon
     return jsonify({
         "session_id": session_id,
     }), 201
-
-
-
 
 @app.route('/api/new-conversation', methods=['POST'])
 def api_new_conversation():
