@@ -1,0 +1,65 @@
+services:
+  redis:
+    image: redis:6
+
+  app:
+    build: .
+    working_dir: /app  
+    command: > 
+      sh -c "python app.py"
+    volumes:
+      - .:/app
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "889:889"
+
+  app_api:
+    build: .
+    working_dir: /app
+    command: > 
+      sh -c "python api_app.py"
+    volumes:
+      - .:/app
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "859:859"
+
+  scheduling_api:
+    build: .
+    working_dir: /app
+    command: > 
+      sh -c "python api_scheduling.py"
+    volumes:
+      - .:/app
+      - playwright_cache:/playwright_cache
+    environment:
+      - FIREBASE_CRED=/app/Keys/firebase.json
+    ports:
+      - "5100:5100"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A api_scheduling.celery_app worker --loglevel=info -I api_scheduling_tasks
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_WORKER_CONCURRENCY=4
+    depends_on:
+      - redis
+
+  beat:
+    build: .
+    command: celery -A api_scheduling.celery_app beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+volumes:
+  playwright_cache:

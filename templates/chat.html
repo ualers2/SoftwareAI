@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat | SoftwareAI</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Markdown renderer -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Tema highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ static_url }}css/styles.css" />
+    <link rel="stylesheet" href="{{ static_url }}css/header.css" />
+ 
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-gray-50">
+    <header class="header-container">
+      <div class="header-left">
+        <div class="flex items-center">
+          <i class="fas fa-code text-blue-500 mr-2"></i>
+          <span class="font-semibold">SoftwareAI</span>
+        </div>
+    
+        <div class="border-l border-gray-700 h-6 mx-2"></div>
+    
+        <div class="flex space-x-2">
+          <button id="github-btn" class="github-btn">
+            <i class="fab fa-github"></i>
+            <span>Connect with GitHub</span>
+          </button>
+          
+        </div>
+      </div>
+    
+      <div class="header-right">
+        <button id="settings-button2" class="text-gray-400 hover:text-white p-2">
+          <i class="fas fa-cog"></i>
+        </button>
+        
+      </div>
+    </header>
+    
+    <main class="flex-1 w-full h-screen p-4">
+      <!-- Botão de menu para mobile -->
+      <button id="toggle-sidebar" class="fixed top-4 left-4 p-2 rounded-full bg-white text-gray-800 shadow-lg z-50">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div id="chat" class="tab-pane show active">
+        <div class="flex md:h-[calc(100vh-2rem)] h-mobile-full">
+
+          <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+          <!-- Sidebar for chat history and settings -->
+          <div id="chat-sidebar" class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white rounded-r-md shadow-lg transform -translate-x-full flex flex-col transition-transform duration-300 z-40">
+            <div class="p-3 flex items-center justify-between border-b border-gray-700">
+              <h3 class="font-medium">Conversations</h3>
+              <button id="new-chat" class="text-sm py-1 px-2 bg-blue-600 hover:bg-blue-700 rounded">
+                <i class="fas fa-plus mr-1"></i> New
+              </button>
+            </div>
+            
+            <div id="chat-history" class="overflow-y-auto p-2 space-y-2 max-h-[320px]">
+              <!-- Chat history will be populated here -->
+              <div class="chat-history-item p-2 rounded hover:bg-gray-800 cursor-pointer active">
+                <div class="text-sm font-medium truncate">Conversa atual</div>
+                <div class="text-xs text-gray-400 truncate">Olá! Como posso ajudar...</div>
+              </div>
+            </div>
+            
+            <div class="p-3 border-t border-gray-700">
+              <button id="settings-button" class="flex items-center justify-center w-full py-2 rounded bg-gray-800 hover:bg-gray-700 text-sm">
+                <i class="fas fa-cog mr-2"></i> Settings
+              </button>
+            </div>
+          </div>
+
+
+          <!-- Container principal do chat -->
+          <div id="chat-main" class="flex flex-col h-full bg-gray-800 rounded-r-md chat-container transition-all duration-300 w-full md:w-full">
+            <!-- Área de mensagens com rolagem -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-6 min-h-0">
+              <!-- Exemplo de mensagens -->
+              <div class="chat-message agent-message">
+                <div class="flex items-start">
+                  <div class="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center text-white mr-4">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <p class="px-4 py-2 rounded-xl max-w-xl text-white">Olá! Como posso ajudar você hoje?</p>
+                </div>
+              </div>
+
+              <div class="chat-message user-message">
+                <div class="flex items-start justify-end">
+                  <p class="px-4 py-2 rounded-xl max-w-xl text-white">Quero saber sobre seus planos de assinatura.</p>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Campo de mensagem sempre visível na tela -->
+            <div id="teste" class="sticky bottom-0 bg-gray-800 p-4 border-t border-gray-700 z-10">
+              <div class="relative">
+                <!-- Miniaturas de imagens -->
+                <div id="image-previews" class="absolute top-[-90px] left-0 right-0 px-4 flex gap-2 overflow-x-auto"></div>
+
+                <div id="attached-files" class="p-2"></div>
+
+
+                <textarea id="message-input" 
+                  class="w-full p-3 pr-20 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none resize-none"
+                  placeholder="Send a message..." rows="3">
+                </textarea>
+
+                <div class="absolute bottom-3 right-3 flex space-x-2">
+
+
+                  <button id="open-custom-modal" class="p-2 text-gray-400 hover:text-white" title="Mais opções">
+                    <i class="fas fa-plus"></i>
+                  </button>
+
+                  <!-- Botão para abrir o Monaco Editor -->
+                  <button id="toggle-editor" class="p-2 text-green-400 hover:text-white" title="Editor de código">
+                    <i class="fas fa-code"></i>
+                  </button>
+
+
+                  <button id="folderPicker" class="p-2 text-gray-400 hover:text-white" title="Select folder">
+                    <i id="folder-icon" class="fas fa-folder"></i>
+                  </button>
+
+
+                  <button id="send-message" class="p-2 text-blue-500 hover:text-blue-400" title="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+
+
+                </div>
+
+                <input type="file" id="image-upload" class="hidden" accept="image/*" multiple>
+                <input type="file" id="file-upload" class="hidden" multiple>
+              </div>
+            </div>
+          
+          </div>
+
+          <div id="code-editor-panel" class="h-full bg-gray-900 text-white w-full overflow-hidden transition-all duration-300">
+            <div id="editor-layout" class="flex h-full w-full relative">
+              
+              <!-- Painel lateral -->
+              <div id="file-tree" class="bg-gray-800 border-r border-gray-700 p-2 text-sm overflow-y-auto" style="width: 200px;"></div>
+          
+              <!-- Divisor vertical -->
+              <div id="resizer" class="w-1 bg-gray-700 cursor-col-resize"></div>
+          
+              <!-- Editor + Preview -->
+              <div id="editor-preview-container" class="flex flex-col h-full relative" style="width: calc(100% - 201px);">
+                
+                <!-- Editor -->
+                <div id="monaco-container" class="relative bg-gray-900" style="height: 50%;">
+                  <div class="absolute top-2 left-2 flex gap-2 z-10">
+                    <button id="toggle-file-tree" class="bg-gray-700 text-gray-300 hover:text-white px-1 py-0.5 rounded">
+                      ⏴
+                    </button>
+                    <button id="toggle-preview-button" class="bg-gray-700 text-gray-300 hover:text-white px-1 py-0.5 rounded">
+                      🔽
+                    </button>
+                  </div>
+                </div>
+          
+                <!-- Divisor horizontal -->
+                <div id="horizontal-resizer" class="h-1 bg-gray-700 cursor-row-resize"></div>
+          
+                <!-- Preview -->
+                <iframe id="preview-frame" class="bg-white w-full h-full"></iframe>
+          
+              </div>
+          
+            </div>
+          </div>
+          
+          
+          
+
+        </div>
+      </div>
+
+    </main>
+
+
+    
+    <!-- Custom Modal -->
+    <div id="custom-modal" class="hidden fixed bottom-24 right-6 bg-gray-800 text-white rounded-lg shadow-lg w-72 z-50 border border-gray-600">
+      <ul class="divide-y divide-gray-700">
+
+        
+        <li id="sync-github" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center space-x-2">
+          <i class="fab fa-github text-white"></i>
+          <span>Upload GitHub repository</span>
+        </li>
+        <li id="upload-file" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center space-x-2">
+          <i class="fas fa-upload text-purple-400"></i>
+          <span>Upload files</span>
+        </li>
+        <li id="upload-image" class="p-3 hover:bg-gray-700 cursor-pointer flex items-center space-x-2">
+          <i class="fas fa-upload text-purple-400"></i>
+          <span>Upload Images</span>
+        </li>
+        
+        <div class="mb-4" id="agent-counter-container">
+          <div id="agent-counter-display"
+            class="flex items-center justify-between px-4 py-2 rounded-lg bg-gray-800 text-white shadow-sm space-x-2">
+            <div class="flex items-center space-x-2">
+              <i class="fas fa-robot text-blue-400"></i>
+              <span id="agent-counter-text" class="min-w-[120px] inline-block">0 agents selected</span>
+              <button id="open-agent-selector" class="ml-2 text-gray-400 hover:text-white">
+                <i class="fas fa-sliders-h"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+
+    <!-- Agent Selector Modal -->
+    <div id="agent-selector-modal-chat" class="hidden fixed bottom-40 right-6 bg-gray-800 text-white rounded-lg shadow-lg w-80 z-50 border border-gray-600">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-3 flex items-center">
+          <i class="fas fa-robot text-blue-400 mr-2"></i> Select Agents
+        </h3>
+        
+        <ul id="agent-list-chat" class="space-y-2 max-h-64 overflow-y-auto">
+          <!-- Agentes serão inseridos dinamicamente -->
+          <div class="flex items-center justify-between space-x-2 p-2 rounded hover:bg-gray-700 border border-gray-700 transition">
+            <div id="agent-loader" class="flex items-center justify-center py-4">
+              <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
+              <span class="ml-2 text-sm text-gray-400">Loading agents...</span>
+            </div>
+          </div>
+        </ul>
+
+        <div class="mt-4 flex justify-end">
+          <button id="close-agent-selector" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 text-sm">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent Selector Modal for Tagging -->
+    <div id="agent-selector-modal-tagging" class="hidden fixed bottom-40 right-6 bg-gray-800 text-white rounded-lg shadow-lg w-80 z-50 border border-gray-600">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-3 flex items-center">
+          <i class="fas fa-robot text-blue-400 mr-2"></i> Mention agents
+        </h3>
+        
+        <ul id="agent-list-tagging" class="space-y-2 max-h-64 overflow-y-auto">
+          <!-- Agentes inseridos dinamicamente -->
+          <div class="flex items-center justify-between space-x-2 p-2 rounded hover:bg-gray-700 border border-gray-700 transition">
+            <div id="agent-loader" class="flex items-center justify-center py-4">
+              <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
+              <span class="ml-2 text-sm text-gray-400">Loading agents...</span>
+            </div>
+          </div>
+        </ul>
+
+        <div class="mt-4 flex justify-end">
+          <button id="close-agent-selector-tagging" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-500 text-sm">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+        
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+      <div class="bg-gray-900 text-white rounded-lg w-full max-w-2xl p-6 mx-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Settings</h3>
+          <button id="close-settings" class="text-gray-400 hover:text-white">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-700 mb-6">
+          <nav class="flex space-x-4" id="settings-tabs">
+            <button data-tab="general" class="tab-btn text-sm py-2 px-4 border-b-2 border-blue-600">SCIA</button>
+            <button data-tab="builder-profile" class="tab-btn text-sm py-2 px-4 text-gray-400 hover:text-white">Builder Profile</button>
+            <button data-tab="github-connection" class="tab-btn text-sm py-2 px-4 text-gray-400 hover:text-white">GitHub</button>
+            <button data-tab="firebase-connection" class="tab-btn text-sm py-2 px-4 text-gray-400 hover:text-white">Firebase</button>
+            <button data-tab="stripe-connection" class="tab-btn text-sm py-2 px-4 text-gray-400 hover:text-white">Stripe</button>
+            <button data-tab="gmail-connection" class="tab-btn text-sm py-2 px-4 text-gray-400 hover:text-white">Gmail</button>
+
+          </nav>
+        </div>
+
+        <!-- Tab Contents -->
+        <div id="tab-content">
+
+          <!-- General Tab -->
+          <div data-content="general" class="tab-content space-y-4">
+
+          
+            <div class="flex items-center space-x-2">
+              <!-- Algoritmo (SCIA) -->
+              <div class="flex-1">
+                <label class="block text-sm font-medium mb-1">Small Context Identification Algorithm</label>
+                <select id="SCIA-Selector" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+                  <option selected>SCIA-v1</option>
+                </select>
+                <div class="flex flex-col space-y-2 bg-gray-800 p-3 rounded border border-gray-700 text-white">
+                  <label class="inline-flex items-center">
+                    <input type="radio" name="scia-mode" value="only-changes" class="form-radio text-blue-500" checked>
+                    <span class="ml-2">Detect changes and attach to chat only changes</span>
+                  </label>
+                  <label class="inline-flex items-center">
+                    <input id="scia-mode" type="radio" name="scia-mode" value="all-files" class="form-radio text-blue-500">
+                    <span class="ml-2">Detect changes and attach all files to chat</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+
+
+
+            <div>
+              <label class="block text-sm font-medium mb-1">Agent Selector</label>
+              <div id="agent-list" class="space-y-2 max-h-40 overflow-y-auto bg-gray-800 p-2 rounded border border-gray-700">
+                <div id="select-all-container" class="flex items-center space-x-2 mb-2">
+                  <input type="checkbox" id="select-all-agents" class="form-checkbox h-4 w-4 text-blue-500">
+                  <label for="select-all-agents" class="text-sm text-gray-300">Select all</label>
+                </div>
+                <p class="text-gray-400 text-sm">Loading agents...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Builder Profile Tab -->
+          <div data-content="builder-profile" class="tab-content space-y-4 hidden">
+
+            <!-- <div>
+              <label for="github-company" class="block text-sm font-medium mb-1">Organization on GitHub</label>
+              <select id="github-company" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">Carregando organizações...
+                <option>Loading ...</option>
+              </select>
+            </div> -->
+
+            <div id="api-token" class="text-sm text-gray-400">
+              Your Api Key: 
+            </div>
+
+            <div id="my-limits-message" class="text-sm text-gray-400">
+              Message Limits: 
+            </div>
+
+            <div id="my-limits-agents" class="text-sm text-gray-400">
+              Agents Limits: 
+            </div>
+
+            <div id="current-plan" class="text-sm text-gray-400">
+              Current Plan: 
+            </div>
+
+          </div>
+
+          <!-- Connected GitHub Tab -->
+          <div data-content="github-connection" class="tab-content space-y-6 hidden">
+
+            <!-- GitHub -->
+            <div class="space-y-2">
+              <p class="text-sm text-gray-300">
+                Connect your GitHub account to enable automatic integration with your repositories and projects.
+              </p>
+              <div class="flex space-x-2">
+                <button id="github-btn2" class="github-btn">
+                  <i class="fab fa-github"></i>
+                  <span>Connect with GitHub</span>
+                </button>
+              </div>
+              <button id="reset-github" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                Reset GitHub Config
+              </button>
+              <div>
+                <label for="owner-repo" class="block text-sm text-gray-400 mb-1">Owner Repositories</label>
+                <input type="text" id="owner-repo" class="w-full py-2 px-3 bg-gray-800 text-gray-200 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="your username git or your company" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Github Project is Private?</label>
+                <select id="github-type-project" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+                  <option selected>False</option>
+                  <option>True</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">GitHub design pattern</label>
+                <select id="converse-compose" class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white">
+                  <option selected>Flask,Html,Css and Js</option>
+                </select>
+              </div>
+              <!-- Conhecimento -->
+              <label for="dropdownButtonKnowledge" class="block text-sm font-medium mb-1">Knowledge Repositories</label>
+              <button
+                id="dropdownButtonKnowledge"
+                data-dropdown-target="repoDropdownKnowledge"
+                type="button"
+                class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white text-left">
+                <!-- Texto aqui -->
+              </button>
+
+              <div
+                id="repoDropdownKnowledge"
+                class="absolute z-10 mt-1 w-full rounded bg-gray-900 border border-gray-700 text-white hidden max-h-60 overflow-y-auto">
+              </div>
+
+              <!-- Área de Trabalho -->
+              <label for="dropdownButtonWorkspace" class="block text-sm font-medium mb-1">Workspace Repositories</label>
+              <button
+                id="dropdownButtonWorkspace"
+                data-dropdown-target="repoDropdownWorkspace"
+                type="button"
+                class="w-full p-2 rounded bg-gray-800 border border-gray-700 text-white text-left">
+              </button>
+
+              <div
+                id="repoDropdownWorkspace"
+                class="absolute z-10 mt-1 w-full rounded bg-gray-900 border border-gray-700 text-white hidden max-h-60 overflow-y-auto">
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+          <!-- Connected Firebase Tab -->
+          <div data-content="firebase-connection" class="tab-content space-y-6 hidden">
+
+            <!-- Firebase Connection -->
+            <div class="space-y-2">
+              <p class="text-sm text-gray-300">
+                Connect your Firebase account to build solid projects
+              </p>
+              <div id="firebase-status" class="text-sm text-gray-400">
+                Status: <span id="firebase-connected-status" class="font-medium text-yellow-400">Desconectado</span>
+              </div>
+              <input type="file" id="firebase-config-upload" accept=".json" class="block w-full text-sm text-gray-300" />
+              <button id="connect-firebase" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+                Connect with Firebase
+              </button>
+              <button id="reset-firebase" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                Reset Firebase
+              </button>
+            </div>
+
+          </div>
+
+
+          <!-- Connected Stripe Tab -->
+          <div data-content="stripe-connection" class="tab-content space-y-6 hidden">
+            
+            <!-- Stripe Connection -->
+            <div class="space-y-2">
+              <p class="text-sm text-gray-300">
+                Connect your Stripe credentials to create projects that become products
+              </p>
+
+              <div class="grid grid-cols-1 gap-4">
+                <div>
+                  <label for="STRIPE-SECRET-KEY" class="block text-sm text-gray-400 mb-1">Secret Key</label>
+                  <input type="text" id="STRIPE-SECRET-KEY" class="w-full py-2 px-3 bg-gray-800 text-gray-200 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="STRIPE SECRET KEY" />
+                </div>
+                <div>
+                  <label for="STRIPE-PUBLIC-KEY" class="block text-sm text-gray-400 mb-1">Public Key</label>
+                  <input type="text" id="STRIPE-PUBLIC-KEY" class="w-full py-2 px-3 bg-gray-800 text-gray-200 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="PUBLIC STRIPE KEY" />
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Connected Gmail Tab -->
+          <div data-content="gmail-connection" class="tab-content space-y-6 hidden">
+
+            <!-- Gmail Connection -->
+            <div class="space-y-2">
+              <p class="text-sm text-gray-300">
+                Connect your Gmail credentials so that your products can send emails to buyers
+              </p>
+
+              <div class="grid grid-cols-1 gap-4">
+                <div>
+                  <label for="gmail-usuario" class="block text-sm text-gray-400 mb-1">Gmail Username</label>
+                  <input type="text" id="gmail-usuario" class="w-full py-2 px-3 bg-gray-800 text-gray-200 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="your-email@gmail.com" />
+                </div>
+                <div>
+                  <label for="gmail-senha" class="block text-sm text-gray-400 mb-1">Gmail Password</label>
+                  <input type="password" id="gmail-senha" class="w-full py-2 px-3 bg-gray-800 text-gray-200 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Password" />
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="mt-6">
+          <button id="save-settings" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">Save Settings</button>
+          <button id="reset-settings" class="w-full mt-2 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+            Resetar para padrão
+          </button>
+          
+        </div>
+        
+      </div>
+    </div>
+    <script src="{{ static_url }}js/chat/real_stream.js"></script>
+    
+    <script src="{{ static_url }}js/inicializer/init-web-socket.js"></script>
+    <script src="{{ static_url }}js/inicializer/init-chat-ui.js"></script>
+
+    <script src="{{ static_url }}js/chat/generate-response.js"></script>
+    <script src="{{ static_url }}js/SCIA-v1/folderPicker.js"></script>
+    <script src="{{ static_url }}js/SCIA-v1/observer-writing.js"></script>
+    <script src="{{ static_url }}js/menu.js"></script>
+    <script src="{{ static_url }}js/chat/add-message.js"></script>
+    <script src="{{ static_url }}js/chat/handle-conversation.js"></script>
+    <script src="{{ static_url }}js/chat/list-chats.js"></script>
+    <script src="{{ static_url }}js/chat/new-chat.js"></script>
+    <script src="{{ static_url }}js/chat/getSessionId.js"></script>
+    <script src="{{ static_url }}js/process/process-message.js"></script>
+    <script src="{{ static_url }}js/settings/load-repo-orgs.js"></script>
+    <script src="{{ static_url }}js/process/repo-counter.js"></script>
+    <script src="{{ static_url }}js/process/agent-counter.js"></script>
+    <script src="{{ static_url }}js/process/toggle-dropdown.js"></script>
+    <script src="{{ static_url }}js/settings/tab-control.js"></script>
+    <script src="{{ static_url }}js/settings/load-agents.js"></script>
+    <script src="{{ static_url }}js/settings/load-settings.js"></script>
+    <script src="{{ static_url }}js/settings/save-settings.js"></script>
+    <script src="{{ static_url }}js/settings/reset-settings.js"></script>
+    <script src="{{ static_url }}js/settings/connect-github.js"></script>
+    <script src="{{ static_url }}js/settings/connect-stripe.js"></script>
+    <script src="{{ static_url }}js/settings/connect-firebase-client.js"></script>
+    <script src="{{ static_url }}js/settings/firebase-config-upload.js"></script>
+    <script src="{{ static_url }}js/settings/check-firebase-status.js"></script>
+    <script src="{{ static_url }}js/settings/check-status-github.js"></script>
+    <script src="{{ static_url }}js/settings/check-session-load.js"></script>
+    <script src="{{ static_url }}js/settings/reset-firebase.js"></script>
+    <script src="{{ static_url }}js/settings/reset-github.js"></script>
+    <script src="{{ static_url }}js/settings/open-custom-modal.js"></script>
+    <script src="{{ static_url }}js/settings/agent-selector-modal.js"></script>
+    <script src="{{ static_url }}js/chat/tagging-mode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
+    <script src="{{ static_url }}js/code_editor/editor.js"></script>
+    <script src="{{ static_url }}js/code_editor/viewfiles.js"></script>
+    
+    <!-- Highlight.js -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/all.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    
+          
+
+  </body>
+</html>
