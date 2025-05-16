@@ -42,6 +42,7 @@ def run_project_manager_task(task_params):
     user_message = task_params.get("user_message")
     api_key = task_params.get("type_stream")
     db_task_id = task_params.get("db_task_id")
+    repo_git = task_params.get("repo_git")
 
     # Execução síncrona do fluxo
     try:
@@ -53,6 +54,7 @@ def run_project_manager_task(task_params):
         "X-User-Email": f"{user_email}",
         }
         body = {
+        "repo_git": f"{repo_git}",
         "session_id": f"{session_id}",
         "user_email": f"{user_email}",
         "user_message": f"{user_message}",

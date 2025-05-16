@@ -56,6 +56,6 @@ def checkoutcancel():
     return render_template('checkout/cancel.html')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=889)
+    app.run(host="0.0.0.0", port=839)
 
   # debug=True, 

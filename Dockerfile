@@ -60,6 +60,11 @@ RUN apt-get update && apt-get install -y \
  --no-install-recommends
 
 
+# Instalar Node.js (LTS) + NPM
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm
+
 # Instalar Playwright e baixar deps
 RUN pip install --no-cache-dir playwright \
  && playwright install --with-deps
@@ -70,6 +75,9 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir --upgrade softwareai-engine-library
+
+# Instalar pacote NPM @ualers/softwareai-skeleton-engine
+RUN npm install --global @ualers/softwareai-skeleton-engine
 
 # Copiar código
 COPY . /app/
