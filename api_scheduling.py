@@ -63,7 +63,9 @@ def schedule_agent():
     data = request.json
     agent_name = data['agent']
     params = data.get('params', {})
-    run_at_str = data['run_at']  # ex: "2025-05-15T14:00:00"
+    run_at_str = data['run_at']  
+    repo_git = data['repo_git']  
+    
     tz = pytz.timezone('America/Sao_Paulo')
     run_at = tz.localize(datetime.fromisoformat(run_at_str))
 
@@ -80,6 +82,7 @@ def schedule_agent():
     task_id = task_ref.key
 
     params['db_task_id'] = task_id
+    params['repo_git'] = repo_git
     
     ref.update({
                 "db_task_id": task_id,
