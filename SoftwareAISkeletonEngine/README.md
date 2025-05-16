@@ -1,81 +1,129 @@
- # SoftwareAI Skeleton Engine
+# SoftwareAI Skeleton Engine
 
- **Economize até 10x em tokens criando esqueletos prontos de projetos**
+**Transforme suas ideias em projetos Python prontos e agende agentes automaticamente, economizando tempo e recursos.**
 
- Esqueletos funcionais com backend e suporte a Docker.
+Este pacote atua como uma **CLI** e **engine** para:
 
- ## Esqueletos Disponíveis
+* **Escalonamento de Agentes**: Agende execuções programadas de agentes (via Flask/Celery) diretamente do terminal.
+* **Scaffold de Projetos**: Crie esqueletos completos de aplicações Python (Flask) com templates e containers Docker.
 
- - **flask-web-product**: Esqueleto pronto para receber um SaaS com integração de pagamento via Stripe.
+## Funcionalidades Principais
 
- ## Quickstart
+| Comando         | Descrição                                                                                    |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| `create-py-app` | Cria um novo projeto Flask com tema predefinido (`flask-web-product`).                       |
+| `schedule-task` | Agenda um agente para execução futura, informando nome do agente, horário e repositório Git. |
 
- ### Pré-requisitos
- - Node.js (v14+)
- - NPM ou Yarn
- - (Opcional) Docker e Docker Compose, se desejar executar em containers
+## Esqueletos Disponíveis
 
- ### Instalação
- Instalação global via NPM:
- ```bash
- npm install -g softwareai-skeleton-engine
- ```
- Ou via Yarn:
- ```bash
- yarn global add softwareai-skeleton-engine
- ```
+* **flask-web-product**: Projeto Flask com telas de login, checkout Stripe, dashboard e Docker.
 
- ### Criando um novo projeto
- Após a instalação, use o comando abaixo para criar seu projeto:
- ```bash
- # Usando o comando global
- create-py-app meu-projeto --theme flask-web-product
+## Quickstart
 
- # Ou sem instalar globalmente (via npx)
- npx create-py-app meu-projeto --theme flask-web-product
- ```
- Se nenhum tema for informado, o padrão `flask-web-product` será utilizado.
+### Pré-requisitos
 
- ### Executando o projeto
- 1. Acesse o diretório do projeto:
-    ```bash
-    cd meu-projeto
-    ```
- 2. (Opcional) Crie e ative um ambiente virtual Python:
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
- 3. Instale as dependências Python:
-    ```bash
-    pip install -r requirements.txt
-    ```
- 4. Execute a aplicação:
-    - Diretamente com Python:
-      ```bash
-      python app.py
-      ```
-    - Ou usando Docker Compose:
-      ```bash
-      python build.py
-      ```
- 5. Acesse em `http://localhost:5000`
+* Node.js (v14+)
+* NPM ou Yarn
+* Python (v3.8+)
+* (Opcional) Docker e Docker Compose
 
- ## Contribuição
- 1. Faça um fork deste repositório
- 2. Crie uma branch para sua feature (`git checkout -b feature/minha-feature`)
- 3. Faça suas alterações e commit (`git commit -am 'Adiciona feature X'`)
- 4. Envie para o seu repositório (`git push origin feature/minha-feature`)
- 5. Abra um Pull Request
+### Instalação
 
- ## Licença
- Este projeto está licenciado sob a licença MIT.
+Via NPM:
 
+```bash
+npm install -g @ualers/softwareai-skeleton-engine
+```
 
+Ou via Yarn:
 
+```bash
+yarn global add @ualers/softwareai-skeleton-engine
+```
 
+### Scaffold de Projeto
 
+```bash
+# Gera esqueleto Flask no diretório `meu-projeto`
+create-py-app meu-projeto --theme flask-web-product
+```
 
+Se não informar `--theme`, o padrão `flask-web-product` será utilizado.
 
+### Agendamento de Agentes
 
+```bash
+# Agenda um agente para rodar em data/hora específica
+create-py-app schedule-task \
+  --agent "AgentsWorkFlow.Saas.teams.ProjectManager" \
+  --email "usuario@exemplo.com" \
+  --runAt "2025-05-20T15:30:00" \
+  --repo "https://github.com/usuario/meu-projeto.git" \
+  --params '{"session_id":"abc123","user_message":"Iniciar projeto"}'
+```
 
+Esse comando envia ao servidor:
+
+```json
+{
+  "agent": "AgentsWorkFlow.Saas.teams.ProjectManager",
+  "run_at": "2025-05-20T15:30:00-03:00",
+  "repo_git": "https://github.com/usuario/meu-projeto.git",
+  "params": {
+    "user_email": "usuario@exemplo.com",
+    "session_id": "abc123",
+    "user_message": "Iniciar projeto"
+  }
+}
+```
+
+### Executando Localmente
+
+1. Entre no diretório do projeto:
+
+   ```bash
+   cd meu-projeto
+   ```
+2. (Opcional) Crie e ative um virtualenv:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. Instale dependências:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Inicie a aplicação:
+
+   ```bash
+   python app.py
+   ```
+
+Ou com Docker Compose:
+
+```bash
+docker-compose up --build
+```
+
+Acesse em: `http://localhost:5000`
+
+## Configuração da API de Agendamento
+
+Defina a URL do servidor de agendamento (opcional, padrão: `http://localhost:5100`):
+
+```bash
+export SCHEDULER_API_URL=https://seu-servidor.com
+```
+
+## Contribuição
+
+1. Faça um fork
+2. Crie uma branch (`git checkout -b feature/x`)
+3. Commit e push
+4. Abra um Pull Request
+
+## Licença
+
+MIT
