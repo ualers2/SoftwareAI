@@ -13,7 +13,7 @@ services:
     environment:
       - FIREBASE_CRED=/app/Keys/firebase.json
     ports:
-      - "889:889"
+      - "839:839"
 
   app_api:
     build: .
