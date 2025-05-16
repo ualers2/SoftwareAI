@@ -1,11 +1,10 @@
+<h1 align="center">SoftwareAI</h1>
 
 ![Screenshot_5](https://github.com/user-attachments/assets/10bc9339-c2d7-4933-876c-450fd65e2180)
-<h1 align="center">SoftwareAI</h1>
-<p align="center">None</p>
+
+<p align="center">It's not just about writing code: SoftwareAI manages updates, documentation, schedules, spreadsheets, and automates processes for the entire team</p>
 
 <p align="center"><code>npm i -g @ualers/softwareai-skeleton-engine</code></p>
-
-![Codex demo GIF using: codex "explain this codebase to me"](./.github/demo.gif)
 
 <details>
 <summary><strong>Table of contents</strong></summary>
@@ -13,9 +12,8 @@
 <!-- Begin ToC -->
 - [Quickstart](#quickstart)
 - [Why SoftwareAI?](#why-softwareai)
-- [Requisitos do Sistema](#requisitos-do-sistema)
-- [Referência da CLI](#referencia-da-cli)
-
+- [System Requirements](#system-requirements)
+- [CLI Reference](#cli-reference)
 <!-- End ToC -->
 
 </details>
@@ -23,85 +21,82 @@
 ---
 
 ## Quickstart
+Use SoftwareAI in **3 easy steps**:
 
-Use o SoftwareAI em **3 passos simples**:
+1. **Install the CLI**
 
-1. **Instale o CLI**
+```bash
+npm install -g @ualers/softwareai-skeleton-engine
+```
 
-   ```bash
-   npm install -g @ualers/softwareai-skeleton-engine
-   ```
+2. **Scaffold a Flask project**
 
-2. **Scaffold de um projeto Flask**
+```bash
+create-py-app my-project --theme flask-web-product
+```
 
-   ```bash
-   create-py-app meu-projeto --theme flask-web-product
-   ```
+* Generates the skeleton in `./my-project` with Docker, login, checkout and dashboard.
 
-   * Gera o esqueleto em `./meu-projeto` com Docker, login, checkout e dashboard.
+3. **Run or schedule agents**
 
-3. **Execute ou agende agentes**
+* To run locally:
 
-   * Para rodar localmente:
+```bash
+cd my-project
+python app.py # without Docker
+# or
+```
 
-     ```bash
-     cd meu-projeto
-     python app.py            # sem Docker
-     # ou
-     ```
-
-docker-compose up --build # com Docker
+docker-compose up --build # with Docker
 \`\`\`
 
-* Para agendar um agente:
+* To schedule an agent:
 
-  ```bash
-  create-py-app schedule-task \
-    --agent "AgentsWorkFlow.Saas.teams.ProjectManager" \
-    --email "voce@exemplo.com" \
-    --runAt "2025-05-20T15:30:00" \
-    --repo "https://github.com/usuario/projeto.git" \
-    --params '{"session_id":"xyz","user_message":"Olá"}'
-  ```
+```bash
+create-py-app schedule-task \
+--agent "AgentsWorkFlow.Saas.teams.ProjectManager" \
+--email "you@example.com" \
+--runAt "2025-05-20T15:30:00" \
+--repo "https://github.com/user/project.git" \
+--params '{"session_id":"xyz","user_message":"Hello"}'
+```
+---
+## Why Softwareai skeleton engine?
+
+* 🚀 **Productivity**: ready-to-use scaffolds and scheduling.
+* 🔄 **Integration**: works with Flask, Celery, Docker and Firebase.
+* ⚙️ **Flexible**: create your own templates and schedule agents via CLI.
 
 ---
 
-## Por que Softwareai skeleton engine?
-
-* 🚀 **Produtividade**: scaffolds e agendamentos prontos para usar.
-* 🔄 **Integração**: funciona com Flask, Celery, Docker e Firebase.
-* ⚙️ **Flexível**: crie templates próprios e escalone agentes via CLI.
-
----
-
-## Requisitos do Sistema
+## System Requirements
 
 * Node.js v14+
 * Python 3.8+
-* (Opcional) Docker & Docker Compose
+* (Optional) Docker & Docker Compose
 
 ---
 
-## Referência da CLI
+## CLI Reference
 
 ```bash
-# Scaffold de projeto
-create-py-app <nome-projeto> [--theme <tema>]
+  # Project Scaffolding
+  create-py-app <project-name> [--theme <theme>]
 
-# Agendamento de agente
-create-py-app schedule-task \
-  --agent <nome> \
-  --email <usuário> \
+  # Agent Scheduling
+  create-py-app schedule-task \
+  --agent <name> \
+  --email <user> \
   --runAt <YYYY-MM-DDTHH:mm:ss> \
-  --repo <URL_git> \
+  --repo <git_URL> \
   [--params <JSON>]
 ```
 
 ---
 
-
-
 # why-softwareai
+
+SoftwareAI is a framework that aims to enable an AI-driven organization to function like a real software development company. It's not just about writing code: SoftwareAI manages updates, documentation, schedules, spreadsheets, and automates processes for the entire team. 
 
 #
 #
@@ -111,21 +106,17 @@ create-py-app schedule-task \
 - [Git Project](https://github.com/SoftwareAI-Company/SoftwareAI-Library-Web)
 #
 #
-# 📖 Library Pip
+# 📖Library Pip
 - ```bash
   pip install softwareai-engine-library
   ```
-- [Pip Project Hosted](https://pypi.org/project/softwareai-engine-library)
 - [Git Project](https://github.com/SoftwareAI-Company/SoftwareAI-Library-Pip)
 #
 #
 # 📖 SoftwareAI Chat
-- Provides a web chat to utilize agents and tools from the SoftwareAI library.
+- Provides a web chat to use agents and tools from the SoftwareAI library.
 - [Web Project Hosted](https://softwareai.rshare.io)
 - [Git Project](https://github.com/SoftwareAI-Company/SoftwareAI-Chat)
-
-
-
 
 
 
