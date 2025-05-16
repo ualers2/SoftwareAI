@@ -1,0 +1,17 @@
+{
+    "name": "softwareai-skeleton-engine",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "CLI to scaffold Python application projects",
+    "bin": {
+      "create-py-app": "./index.js"
+    },
+    "dependencies": {
+      "commander": "^11.0.0",
+      "fs-extra": "^11.1.1",
+      "inquirer": "^9.2.7"
+    },
+    "author": "",
+    "license": "MIT"
+  }
+  
