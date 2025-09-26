@@ -68,7 +68,7 @@ jobs:
         ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
           cd /home/administrator/deploys/softwareai && \
 
-          docker rm -f softwareai-frontend frontend_support_prod || true && \
+          docker rm -f softwareai_frontend softwareai_api || true && \
           docker container prune && \
-          docker compose up --build -d --no-deps api_support_prod frontend_support_prod 
+          docker compose up --build -d --no-deps softwareai_frontend softwareai_api 
         "
