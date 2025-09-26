@@ -51,11 +51,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 jwt = JWTManager(app)
 
-CORS(app, resources={
-    r"/api/*": {
-        "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
-    }
-})
+# CORS(app, resources={
+#     r"/api/*": {
+#         "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
+#     }
+# })
 db.init_app(app)
 
 @app.route('/')
