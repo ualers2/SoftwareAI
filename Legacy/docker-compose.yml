@@ -1,0 +1,22 @@
+
+version: '3.8'
+services:
+  softwareai_app:
+    build: .
+    volumes:
+      - .:/app  
+    restart: always
+    ports:
+      - "829:829"
+    # env_file:
+    #   - keys.env 
+    command: > 
+      sh -c "python Chat_app.py"
+    mem_limit: 500MB
+    cpus: "1.25"   
+    networks:
+      - rede_externa
+
+networks:
+  rede_externa:
+    external: true

@@ -1,0 +1,13 @@
+Keys/InternalDocs
+Keys/
+LocalProject/
+node_modules/
+Tests/
+we0/
+__pycache__/
+*.py[cod]
+*.pyc
+*.cpython-39.pyc 
+**/__pycache__/
+
+

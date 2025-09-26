@@ -1,0 +1,22 @@
+name: Processar Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  call-external-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar API para processar PR
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-API-TOKEN: ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{
+              "repository": "${{ github.repository }}",
+              "pr_number": ${{ github.event.pull_request.number }},
+              "pr_url": "${{ github.event.pull_request.url }}",
+              "diff_url": "${{ github.event.pull_request.diff_url }}"
+            }' \
+            https://b70c040bdbc5.ngrok-free.app/api/prai/gen

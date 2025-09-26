@@ -1,0 +1,16 @@
+Flask
+flask-cors
+firebase-admin
+user-agents
+waitress
+python-dotenv
+stripe
+flask-limiter
+flask-dance
+openai
+openai-agents
+matplotlib
+typing-extensions
+PyYAML
+requests
+softwareai_engine_library

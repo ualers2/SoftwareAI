@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: meubanco
     ports:
-      - "5422:5432"
+      - "5932:5932"
     networks: 
       - rede_externa
     volumes:
@@ -24,7 +24,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
       MONGO_INITDB_DATABASE: controls_logs
     ports:
-      - "27017:27017"
+      - "21017:21017"
     restart: always
     volumes:
       - mongodb_data:/data/db
@@ -40,7 +40,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6389:6379"
+      - "6189:6379"
     command: redis-server --appendonly yes
     restart: always
     volumes:
@@ -54,58 +54,56 @@ services:
       - rede_externa
 
 
-  frontend-pipeline:
-    image: frontend-pipeline-server:latest
+  softwareai_frontend:
+    image: softwareai-frontend-server:latest
     build:
       context: ./Front-End
       dockerfile: Dockerfile
-    container_name: frontend-pipeline
-    volumes:
-      - "./Front-End:/app"
-      - npm-modules:/app/node_modules
+    container_name: softwareai_frontend
     working_dir: /app
     environment:
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_INTERVAL=100
     ports:
-      - "4684:4684"
+      - "4494:4494"
     restart: always
     command: >
-      sh -c "npm ci && npm run build && npx serve -s dist -l 4684"
+      sh -c "npm ci && npm run build && npx serve -s dist -l 4494"
+    
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:4684"] 
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:4494"] 
       interval: 129s
       timeout: 2s
       retries: 5
     mem_limit: 500MB
-    cpus: "1.5"
+    cpus: "0.8"
 
-  pipeline-api:
+  softwareai_api:
+    image: softwareai-api-server:latest
     build:
       context: ./Back-End
       dockerfile: Dockerfile
-    container_name: pipeline-api
+    container_name: softwareai_api
     working_dir: /app  
     privileged: true     
     volumes:
-      - ./Back-End:/app
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     ports:
-      - "5920:5920"
+      - "4941:4941"
     command: >
-      sh -c "uvicorn api:asgi_app --host 0.0.0.0 --port 5920"
+      sh -c "uvicorn api:asgi_app --host 0.0.0.0 --port 4941"
     environment:
-      - FLASK_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5432/meubanco
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5932/meubanco
       - MONGO_URI=mongodb://root:rootpassword@mongodb:27017/controls_logs?authSource=admin
-      - REDIS_URL=redis://redis:6389/0
+      - REDIS_URL=redis://redis:6189/0
     depends_on:
       - meu_postgres2
       - mongodb
       - redis
-    mem_limit: 800MB
-    cpus: "2.25"   
+    mem_limit: 700MB
+    cpus: "0.80"   
     networks:
       - rede_externa
 
