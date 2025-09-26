@@ -1,0 +1,74 @@
+name: Deploy Employers AI
+
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+
+jobs:
+  build-and-deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add remote host to known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+        ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
+        echo "known_hosts:"
+        cat ~/.ssh/known_hosts 
+
+    - name: Copy entire project to VPS
+      run: |
+        rsync -avz --delete ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/home/administrator/deploys/softwareai \
+          --exclude node_modules \
+          --exclude .git \
+          --exclude front-end/node_modules
+
+    - name: Make dir on VPS
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
+          mkdir -p /home/administrator/deploys/softwareai/Back-End/Keys && \
+          mkdir -p /home/administrator/deploys/softwareai/Front-End
+        "
+
+    - name: Create keys.env on VPS
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
+          printf '%s' '${{ secrets.BACK_END_ENV_KEYS }}' > /home/administrator/deploys/softwareai/Back-End/Keys/keys.env
+        "
+
+    - name: Create .env on VPS
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
+          printf '%s' '${{ secrets.FRONT_END_ENV_KEYS }}' > /home/administrator/deploys/softwareai/Front-End/.env
+        "
+
+    - name: Create COMPOSE on VPS
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
+          echo '${{ secrets.COMPOSE }}' | base64 --decode > /home/administrator/deploys/softwareai/docker-compose.yml
+        "
+
+    - name: Deploy Docker Compose
+      run: |
+        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "
+          cd /home/administrator/deploys/softwareai && \
+
+          docker rm -f softwareai-frontend frontend_support_prod || true && \
+          docker container prune && \
+          docker compose up --build -d --no-deps api_support_prod frontend_support_prod 
+        "
