@@ -70,5 +70,5 @@ jobs:
 
           docker rm -f softwareai_frontend softwareai_api || true && \
           docker container prune && \
-          docker compose up --build -d --no-deps softwareai_frontend softwareai_api 
+          docker compose up --build -d softwareai_frontend softwareai_api 
         "
