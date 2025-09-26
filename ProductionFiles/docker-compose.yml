@@ -16,6 +16,8 @@ services:
       - rede_externa
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    mem_limit: 1g
+    cpus: "0.8"
 
   mongodb:
     image: mongo:7
@@ -36,6 +38,8 @@ services:
       retries: 3
     networks:
       - rede_externa
+    mem_limit: 1g
+    cpus: "0.8"
 
   redis:
     image: redis:7-alpine
@@ -52,7 +56,8 @@ services:
       retries: 3
     networks:
       - rede_externa
-
+    mem_limit: 100MB
+    cpus: "0.3"
 
   softwareai_frontend:
     image: softwareai-frontend-server:latest
@@ -75,7 +80,7 @@ services:
       interval: 129s
       timeout: 2s
       retries: 5
-    mem_limit: 500MB
+    mem_limit: 850MB
     cpus: "0.8"
 
   softwareai_api:
@@ -102,7 +107,7 @@ services:
       - meu_postgres2
       - mongodb
       - redis
-    mem_limit: 700MB
+    mem_limit: 850MB
     cpus: "0.80"   
     networks:
       - rede_externa
