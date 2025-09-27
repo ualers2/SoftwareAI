@@ -8,15 +8,21 @@ jobs:
   call-external-service:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug JSON
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+          echo "Email: ${{ secrets.email }}"
+
       - name: Chamar API PR AI
         run: |
           curl -X POST \
             -H "Content-Type: application/json" \
             -H "X-API-TOKEN: ${{ secrets.PRAI_API_TOKEN }}" \
-            -d '{
-              "repository": "${{ github.repository }}",
-              "pr_number": ${{ github.event.pull_request.number }},
-              "email": ${{ secrets.email }},
-              "password": "${{ secrets.password }}",
-            }' \
+            -d "{
+              \"repository\": \"${{ github.repository }}\",
+              \"pr_number\": \"${{ github.event.pull_request.number }}\",
+              \"email\": \"${{ secrets.email }}\",
+              \"password\": \"${{ secrets.password }}\"
+            }" \
             https://api.softwareai.site/api/prai/gen
