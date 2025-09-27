@@ -131,8 +131,8 @@ def public_plans_features():
 
 
 @app.route('/api/plans-features', methods=['GET'])
-def user_plan_limit(email, password):
-    user, _, status = auth_user(email, password, logs_collection, app)
+def user_plan_limit():
+    user, _, status = auth_user(logs_collection, app)
     if status != "success" or not user:
         return jsonify({"error": "Credenciais inválidas"}), 401
 
@@ -180,19 +180,16 @@ def register():
         log_action(logs_collection, 'register_error', {'username': email, 'message': str(e)}, level='error')
         return jsonify({'error': 'Failed to register user', 'detail': str(e)}), 500
 
-@app.route('/api/login', methods=['POST'])
-@require_user_token(optional=True)
+@app.route('/api/login', methods=['GET'])
+# @require_user_token(optional=True)
 def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
     try:
-        user, access_token_to_return, status = auth_user(email, password, logs_collection, app)
+        user, access_token_to_return, status = auth_user(logs_collection, app)
 
         if status == "invalid" or not user:
             return jsonify({"error": "Credenciais inválidas"}), 401
 
-        log_action(logs_collection, 'login_success', {'username': email}, user=user.id)
+        log_action(logs_collection, 'login_success', {'message': f"Bem-vindo, {user.email}!"}, user=user.id)
         return jsonify({
             "message": f"Bem-vindo, {user.email}!",
             "acess_token": user.acess_token,
@@ -205,7 +202,7 @@ def login():
 
     except Exception as error_login:
         db.session.rollback()
-        log_action(logs_collection, f'login_error {error_login}', {'username': email}, level='error')
+        log_action(logs_collection, f'login_error {error_login}', {'message': 'Erro no login'}, level='error')
         return jsonify({"error": "Erro no login"}), 500
 
 @app.route('/api/health', methods=['GET'])
@@ -431,8 +428,6 @@ def get_settings():
 def update_settings():
     """Atualizar configurações do sistema"""
     data = request.get_json()
-    user_email = data.get("email") 
-    user_senha = data.get("password") 
 
     user, _, status = auth_user( logs_collection, app)
 
@@ -1264,8 +1259,6 @@ def download_invoice(invoice_id):
 def reprocess_pr(pr_number):
     """Reprocessar um Pull Request específico"""
     data = request.get_json()
-    user_email = data.get("email") 
-    user_senha = data.get("password") 
     redo_merge = data.get("redo_merge") 
 
     user, _, status = auth_user( logs_collection, app)

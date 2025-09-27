@@ -21,21 +21,21 @@ const LoginForm: React.FC = () => {
   const { login } = useAuth();
 
   const backendUrl = import.meta.env.VITE_BACK_END;
-  const access_token = localStorage.getItem("access_token")
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
     setError(null);
+    const access_token = localStorage.getItem("access_token")
 
     try {
       const response = await fetch(`${backendUrl}/api/login`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-API-TOKEN': `${access_token}`
         },
-        body: JSON.stringify({ email, password }),
       });
 
       // debug rápido
