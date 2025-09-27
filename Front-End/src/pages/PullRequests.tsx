@@ -53,18 +53,14 @@ const PullRequests = () => {
   const [selectedPR, setSelectedPR] = useState<PullRequest | null>(null)
   const backendUrl = import.meta.env.VITE_BACK_END
 
-  const email = localStorage.getItem('user_email') || '';
-  const password = localStorage.getItem('user_senha') || '';
   const access_token = localStorage.getItem("access_token")
-  const payload = { email, password }
-  const params = new URLSearchParams({ email, password });
   const [showFullDiff, setShowFullDiff] = useState(false)
 
   const fetchPRs = async () => {
-    if (!email) return
+    if (!access_token) return
     try {
       setIsLoading(true)
-      const res = await fetch(`${backendUrl}/api/pull-requests?${params.toString()}`, {
+      const res = await fetch(`${backendUrl}/api/pull-requests`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,9 +83,9 @@ const PullRequests = () => {
   }
 
   const fetchPRDetails = async (prId: string) => {
-    if (!email) return
+    if (!access_token) return
     try {
-      const res = await fetch(`${backendUrl}/api/pull-requests/${prId}?${params.toString()}`, {
+      const res = await fetch(`${backendUrl}/api/pull-requests/${prId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

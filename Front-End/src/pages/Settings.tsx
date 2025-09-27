@@ -52,18 +52,14 @@ const Settings = () => {
   })
   const { toast } = useToast()
   const backendUrl = import.meta.env.VITE_BACK_END;
-  const email = localStorage.getItem('user_email') || '';
-  const password = localStorage.getItem('user_senha') || '';
 
   const access_token = localStorage.getItem("access_token")
   console.log('Token enviado:', access_token)
-  const payload = { email, password }
-  const params = new URLSearchParams({ email, password });
 
   const fetchSettings = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch(`${backendUrl}/api/settings?${params.toString()}`, {
+      const response = await fetch(`${backendUrl}/api/settings`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +89,7 @@ const Settings = () => {
 
   const saveSettings = async () => {
     setIsSaving(true)
-    const payload = { ...settings, email, password }
+    const payload = { ...settings}
     try {
       const response = await fetch(`${backendUrl}/api/settings`, {
         method: 'PUT',
@@ -141,12 +137,11 @@ const Settings = () => {
   const testConnection = async (service: "github" | "openai") => {
     try {
       const response = await fetch(`${backendUrl}/api/test-connection/${service}`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'X-API-TOKEN': `${access_token}`
         },
-        body: JSON.stringify(payload)
       });
 
       if (response.ok) {

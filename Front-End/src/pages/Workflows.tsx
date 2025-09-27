@@ -40,17 +40,15 @@ const Workflows = () => {
 
 
         const backendUrl = import.meta.env.VITE_BACK_END
-        const e = localStorage.getItem('user_email') ?? ''
-        const p = localStorage.getItem('user_senha') ?? ''
+
         const token = localStorage.getItem('access_token') ?? ''
 
-        if (!e) {
+        if (!token) {
             throw new Error('Email do usuário não encontrado. Verifique se há user_email no localStorage.')
         }
 
-        const params = new URLSearchParams({ email: e, password: p })
 
-        const res = await fetch(`${backendUrl}/api/workflows?${params.toString()}`, {
+        const res = await fetch(`${backendUrl}/api/workflows`, {
             method: 'GET',
             headers: {
             'Content-Type': 'application/json',

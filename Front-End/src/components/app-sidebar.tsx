@@ -25,6 +25,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+import { LogOut } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from '@/contexts/AuthContext';
+
 const navigationItems = [
   { 
     title: "Dashboard", 
@@ -76,14 +80,11 @@ const navigationItems = [
   },  
   { 
     title: "Invoices", 
-    url: "/invoices", 
+    url: "/billing/invoices", 
     icon: FileText,
     description: "Relatório de Faturas"
   },
 ]
-
-import { LogOut } from "lucide-react"
-import { useNavigate } from "react-router-dom"
 
 // Dentro do componente AppSidebar
 export function AppSidebar() {
@@ -92,6 +93,7 @@ export function AppSidebar() {
   const currentPath = location.pathname
   const isCollapsed = state === "collapsed"
   const navigate = useNavigate()
+  const { logout } = useAuth();
 
   const isActive = (path: string) => {
     if (path === "/") return currentPath === "/"
@@ -106,10 +108,10 @@ export function AppSidebar() {
   }
 
   const handleLogout = () => {
-    // Limpa tokens ou dados de sessão
-    localStorage.clear()
-    sessionStorage.clear()
-    navigate("/")
+    logout(); 
+    // navigate("/")
+    window.location.reload()
+
   }
 
   return (

@@ -37,7 +37,7 @@ const MyAccount = () => {
     if (!email || !accessToken) return
     try {
       setIsLoading(true)
-      const response = await fetch(`${backendUrl}/api/myaccount?email=${email}&password=${password}`, {
+      const response = await fetch(`${backendUrl}/api/myaccount`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

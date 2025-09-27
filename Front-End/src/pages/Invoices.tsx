@@ -28,8 +28,7 @@ const InvoicesPage = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
 
   const backend = import.meta.env.VITE_BACK_END || ''
-  const email = localStorage.getItem("user_email") || ""
-  const password = localStorage.getItem("user_senha") || ""
+
   const accessToken = localStorage.getItem("access_token") || ""
 
   useEffect(() => {
@@ -44,8 +43,7 @@ const InvoicesPage = () => {
       const params = new URLSearchParams()
       params.set('page', String(page))
       params.set('limit', String(pageSize))
-      params.set('email', String(email))
-      params.set('password', String(password))
+
       if (filterStatus !== 'all') params.set('status', filterStatus)
       if (query) params.set('q', query)
 
@@ -106,11 +104,10 @@ const InvoicesPage = () => {
 
   async function handleView(invoice: Invoice) {
     const params = new URLSearchParams()
-    params.set('email', String(email))
-    params.set('password', String(password))
+
     if (!invoice.lines) {
       try {
-        const res = await fetch(`${backend}/api/invoices/${invoice.id}?${params.toString()}`, {
+        const res = await fetch(`${backend}/api/invoices/${invoice.id}`, {
           headers: {
             'X-API-TOKEN': accessToken
           }

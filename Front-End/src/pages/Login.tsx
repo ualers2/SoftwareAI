@@ -22,8 +22,7 @@ const LoginForm: React.FC = () => {
 
   const backendUrl = import.meta.env.VITE_BACK_END;
   const access_token = localStorage.getItem("access_token")
-  console.log('Token access_token:', access_token)
-  console.log('Token access_token_fallback:', access_token_fallback)
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
@@ -31,35 +30,47 @@ const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-
       const response = await fetch(`${backendUrl}/api/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'X-API-TOKEN': `${access_token_fallback}`
-         },
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ email, password }),
       });
+
+      // debug rápido
       const result = await response.json();
+      console.log('login response status', response.status, result);
 
       if (!response.ok) {
         throw new Error(result.message || 'Erro no login');
       }
-      
+
+      // usa o token direto do result para salvar no localStorage
+      const token = result.acess_token;
+      if (!token) throw new Error('Resposta sem access_token');
+
+      localStorage.setItem('isAuthenticated', 'true');
       const formattedTime = new Date().toLocaleString('en-US', {
         hour: 'numeric', minute: 'numeric', hour12: true,
         day: '2-digit', month: 'short', year: 'numeric'
       });
-      // Armazena dados de sessão
-      localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('login_time', formattedTime);
-      setaccess_token_fallback(result.access_token)
-      localStorage.setItem('access_token', access_token_fallback);
-      login(result.access_token);
+      localStorage.setItem('acess_token', token);
+      localStorage.setItem('access_token', token);
+      localStorage.setItem('user_email', email); 
+      localStorage.setItem('user_senha', email); 
+      setaccess_token_fallback(token);
+
+
+      console.log('Token access_token:', token)
+      console.log('Token access_token_fallback:', token)
+
+      login(token); 
       navigate(`/home`);
 
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Erro no login');
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +82,7 @@ const LoginForm: React.FC = () => {
       setError('As senhas não coincidem.');
       return;
     }
-    
+
     setIsLoading(true);
     setError(null);
 
@@ -81,26 +92,38 @@ const LoginForm: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const result = await response.json();
-      localStorage.setItem('user_email', email);
-      localStorage.setItem('user_senha', password);
-      setaccess_token_fallback(result.access_token)
-      localStorage.setItem('access_token', access_token_fallback);
+      console.log('register response', response.status, result);
+
       if (!response.ok) {
         throw new Error(result.message || 'Erro no registro');
       }
-      
-      // Sucesso! Volta para a tela de login.
+
+      // usa o token direto do result para salvar no localStorage
+      const token = result.acess_token;
+      if (!token) throw new Error('Resposta sem access_token');
+
+   
+      localStorage.setItem('acess_token', token);
+      localStorage.setItem('access_token', token);
+      localStorage.setItem('user_email', email); 
+      localStorage.setItem('user_senha', email); 
+      setaccess_token_fallback(token);
+
+
+      console.log('Token access_token:', token)
+      console.log('Token access_token_fallback:', token)
+
+
       setIsRegistering(false);
-      // Você pode adicionar uma notificação de sucesso aqui (usando um 'toast', por exemplo)
 
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Erro no registro');
     } finally {
       setIsLoading(false);
     }
   };
-
   const toggleMode = () => {
     setIsRegistering(!isRegistering);
     setError(null); // Limpa erros ao trocar de modo

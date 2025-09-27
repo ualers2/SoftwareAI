@@ -72,9 +72,29 @@ def resolve_user_identifier(identifier):
     # fallback: tenta buscar por email ignorando espaços
     return User.query.filter_by(email=str(identifier).strip()).first()
 
+def auth_user(logs_collection, app):
+    with app.app_context():
+        header_token = None
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.lower().startswith('bearer '):
+            header_token = auth_header.split(None, 1)[1].strip()
+        if not header_token:
+            header_token = request.headers.get('X-API-TOKEN')
 
+        user = None
+        # se token informado, resolve usuário
+        if header_token:
+            try:
+                user = get_user_by_access_token(header_token)
+            except Exception as e:
+                log_action(logs_collection, 'dashboard_token_lookup_error', {'error': str(e)}, level='warning')
+                return None, None, "invalid" 
+                
 
-def auth_user(email, password, logs_collection, app):
+        numeric_user_id = user.id
+        return user, numeric_user_id, "success" 
+    
+def auth_user_fallback(email, password, logs_collection, app):
     """
     Autentica usuário por token (se já estiver em g.current_user)
     ou por email+senha. Retorna tupla (user, access_token, status).
@@ -85,6 +105,7 @@ def auth_user(email, password, logs_collection, app):
       - "invalid" -> credenciais inválidas
     """
     with app.app_context():
+        # se já veio pelo decorator (token válido)
         if getattr(g, "current_user", None):
             user = g.current_user
             try:
@@ -94,17 +115,18 @@ def auth_user(email, password, logs_collection, app):
             except Exception:
                 db.session.rollback()
             log_action(logs_collection, 'login_success_token', {'message': 'login_success_token_by_token', 'username': user.email}, user=user.id)
+            # garante que retornamos o token atual do usuário
             return user, user.acess_token, "success"
 
         # 2) Autenticação por email + senha
         if not email or not password:
-            log_action(logs_collection, 'auth_user', {'username': email, 'message': f"email e password nao presentes"}, user=user.id, level='warning')
-        
+            logger.info("????????")
             return None, None, "invalid"
 
         user = resolve_user_identifier(email)
+        # evita usar user.id quando user é None (corrige crash no log)
         if not user or not user.check_password(password):
-            log_action(logs_collection, 'login_failed', {'message': 'login_failed in if not user or not user.check_password(password):'}, level='warning', user=user.id)
+            log_action(logs_collection, 'login_failed', {'message': 'login_failed in if not user or not user.check_password(password):'}, level='warning', user=(user.id if user else None))
             return None, None, "invalid"
 
         # atualiza last_seen
@@ -121,18 +143,9 @@ def auth_user(email, password, logs_collection, app):
         used = user.tokens_used or 0
         remaining = limit - used
 
-        if token_needs_creation:
-            if remaining <= 0:
-                log_action(logs_collection, 'login_blocked_no_tokens',
-                           {'message': 'login_blocked_no_tokens', 'remaining': remaining}, user=user.id, level='error')
-                return user, None, "token_limit"
-            new_token = user.create_access_token_for_user()
-            db.session.add(user)
-            db.session.commit()
-            return user, new_token, "success"
-
+        # se token não precisava ser recriado, só retorna o token atual
+        g.current_user = user
         return user, user.acess_token, "success"
-
 
 def is_token_revoked_or_expired(user: User):
     if not user:

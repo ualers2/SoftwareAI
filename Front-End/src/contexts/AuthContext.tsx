@@ -10,18 +10,19 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Aqui usamos localStorage para persistir o token; você pode adaptar conforme precisar
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return !!localStorage.getItem('auth_token');
+    return !!localStorage.getItem('access_token');
   });
 
   function login(token: string) {
-    localStorage.setItem('auth_token', token);
+    localStorage.setItem('access_token', token);
     setIsAuthenticated(true);
   }
 
   function logout() {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_senha');
+    localStorage.removeItem('access_token');
     setIsAuthenticated(false);
   }
 

@@ -58,17 +58,13 @@ const Dashboard = () => {
 
   const backendUrl = import.meta.env.VITE_BACK_END
 
-  const email = localStorage.getItem('user_email') || '';
-  const password = localStorage.getItem('user_senha') || '';
   const access_token = localStorage.getItem("access_token")
-  const payload = { email, password }
-  const params = new URLSearchParams({ email, password });
 
   const fetchDashboardData = async () => {
-    if (!email) return
+    if (!access_token) return
     try {
       setIsLoading(true)
-      const response = await fetch(`${backendUrl}/api/dashboard-data?${params.toString()}`, {
+      const response = await fetch(`${backendUrl}/api/dashboard-data`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
