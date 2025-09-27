@@ -35,17 +35,13 @@ const Controls = () => {
   const [rateLimits, setRateLimits] = useState<any>(null)   
   const [redoMerge, setRedoMerge] = useState(false)
 
-  const email = localStorage.getItem('user_email') || '';
-  const password = localStorage.getItem('user_senha') || '';
   const access_token = localStorage.getItem("access_token")
-  const payload = { email, password }
-  const params = new URLSearchParams({ email, password });
 
 
   // Fetch dos Rate Limits
   const fetchRateLimits = async () => {
     try {
-      const response = await fetch(`${backendUrl}/api/rate-limits?${params.toString()}`, {
+      const response = await fetch(`${backendUrl}/api/rate-limits`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +80,7 @@ const Controls = () => {
     setIsProcessing(true)
     try {
 
-      const payload = { redoMerge, email, password }
+      const payload = { redoMerge }
  
       const response = await fetch(`${backendUrl}/api/reprocess-pr/${prNumber}`, {
         method: 'POST',
@@ -116,15 +112,13 @@ const Controls = () => {
   }
 
   const testSystemHealth = async () => {
-    const payload = { email, password }
     try {
       const response = await fetch(`${backendUrl}/api/health`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'X-API-TOKEN': `${access_token}`
         },
-        body: JSON.stringify(payload)
       });
 
 

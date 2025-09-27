@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from bson.json_util import dumps
 from datetime import datetime, timedelta, timezone
-from flask import g, Flask, Response, request, jsonify
+from flask import g, Flask, Response, request, jsonify, send_file
 from flask_cors import CORS
 from asgiref.wsgi import WsgiToAsgi
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -20,7 +20,7 @@ from Models.postgreSQL import *
 from Modules.Resolvers.pr_process import process_pull_request
 from Modules.Resolvers.user_identifier import auth_user, require_user_token, resolve_user_identifier
 from Modules.Geters.systemsettings import *
-
+from Modules.Geters.user_by_access_token import get_user_by_access_token
 
 from Models.mongoDB import ( 
                                 Log,
@@ -92,7 +92,8 @@ def get_plans_data():
                 'PR basic automation',
                 '5 - 10 PRs/mo',
                 'Logs basic'
-            ]
+            ],
+            'payment_link': ''
         },
         "Premium": {
             'price': 15,
@@ -102,7 +103,8 @@ def get_plans_data():
                 '20 - 40 PRs/mo',
                 'Logs advanced',
                 'API access'
-            ]
+            ],
+            'payment_link': ''
         },
         "Pro": {
             'price': 29,
@@ -114,9 +116,11 @@ def get_plans_data():
                 'Auto-Commit Intelligence',
                 'Smart Threshold Detection',
                 'Context-Aware Messages'
-            ]
+            ],
+            'payment_link': ''
         }
     }
+
 @app.route('/api/public/plans-features', methods=['GET'])
 @limiter.limit("5 per minute")
 def public_plans_features():
@@ -126,7 +130,7 @@ def public_plans_features():
     }), 200
 
 
-@app.route('/api/plans-features/<email>/<password>', methods=['GET'])
+@app.route('/api/plans-features', methods=['GET'])
 def user_plan_limit(email, password):
     user, _, status = auth_user(email, password, logs_collection, app)
     if status != "success" or not user:
@@ -146,7 +150,7 @@ def user_plan_limit(email, password):
 @app.route('/api/register', methods=['POST'])
 def register():
     """
-    Registro simples: cria usuário, seta senha e cria access_token, persiste.
+    Registro simples: cria usuário, seta senha e cria acess_token, persiste.
     """
     data = request.get_json() or {}
     email = data.get("email")
@@ -160,14 +164,14 @@ def register():
     try:
         new_user = User(email=email)
         new_user.set_password(password)
-        access_token = new_user.create_access_token_for_user(expires_days if expires_days is not None else TOKEN_DEFAULT_EXPIRES_DAYS)
+        acess_token = new_user.create_access_token_for_user(expires_days if expires_days is not None else TOKEN_DEFAULT_EXPIRES_DAYS)
         db.session.add(new_user)
         db.session.commit()
         log_action(logs_collection, 'user_registered', {'message': "Usuário criado com sucesso", 'username': email})
         
         return jsonify({
             "message": "Usuário criado com sucesso",
-            "access_token": access_token,
+            "acess_token": acess_token,
             "user_id": new_user.id,
             "expires_at": new_user.expires_at.isoformat() if new_user.expires_at else None
         }), 201
@@ -188,17 +192,10 @@ def login():
         if status == "invalid" or not user:
             return jsonify({"error": "Credenciais inválidas"}), 401
 
-        if status == "token_limit":
-            return jsonify({
-                "error": "Limite de tokens mensal atingido. Atualize o plano para gerar/renovar o access token.",
-                "remaining_tokens": (user.limit_monthly_tokens or 0) - (user.tokens_used or 0),
-                "plan_name": user.plan_name
-            }), 402  # Payment Required
-
         log_action(logs_collection, 'login_success', {'username': email}, user=user.id)
         return jsonify({
             "message": f"Bem-vindo, {user.email}!",
-            "access_token": user.acess_token,
+            "acess_token": user.acess_token,
             "user_id": user.id,
             "plan_name": user.plan_name,
             "limit_monthly_tokens": user.limit_monthly_tokens,
@@ -211,8 +208,8 @@ def login():
         log_action(logs_collection, f'login_error {error_login}', {'username': email}, level='error')
         return jsonify({"error": "Erro no login"}), 500
 
-@app.route('/api/health', methods=['POST'])
-@require_user_token(optional=False) 
+@app.route('/api/health', methods=['GET'])
+#@require_user_token(optional=False) 
 def health_check():
     """
     Verifica a saúde do sistema.
@@ -220,11 +217,8 @@ def health_check():
     Usa o usuário autenticado (g.current_user).
     """
     try:
-        data = request.get_json()
-        user_email = data.get("email") 
-        user_senha = data.get("password") 
 
-        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+        user, _, status = auth_user( logs_collection, app)
 
         if status != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -324,13 +318,13 @@ def health_check():
         return jsonify({"error": "Erro ao executar health_check", "detail": str(e)}), 500
 
 @app.route('/api/rate-limits', methods=['GET'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def get_rate_limits():
     """Obter informações de rate limits"""
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -385,13 +379,13 @@ def get_rate_limits():
     return jsonify(rate_limits)
 
 @app.route('/api/settings', methods=['GET'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def get_settings():
     """Recuperar configurações do sistema (com valores mascarados)"""
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -433,14 +427,14 @@ def get_settings():
         return jsonify({'error': 'Failed to fetch settings'}), 500
 
 @app.route('/api/settings', methods=['PUT'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def update_settings():
     """Atualizar configurações do sistema"""
     data = request.get_json()
     user_email = data.get("email") 
     user_senha = data.get("password") 
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -485,15 +479,13 @@ def update_settings():
         log_action(logs_collection, 'settings_update_error', {'error': str(e)}, user=numeric_user_id, level='error')
         return jsonify({'error': 'Failed to update settings'}), 500
 
-@app.route('/api/test-connection/<service>', methods=['POST'])
-@require_user_token(optional=False) 
+@app.route('/api/test-connection/<service>', methods=['GET'])
+#@require_user_token(optional=False) 
 def test_connection(service):
     """Testar conexão com serviços externos"""
-    data = request.get_json()
-    user_email = data.get("email") 
-    user_senha = data.get("password") 
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -614,15 +606,15 @@ def test_connection(service):
         }), 500
 
 @app.route("/api/logs", methods=["GET"])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def get_logs():
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
     level = request.args.get("level")
     search_term = request.args.get("searchTerm")
     limit = int(request.args.get("limit", 200))
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -664,18 +656,18 @@ def get_logs():
     return jsonify(adapted_logs)
 
 @app.route("/api/logs/export", methods=["GET"])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def export_logs():
     """
     Exporta logs filtrados em formato .txt
     Requer `user_id` (query param).
     """
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
     level = request.args.get("level")
     search_term = request.args.get("searchTerm")
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -721,20 +713,20 @@ def export_logs():
     return Response(
         export_text,
         mimetype="text/plain",
-        headers={"Content-Disposition": f"attachment; filename=logs-{user_email}.txt"},
+        headers={"Content-Disposition": f"attachment; filename=logs-{numeric_user_id}.txt"},
     )
 
 @app.route('/api/pull-requests', methods=['GET'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def get_pull_requests():
     """Listar PRs processados com filtros e busca"""
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
     page = request.args.get("page", 1)
     search_term = request.args.get("searchTerm", None)
     limit = int(request.args.get("limit", 50))
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -799,13 +791,13 @@ def get_pull_requests():
         return jsonify({'error': 'Failed to fetch pull requests'}), 500
 
 @app.route('/api/pull-requests/<pr_id>', methods=['GET'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def get_pull_request_details(pr_id):
     """Obter detalhes completos de um PR específico"""
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
+    
+    
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -908,14 +900,11 @@ def parse_to_aware(dt):
     return None
 
 @app.route('/api/dashboard-data', methods=['GET'])
-@require_user_token(optional=False) 
+# #@require_user_token(optional=False) 
 def get_dashboard_data():
     """Obter dados agregados para o dashboard (correção focada: apenas aqui)."""
-    user_email = request.args.get("email") 
-    user_senha = request.args.get("password") 
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
-
+    user, _, status = auth_user( logs_collection, app)
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
@@ -1053,17 +1042,17 @@ def get_dashboard_data():
 
 
 @app.route('/api/workflows', methods=['GET'])
-@require_user_token(optional=False)
+#@require_user_token(optional=False)
 def list_workflows():
     """
     Lista workflows (arquivos .yml/.yaml) a partir de WORKFLOWS_PATH (env) ou ./workflows.
     Retorna JSON: { "workflows": [ { id, name, category, createdAt, yaml, git }, ... ] }
     """
     try:
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+        
+        
 
-        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+        user, _, status = auth_user( logs_collection, app)
         if status != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
@@ -1111,17 +1100,14 @@ def list_workflows():
         return jsonify({'error': 'Failed to list workflows', 'detail': str(e)}), 500
 
 @app.route('/api/myaccount', methods=['GET'])
-@require_user_token(optional=False)
+#@require_user_token(optional=False)
 def my_account():
     """
     Retorna informações da conta do usuário autenticado.
     Inclui plano, limites e status de expiração.
     """
     try:
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
-
-        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+        user, _, status = auth_user( logs_collection, app)
         if status != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
@@ -1147,7 +1133,7 @@ def my_account():
 
 
 @app.route('/api/invoices', methods=['GET'])
-@require_user_token(optional=False)
+#@require_user_token(optional=False)
 def list_invoices():
     """
     Listar faturas paginadas.
@@ -1161,9 +1147,9 @@ def list_invoices():
         q = request.args.get('q', '').strip()
 
         # autentica (compatível com existing pattern)
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
-        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+        
+        
+        user, _, status_auth = auth_user( logs_collection, app)
 
         if status_auth != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -1193,15 +1179,15 @@ def list_invoices():
 
 
 @app.route('/api/invoices/<int:invoice_id>', methods=['GET'])
-@require_user_token(optional=False)
+#@require_user_token(optional=False)
 def get_invoice_detail(invoice_id):
     """
     Detalhe da fatura (inclui linhas / itens).
     """
     try:
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
-        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+        
+        
+        user, _, status_auth = auth_user( logs_collection, app)
 
         if status_auth != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -1222,7 +1208,7 @@ def get_invoice_detail(invoice_id):
 
 
 @app.route('/api/invoices/<int:invoice_id>/download', methods=['GET'])
-@require_user_token(optional=False)
+#@require_user_token(optional=False)
 def download_invoice(invoice_id):
     """
     Download do PDF da fatura.
@@ -1230,9 +1216,9 @@ def download_invoice(invoice_id):
     Se Invoice.pdf_path estiver configurado, serve o arquivo do diretório INVOICES_DIR.
     """
     try:
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
-        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+        
+        
+        user, _, status_auth = auth_user( logs_collection, app)
 
         if status_auth != "success" or not user:
             return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -1274,7 +1260,7 @@ def download_invoice(invoice_id):
 
 
 @app.route('/api/reprocess-pr/<int:pr_number>', methods=['POST'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def reprocess_pr(pr_number):
     """Reprocessar um Pull Request específico"""
     data = request.get_json()
@@ -1282,7 +1268,7 @@ def reprocess_pr(pr_number):
     user_senha = data.get("password") 
     redo_merge = data.get("redo_merge") 
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -1312,15 +1298,13 @@ def reprocess_pr(pr_number):
     }), 202
 
 @app.route('/api/prai/gen', methods=['POST'])
-@require_user_token(optional=False) 
+#@require_user_token(optional=False) 
 def prai():
     data = request.get_json()
-    user_email = data.get("email") 
-    user_senha = data.get("password") 
     repository = data.get("repository")
     pr_number = data.get("pr_number")
 
-    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+    user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401

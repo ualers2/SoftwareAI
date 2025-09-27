@@ -39,7 +39,7 @@ const AppRoutes = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/myaccount" element={<MyAccount />} />
             <Route path="/billing" element={<BillingPage />} />
-            <Route path="/invoices" element={<InvoicesPage />} />
+            <Route path="/billing/invoices" element={<InvoicesPage />} />
           
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -50,7 +50,7 @@ const AppRoutes = () => {
           <Route path="/" element={<Index />} />
 
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}
     </BrowserRouter>

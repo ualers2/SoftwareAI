@@ -28,13 +28,13 @@ export const project = [
       ],
       actions: {
         login: { label: "Entrar", href: "/login" },
-        signup: { label: "Começar Grátis", href: "/signup" },
+        signup: { label: "Começar Grátis", href: "/login" },
       },
     },
     plans: [
       {
         name: "Free",
-        checkout: "https://www.softwareai.site/signup?plan=free"
+        checkout: "https://www.softwareai.site/login"
       },
       {
         name: "Premium",

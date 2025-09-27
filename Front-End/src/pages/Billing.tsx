@@ -39,21 +39,24 @@ const BillingPage = () => {
   const [loading, setLoading] = useState(false)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [plans, setPlans] = useState<any[]>([])
+  const [plansLoading, setPlansLoading] = useState(false)
+
 
   const backend = import.meta.env.VITE_BACK_END || ''
-  const email = localStorage.getItem("user_email") || ""
-  const password = localStorage.getItem("user_senha") || ""
+
   const accessToken = localStorage.getItem("access_token") || ""
 
   useEffect(() => {
     fetchAccount()
+    fetchPlans()
   }, [])
 
   async function fetchAccount() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`${backend}/api/myaccount?email=${email}&password=${password}`, {
+      const res = await fetch(`${backend}/api/myaccount`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -77,6 +80,28 @@ const BillingPage = () => {
       setLoading(false)
     }
   }
+
+  async function fetchPlans() {
+    setPlansLoading(true)
+    try {
+      const res = await fetch(`${backend}/api/public/plans-features`)
+      if (!res.ok) throw new Error('Falha ao buscar planos')
+      const data = await res.json()
+      const plansArray = Object.entries(data.payload).map(([key, value]: any) => ({
+        id: key.toLowerCase(),
+        name: key,
+        price: `R$ ${value.price}/mês`,
+        features: value.features,
+        paymentLink: value.payment_link
+      }))
+      setPlans(plansArray)
+    } catch (err: any) {
+      setError(err.message || 'Erro ao carregar planos')
+    } finally {
+      setPlansLoading(false)
+    }
+  }
+
 
   function calcPercent(used: number, limit: number) {
     if (limit === 0) return 0
@@ -136,7 +161,6 @@ const BillingPage = () => {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column: account summary */}
         <div className="lg:col-span-1 space-y-4">
           <Card>
             <CardHeader>
@@ -205,33 +229,33 @@ const BillingPage = () => {
           </Card>
         </div>
 
-        {/* Right column: plans */}
         <div className="lg:col-span-2">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {samplePlans.map((p) => (
-              <Card key={p.id} className="flex flex-col">
-                <CardHeader>
-                  <CardTitle>{p.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="text-xl font-semibold mb-2">{p.price}</div>
-                    <ul className="mb-4 text-sm space-y-1">
-                      {p.features.map((f, i) => (
-                        <li key={i}>• {f}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-4">
-                    <Button onClick={() => handleSubscribe(p.id)} disabled={actionLoading !== null}>
-                      {actionLoading === p.id ? 'Processando...' : p.id === 'free' ? 'Selecionar' : `Assinar ${p.name}`}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {plansLoading ? (
+            <div>Carregando planos...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {plans.map((p) => (
+                <Card key={p.id} className="flex flex-col">
+                  <CardHeader>
+                    <CardTitle>{p.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="text-xl font-semibold mb-2">{p.price}</div>
+                      <ul className="mb-4 text-sm space-y-1">
+                        {p.features.map((f, i) => <li key={i}>• {f}</li>)}
+                      </ul>
+                    </div>
+                    <div className="mt-4">
+                      <Button onClick={() => handleSubscribe(p.id)} disabled={actionLoading !== null}>
+                        {actionLoading === p.id ? 'Processando...' : p.id === 'free' ? 'Selecionar' : `Assinar ${p.name}`}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
