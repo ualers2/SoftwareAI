@@ -1,0 +1,22 @@
+name: Processar Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  call-external-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar API PR AI
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-API-TOKEN: ${{ secrets.PRAI_API_TOKEN }}" \
+            -d '{
+              "repository": "${{ github.repository }}",
+              "pr_number": ${{ github.event.pull_request.number }},
+              "email": ${{ secrets.email }},
+              "password": "${{ secrets.password }}",
+            }' \
+            https://api.softwareai.site/api/prai/gen
