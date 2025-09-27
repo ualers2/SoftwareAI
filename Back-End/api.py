@@ -4,6 +4,8 @@ import threading
 import requests
 import json
 import logging
+from dotenv import load_dotenv
+
 
 from bson.json_util import dumps
 from datetime import datetime, timedelta, timezone
@@ -11,12 +13,14 @@ from flask import g, Flask, Response, request, jsonify
 from flask_cors import CORS
 from asgiref.wsgi import WsgiToAsgi
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from dotenv import load_dotenv
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 from Models.postgreSQL import *
 from Modules.Resolvers.pr_process import process_pull_request
 from Modules.Resolvers.user_identifier import auth_user, require_user_token, resolve_user_identifier
 from Modules.Geters.systemsettings import *
+
 
 from Models.mongoDB import ( 
                                 Log,
@@ -36,6 +40,10 @@ os.chdir(os.path.join(os.path.dirname(__file__)))
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'keys.env'))
 
 
+INVOICES_DIR = os.path.join(os.path.dirname(__file__), 'invoices')
+os.makedirs(INVOICES_DIR, exist_ok=True)
+
+
 
 app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
@@ -51,11 +59,17 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 jwt = JWTManager(app)
 
-# CORS(app, resources={
-#     r"/api/*": {
-#         "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
-#     }
-# })
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=[]
+)
+
+CORS(app, resources={
+    r"/api/*": {
+        "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
+    }
+})
 db.init_app(app)
 
 @app.route('/')
@@ -66,7 +80,66 @@ def index():
         "database": "PostgreSQL + MongoDB",
         "status": "running"
     })
+    
+def get_plans_data():
+    return {
+        "Free": {
+            'price': 0,
+            'limit_monthly_tokens': 300000,
+            'features': [
+                'PR basic automation',
+                '5 - 10 PRs/mo',
+                'Logs basic'
+            ]
+        },
+        "Premium": {
+            'price': 15,
+            'limit_monthly_tokens': 3000000,
+            'features': [
+                'PR Premium automation',
+                '20 - 40 PRs/mo',
+                'Logs advanced',
+                'API access'
+            ]
+        },
+        "Pro": {
+            'price': 29,
+            'limit_monthly_tokens': 10000000,
+            'features': [
+                'Everything from Premium',
+                '60 - 90 PRs/mo',
+                'Git Context Layer',
+                'Auto-Commit Intelligence',
+                'Smart Threshold Detection',
+                'Context-Aware Messages'
+            ]
+        }
+    }
+@app.route('/api/public/plans-features', methods=['GET'])
+@limiter.limit("5 per minute")
+def public_plans_features():
+    return jsonify({
+        "message": "Lista pública de planos e features",
+        "payload": get_plans_data()
+    }), 200
 
+
+@app.route('/api/plans-features/<email>/<password>', methods=['GET'])
+def user_plan_limit(email, password):
+    user, _, status = auth_user(email, password, logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Credenciais inválidas"}), 401
+
+    plans = get_plans_data()
+    plan_name = user.plan_name
+
+    if plan_name not in plans:
+        return jsonify({"error": "Plano não encontrado"}), 404
+
+    return jsonify({
+        "message": "Plano do usuário",
+        "payload": plans[plan_name],
+    }), 200
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -104,7 +177,7 @@ def register():
 @app.route('/api/login', methods=['POST'])
 @require_user_token(optional=True)
 def login():
-    data = request.get_json() or {}
+    data = request.get_json()
     email = data.get("email")
     password = data.get("password")
     try:
@@ -123,7 +196,7 @@ def login():
         log_action(logs_collection, 'login_success', {'username': email}, user=user.id)
         return jsonify({
             "message": f"Bem-vindo, {user.email}!",
-            "access_token": access_token_to_return,
+            "access_token": user.acess_token,
             "user_id": user.id,
             "plan_name": user.plan_name,
             "limit_monthly_tokens": user.limit_monthly_tokens,
@@ -781,6 +854,7 @@ def get_pull_request_details(pr_id):
             'author': author,
             'aiGeneratedContent': ai_generated_content,
             'originalDiff': original_diff,
+            'total_tokens': pr.total_tokens,
             'errorMessage': None if pr.status != 'error' else f'Error processing PR #{pr.pr_number}'
         }
         
@@ -976,6 +1050,227 @@ def get_dashboard_data():
         return jsonify({'error': 'Failed to fetch dashboard data'}), 500
 
 
+@app.route('/api/workflows', methods=['GET'])
+@require_user_token(optional=False)
+def list_workflows():
+    """
+    Lista workflows (arquivos .yml/.yaml) a partir de WORKFLOWS_PATH (env) ou ./workflows.
+    Retorna JSON: { "workflows": [ { id, name, category, createdAt, yaml, git }, ... ] }
+    """
+    try:
+        user_email = request.args.get("email") or (request.json and request.json.get("email"))
+        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+
+        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+        if status != "success" or not user:
+            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+        numeric_user_id = user.id
+
+        # diretório de workflows 
+        workflows_dir = os.path.join(os.path.dirname(__file__), 'Workflows')
+
+
+        workflows = []
+
+        if os.path.isdir(workflows_dir):
+            for root, _, files in os.walk(workflows_dir):
+                for fname in files:
+                    if fname.lower().endswith(('.yml', '.yaml')):
+                        path = os.path.join(root, fname)
+                        try:
+                            with open(path, 'r', encoding='utf-8') as f:
+                                content = f.read()
+                            stat = os.stat(path)
+                            created = datetime.utcfromtimestamp(stat.st_mtime).isoformat() + 'Z'
+                            rel_id = os.path.relpath(path, workflows_dir).replace('\\', '/')
+                            category = os.path.relpath(root, workflows_dir)
+                            if category == '.':
+                                category = ''
+                            wf = {
+                                'id': rel_id,
+                                'name': os.path.splitext(fname)[0],
+                                'category': category,
+                                'createdAt': created,
+                                'yaml': content,
+                            }
+                            workflows.append(wf)
+                        except Exception as e:
+                            log_action(logs_collection, 'workflow_read_error', {'file': path, 'error': str(e)}, user=numeric_user_id, level='error')
+        else:
+            # Se o diretório não existe, retorna lista vazia (com log)
+            log_action(logs_collection, 'workflows_dir_missing', {'path': workflows_dir}, user=numeric_user_id)
+
+        log_action(logs_collection, 'workflows_listed', {'count': len(workflows)}, user=numeric_user_id)
+        return jsonify({'workflows': workflows}), 200
+
+    except Exception as e:
+        log_action(logs_collection, 'workflows_list_error', {'error': str(e)}, user=(getattr(g, 'current_user', None) or None), level='error')
+        return jsonify({'error': 'Failed to list workflows', 'detail': str(e)}), 500
+
+@app.route('/api/myaccount', methods=['GET'])
+@require_user_token(optional=False)
+def my_account():
+    """
+    Retorna informações da conta do usuário autenticado.
+    Inclui plano, limites e status de expiração.
+    """
+    try:
+        user_email = request.args.get("email") or (request.json and request.json.get("email"))
+        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+
+        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+        if status != "success" or not user:
+            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+        numeric_user_id = user.id
+        response = {
+            "user_id": user.id,
+            "email": user.email,
+            "planName": user.plan_name,
+            "planExpiresAt": user.expires_at.isoformat() if user.expires_at else None,
+            "tokensUsed": user.tokens_used or 0,
+            "tokenLimit": user.limit_monthly_tokens or 0,
+            "remainingTokens": (user.limit_monthly_tokens or 0) - (user.tokens_used or 0),
+            "accessToken": user.acess_token,
+            "createdAt": user.created_at.isoformat() if user.created_at else None,
+        }
+
+        log_action(logs_collection, 'myaccount_accessed', response, user=user.id)
+        return jsonify(response), 200
+
+    except Exception as e:
+        log_action(logs_collection, 'myaccount_error', {'error': str(e)}, level='error')
+        return jsonify({"error": "Erro ao recuperar informações da conta", "detail": str(e)}), 500
+
+
+@app.route('/api/invoices', methods=['GET'])
+@require_user_token(optional=False)
+def list_invoices():
+    """
+    Listar faturas paginadas.
+    Query params: page, limit, status, q, email, password (compatibilidade com auth_user)
+    Retorna: { invoices: [...], total: N }
+    """
+    try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 12))
+        status = request.args.get('status')
+        q = request.args.get('q', '').strip()
+
+        # autentica (compatível com existing pattern)
+        user_email = request.args.get("email") or (request.json and request.json.get("email"))
+        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+
+        if status_auth != "success" or not user:
+            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+        numeric_user_id = user.id
+
+        query = Invoice.query.filter_by(user_id=numeric_user_id)
+
+        if status:
+            query = query.filter(Invoice.status == status)
+
+        if q:
+            like = f"%{q}%"
+            query = query.filter(db.or_(Invoice.number.ilike(like), Invoice.plan_name.ilike(like)))
+
+        total = query.count()
+
+        invoices_page = query.order_by(Invoice.date.desc()).offset((page - 1) * limit).limit(limit).all()
+
+        invoices_data = [inv.to_dict(include_lines=False) for inv in invoices_page]
+
+        log_action(logs_collection, 'invoices_listed', {'count': len(invoices_data), 'page': page}, user=numeric_user_id)
+        return jsonify({"invoices": invoices_data, "total": total})
+    except Exception as e:
+        log_action(logs_collection, 'invoices_list_error', {'error': str(e)}, user=(getattr(g, 'current_user', None) or None), level='error')
+        return jsonify({'error': 'Failed to list invoices', 'detail': str(e)}), 500
+
+
+@app.route('/api/invoices/<int:invoice_id>', methods=['GET'])
+@require_user_token(optional=False)
+def get_invoice_detail(invoice_id):
+    """
+    Detalhe da fatura (inclui linhas / itens).
+    """
+    try:
+        user_email = request.args.get("email") or (request.json and request.json.get("email"))
+        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+
+        if status_auth != "success" or not user:
+            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+        numeric_user_id = user.id
+
+        inv = Invoice.query.filter_by(id=invoice_id, user_id=numeric_user_id).first()
+        if not inv:
+            return jsonify({'error': 'Invoice not found'}), 404
+
+        inv_data = inv.to_dict(include_lines=True)
+
+        log_action(logs_collection, 'invoice_detail_accessed', {'invoice_id': invoice_id}, user=numeric_user_id)
+        return jsonify(inv_data)
+    except Exception as e:
+        log_action(logs_collection, 'invoice_detail_error', {'error': str(e), 'invoice_id': invoice_id}, user=(getattr(g, 'current_user', None) or None), level='error')
+        return jsonify({'error': 'Failed to fetch invoice detail', 'detail': str(e)}), 500
+
+
+@app.route('/api/invoices/<int:invoice_id>/download', methods=['GET'])
+@require_user_token(optional=False)
+def download_invoice(invoice_id):
+    """
+    Download do PDF da fatura.
+    Se Invoice.pdf_url estiver setado como URL externa, redireciona para ela.
+    Se Invoice.pdf_path estiver configurado, serve o arquivo do diretório INVOICES_DIR.
+    """
+    try:
+        user_email = request.args.get("email") or (request.json and request.json.get("email"))
+        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
+        user, _, status_auth = auth_user(user_email, user_senha, logs_collection, app)
+
+        if status_auth != "success" or not user:
+            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+        numeric_user_id = user.id
+
+        inv = Invoice.query.filter_by(id=invoice_id, user_id=numeric_user_id).first()
+        if not inv:
+            return jsonify({'error': 'Invoice not found'}), 404
+
+        # Prioriza URL externa
+        if inv.pdf_url:
+            log_action(logs_collection, 'invoice_download_redirect', {'invoice_id': invoice_id, 'url': inv.pdf_url}, user=numeric_user_id)
+            return jsonify({'pdfUrl': inv.pdf_url}), 200
+
+        # Se tiver path relativo, tenta servir o arquivo
+        if inv.pdf_path:
+            # garante que não escape o diretório
+            file_path = os.path.join(INVOICES_DIR, inv.pdf_path)
+            if not os.path.exists(file_path):
+                log_action(logs_collection, 'invoice_download_missing_file', {'invoice_id': invoice_id, 'path': file_path}, user=numeric_user_id, level='warning')
+                return jsonify({'error': 'Arquivo de fatura não encontrado no servidor'}), 404
+
+            # usa send_file com attachment_filename (flask >=2)
+            try:
+                log_action(logs_collection, 'invoice_download_served', {'invoice_id': invoice_id, 'file': inv.pdf_path}, user=numeric_user_id)
+                return send_file(file_path, mimetype='application/pdf', as_attachment=True, download_name=f"invoice-{inv.number}.pdf")
+            except Exception as e:
+                log_action(logs_collection, 'invoice_download_error', {'invoice_id': invoice_id, 'error': str(e)}, user=numeric_user_id, level='error')
+                return jsonify({'error': 'Erro ao servir arquivo de fatura', 'detail': str(e)}), 500
+
+        # nenhum arquivo nem url configurado
+        return jsonify({'error': 'Nenhum arquivo de fatura disponível'}), 404
+
+    except Exception as e:
+        log_action(logs_collection, 'invoice_download_exception', {'error': str(e), 'invoice_id': invoice_id}, user=(getattr(g, 'current_user', None) or None), level='error')
+        return jsonify({'error': 'Failed to download invoice', 'detail': str(e)}), 500
+
+
+
 @app.route('/api/reprocess-pr/<int:pr_number>', methods=['POST'])
 @require_user_token(optional=False) 
 def reprocess_pr(pr_number):
@@ -1015,97 +1310,39 @@ def reprocess_pr(pr_number):
     }), 202
 
 @app.route('/api/prai/gen', methods=['POST'])
+@require_user_token(optional=False) 
 def prai():
-    model = "gpt-5-nano"
-    payload = request.get_json()
-    user_id = request.args.get("user_id") or (request.get_json(silent=True) or {}).get("user_id")
-    if not user_id:
-        return jsonify({"error": "user_id obrigatório"}), 400
-    
-    GitToken = request.headers.get('Bearer')
-    if not GitToken:
-        return jsonify({"error": "GitToken obrigatório"}), 400
-    
-    user = resolve_user_identifier(user_id)
-    if not user:
-        return jsonify({"error": "Usuário não encontrado."}), 404
+    data = request.get_json()
+    user_email = data.get("email") 
+    user_senha = data.get("password") 
+    repository = data.get("repository")
+    pr_number = data.get("pr_number")
+
+    user, _, status = auth_user(user_email, user_senha, logs_collection, app)
+
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
     numeric_user_id = user.id
+    model = "gpt-5-nano"
     GITHUB_TOKEN, OPENAI_API_KEY, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
-    repository = payload["repository"]
-    pr_number = payload["pr_number"]
+
     threading.Thread(target=process_pull_request, args=(
                                                     app,
                                                     numeric_user_id, 
-                                                    GitToken, 
+                                                    GITHUB_TOKEN, 
                                                     OPENAI_API_KEY, 
                                                     logs_collection,
                                                     pr_number,
                                                     repository, 
                                                     model, 
                                                     )).start()
-    return 'Processamento do Pull Request iniciado', 202
 
-
-
-@app.route('/api/workflows', methods=['GET'])
-@require_user_token(optional=False)
-def list_workflows():
-    """
-    Lista workflows (arquivos .yml/.yaml) a partir de WORKFLOWS_PATH (env) ou ./workflows.
-    Retorna JSON: { "workflows": [ { id, name, category, createdAt, yaml, git }, ... ] }
-    """
-    try:
-        # obter credenciais do query params ou body (compatível com frontend)
-        user_email = request.args.get("email") or (request.json and request.json.get("email"))
-        user_senha = request.args.get("password") or (request.json and request.json.get("password"))
-
-        user, _, status = auth_user(user_email, user_senha, logs_collection, app)
-        if status != "success" or not user:
-            return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
-
-        numeric_user_id = user.id
-
-        # diretório de workflows — configurável via env
-        workflows_dir = os.getenv('WORKFLOWS_PATH', os.path.join(os.path.dirname(__file__), 'workflows'))
-
-        workflows = []
-
-        if os.path.isdir(workflows_dir):
-            for root, _, files in os.walk(workflows_dir):
-                for fname in files:
-                    if fname.lower().endswith(('.yml', '.yaml')):
-                        path = os.path.join(root, fname)
-                        try:
-                            with open(path, 'r', encoding='utf-8') as f:
-                                content = f.read()
-                            stat = os.stat(path)
-                            created = datetime.utcfromtimestamp(stat.st_mtime).isoformat() + 'Z'
-                            rel_id = os.path.relpath(path, workflows_dir).replace('\\', '/')
-                            category = os.path.relpath(root, workflows_dir)
-                            if category == '.':
-                                category = ''
-                            wf = {
-                                'id': rel_id,
-                                'name': os.path.splitext(fname)[0],
-                                'category': category,
-                                'createdAt': created,
-                                'yaml': content,
-                            }
-                            workflows.append(wf)
-                        except Exception as e:
-                            log_action(logs_collection, 'workflow_read_error', {'file': path, 'error': str(e)}, user=numeric_user_id, level='error')
-        else:
-            # Se o diretório não existe, retorna lista vazia (com log)
-            log_action(logs_collection, 'workflows_dir_missing', {'path': workflows_dir}, user=numeric_user_id)
-
-        log_action(logs_collection, 'workflows_listed', {'count': len(workflows)}, user=numeric_user_id)
-        return jsonify({'workflows': workflows}), 200
-
-    except Exception as e:
-        log_action(logs_collection, 'workflows_list_error', {'error': str(e)}, user=(getattr(g, 'current_user', None) or None), level='error')
-        return jsonify({'error': 'Failed to list workflows', 'detail': str(e)}), 500
-
+    return jsonify({
+        'message': 'Processing started',
+        'pr_number': pr_number,
+        'triggered_by': numeric_user_id
+    }), 202
 
 
 # Endpoints nao desenvolvidos e Pendentes

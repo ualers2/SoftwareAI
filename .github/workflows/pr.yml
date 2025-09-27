@@ -8,15 +8,15 @@ jobs:
   call-external-service:
     runs-on: ubuntu-latest
     steps:
-      - name: Chamar API para processar PR
+      - name: Chamar API PR AI
         run: |
           curl -X POST \
             -H "Content-Type: application/json" \
-            -H "X-API-TOKEN: ${{ secrets.GITHUB_TOKEN }}" \
+            -H "X-API-TOKEN: ${{ secrets.PRAI_API_TOKEN }}" \
             -d '{
               "repository": "${{ github.repository }}",
               "pr_number": ${{ github.event.pull_request.number }},
-              "pr_url": "${{ github.event.pull_request.url }}",
-              "diff_url": "${{ github.event.pull_request.diff_url }}"
+              "email": ${{ secrets.email }},
+              "password": "${{ secrets.password }}",
             }' \
-            https://b70c040bdbc5.ngrok-free.app/api/prai/gen
+            https://api.softwareai.site/api/prai/gen

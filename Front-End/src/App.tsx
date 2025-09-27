@@ -12,7 +12,11 @@ import Controls from "./pages/Controls";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import Workflows from "./pages/Workflows";
+import Workflows from "./pages/Workflows"; 
+import MyAccount from "./pages/MyAccount"; 
+import BillingPage from "./pages/Billing"; 
+import InvoicesPage from "./pages/Invoices"; 
+import Index from "./pages/Landingpage";
 
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -33,12 +37,18 @@ const AppRoutes = () => {
             <Route path="/logs" element={<Logs />} />
             <Route path="/controls" element={<Controls />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/myaccount" element={<MyAccount />} />
+            <Route path="/billing" element={<BillingPage />} />
+            <Route path="/invoices" element={<InvoicesPage />} />
+          
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
       ) : (
         <Routes>
-         
+          
+          <Route path="/" element={<Index />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

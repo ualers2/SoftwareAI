@@ -5,7 +5,10 @@ import {
   GitBranch,
   ScrollText, 
   Settings, 
-  Zap 
+  Zap,
+  User,
+  CreditCard,
+  FileText
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -59,6 +62,24 @@ const navigationItems = [
     icon: Settings,
     description: "Configurações do sistema"
   },
+  { 
+    title: "Conta", 
+    url: "/myaccount", 
+    icon: User,
+    description: "Configurações da conta"
+  },
+  { 
+    title: "Billing", 
+    url: "/billing", 
+    icon: CreditCard,
+    description: "Configurações de faturamento"
+  },  
+  { 
+    title: "Invoices", 
+    url: "/invoices", 
+    icon: FileText,
+    description: "Relatório de Faturas"
+  },
 ]
 
 import { LogOut } from "lucide-react"
@@ -88,8 +109,7 @@ export function AppSidebar() {
     // Limpa tokens ou dados de sessão
     localStorage.clear()
     sessionStorage.clear()
-    // Redireciona para login
-    navigate("/login")
+    navigate("/")
   }
 
   return (

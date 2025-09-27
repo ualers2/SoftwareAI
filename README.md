@@ -12,11 +12,11 @@
 >
 > A maneira mais fácil e rápida de experimentar o poder do SoftwareAI é através da nossa plataforma oficial.
 >
-> **Visite [www.softwareai.site](https://www.google.com/search?q=https://www.softwareai.site) para iniciar gratuitamente!**
+> **Visite [www.softwareai.site](https://www.softwareai.site) para iniciar gratuitamente!**
 
 <div align="center">
 
-[Plataforma Oficial](https://www.google.com/search?q=https://www.softwareai.site) • [Documentação](https://www.google.com/search?q=%23documenta%C3%A7%C3%A3o) • [Instalação Local]() • [Arquitetura](#)
+[Plataforma Oficial](https://www.softwareai.site) • [Documentação](https://www.softwareai.site/docs/api) • [Instalação Local (em breve)]() • [Arquitetura](#️-arquitetura-do-sistema-pr-ai)
 
 
 </div>

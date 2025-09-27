@@ -71,7 +71,7 @@ services:
       - "4684:4684"
     restart: always
     command: >
-      sh -c "npm ci && npm run build && npx serve -s dist -l 4684"
+      sh -c "npm run dev -- --port 4684"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:4684"] 
       interval: 129s

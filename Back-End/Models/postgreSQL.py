@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 from datetime import datetime, timedelta
 import secrets
-
+import json
+from sqlalchemy import Numeric
 
 TOKEN_DEFAULT_EXPIRES_DAYS = 30
 
@@ -96,3 +97,39 @@ class SystemSettings(db.Model):
     enable_logging = db.Column(db.Boolean, default=True)
     log_level = db.Column(db.String(50), default='INFO')
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class Invoice(db.Model):
+    __tablename__ = 'invoices'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    number = db.Column(db.String(64), nullable=False)  # número/identificador da fatura
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    amount = db.Column(Numeric(12, 2), nullable=False, default=0.0)
+    currency = db.Column(db.String(8), default='BRL')
+    status = db.Column(db.String(32), default='pending')  # paid, pending, failed
+    plan_name = db.Column(db.String(128), nullable=True)
+    pdf_path = db.Column(db.String(500), nullable=True)  # path relativo em ./invoices/ ou None
+    pdf_url = db.Column(db.String(1000), nullable=True)  # opcional: url externa se armazenada em S3 etc.
+    lines = db.Column(db.Text, nullable=True)  # JSON serializado com itens [{description, qty, price}, ...]
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self, include_lines=False):
+        data = {
+            "id": str(self.id),
+            "number": self.number,
+            "date": self.date.isoformat() if self.date else None,
+            "amount": float(self.amount) if self.amount is not None else 0.0,
+            "currency": self.currency,
+            "status": self.status,
+            "planName": self.plan_name,
+            "pdfUrl": self.pdf_url or (f"/api/invoices/{self.id}/download" if self.pdf_path else None)
+        }
+        if include_lines:
+            try:
+                data["lines"] = json.loads(self.lines) if self.lines else []
+            except Exception:
+                data["lines"] = []
+        return data
