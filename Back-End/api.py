@@ -65,11 +65,13 @@ limiter = Limiter(
     default_limits=[]
 )
 
-CORS(app, resources={
-    r"/api/*": {
-        "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
-    }
-})
+
+if os.getenv("FLASK_ENV") == "development":
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
+        }
+    })
 db.init_app(app)
 
 @app.route('/')
