@@ -1,3 +1,4 @@
+// Front-End\src\components\pricing-section.tsx
 import { Check, Star, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { project } from "@/constants/landingpage.ts";
@@ -120,7 +121,19 @@ export const PricingSection = () => {
 
               {/* CTA Button */}
               <button
-                onClick={() => window.location.href = project[0].plans.find(p => p.name === plan.name)?.checkout}
+                onClick={() => {
+                  if (plan.name.toLowerCase() === "free") {
+                    // plano free redireciona para login
+                    window.location.href = "/login";
+                  } else {
+                    const searchParams = new URLSearchParams({
+                      plan: plan.name,
+                      price: String(isAnnual ? plan.annualPrice : plan.monthlyPrice),
+                      billing: isAnnual ? "annual" : "monthly"
+                    });
+                    window.location.href = `/checkout?${searchParams.toString()}`;
+                  }
+                }}
                 className={`w-full ${plan.isPopular ? 'btn-hero' : 'btn-hero-outline'} group`}
               >
                 {plan.isPopular ? (
@@ -129,10 +142,9 @@ export const PricingSection = () => {
                     Começar Agora
                   </>
                 ) : (
-                  'Escolher Plano'
+                  plan.name.toLowerCase() === "free" ? "Começar Grátis" : "Escolher Plano"
                 )}
               </button>
-
 
               {plan.isPopular && (
                 <div className="text-center mt-4">

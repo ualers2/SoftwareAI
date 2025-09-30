@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; margin:0; padding:0; }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fff3cd;
+      border-left: 6px solid #f1c40f;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+    h2 { color: #f1c40f; }
+    p { line-height: 1.5; }
+    .highlight {
+      font-weight: bold;
+      color: #333;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>⚠️ Limitação do servidor</h2>
+    <p>Olá, não foi possível colocar seu projeto 
+       <strong>{{title}}</strong> em execução por conta da limitação do servidor.</p>
+    <p>Mas não se preocupe! Agendamos a execução do seu projeto para o seguinte horário:</p>
+    <p class="highlight">{{new_scheduled_time}}</p>
+    <p>Você pode acompanhar no painel de projetos:</p>
+    <a href="https://mediacutsstudio.com/projects" target="_blank">
+      https://mediacutsstudio.com/projects
+    </a>
+    <div class="footer">
+      Media Cuts Studio © 2025
+    </div>
+  </div>
+</body>
+</html>

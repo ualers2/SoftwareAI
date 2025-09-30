@@ -122,7 +122,7 @@ export function AppSidebar() {
           {!isCollapsed && (
             <div>
               <h2 className="text-lg font-bold text-sidebar-foreground">PR AI</h2>
-              <p className="text-xs text-sidebar-foreground/60">Sistema de DevOps</p>
+              <p className="text-xs text-sidebar-foreground/60">Equipe de DevOps</p>
             </div>
           )}
         </div>

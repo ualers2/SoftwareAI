@@ -5,7 +5,6 @@ Flask-JWT-Extended==4.6.0
 Flask-SQLAlchemy==3.1.1
 sqlalchemy==2.0.25
 
-python-dotenv
 openai-agents
 asyncio
 uvicorn 
@@ -17,7 +16,18 @@ python-dotenv==1.0.0
 requests==2.31.0
 bcrypt==4.1.2
 
-
+reportlab
 tiktoken
+
+
+celery
+redis
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+pytz
+waitress
+gunicorn
+stripe
 
 

@@ -72,27 +72,43 @@ def resolve_user_identifier(identifier):
     # fallback: tenta buscar por email ignorando espaços
     return User.query.filter_by(email=str(identifier).strip()).first()
 
-def auth_user(logs_collection, app):
+def auth_user(logs_collection, app, email='', password=''):
     with app.app_context():
-        header_token = None
-        auth_header = request.headers.get('Authorization')
-        if auth_header and auth_header.lower().startswith('bearer '):
-            header_token = auth_header.split(None, 1)[1].strip()
-        if not header_token:
-            header_token = request.headers.get('X-API-TOKEN')
+        header_token = request.headers.get('X-API-TOKEN')
 
         user = None
-        # se token informado, resolve usuário
         if header_token:
             try:
                 user = get_user_by_access_token(header_token)
-            except Exception as e:
-                log_action(logs_collection, 'dashboard_token_lookup_error', {'error': str(e)}, level='warning')
-                return None, None, "invalid" 
-                
+                if user:
+                    logger.info(f"auth_user login sucess")
+                    return user, user.id, "success"
+                else:
+                    logger.info(f"auth_user invalid token")
 
-        numeric_user_id = user.id
-        return user, numeric_user_id, "success" 
+                    user = resolve_user_identifier(email)
+                    # evita usar user.id quando user é None (corrige crash no log)
+                    if not user or not user.check_password(password):
+                        log_action(logs_collection, 'login_failed', {'message': 'login_failed in if not user or not user.check_password(password):'}, level='warning', user=(user.id if user else None))
+                        return None, None, "invalid"
+                    else:
+                        logger.info(f"auth_user login sucess")
+                        return user, user.id, "success"
+                    
+            except Exception as e:
+                logger.info(f"auth_user_error {e}")
+                log_action(
+                    logs_collection,
+                    'auth_user_error',
+                    {'message': str(e)},
+                    level='warning'
+                )
+                return None, None, "invalid"
+
+        if not user:
+            return None, None, "invalid"
+
+        return user, user.id, "success"
     
 def auth_user_fallback(email, password, logs_collection, app):
     """

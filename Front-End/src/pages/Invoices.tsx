@@ -76,18 +76,23 @@ const InvoicesPage = () => {
   }
 
   async function handleDownload(invoice: Invoice) {
-    if (invoice.pdfUrl) {
-      window.open(invoice.pdfUrl, '_blank')
-      return
-    }
     try {
       const res = await fetch(`${backend}/api/invoices/${invoice.id}/download`, {
         method: 'GET',
-        headers: {
-          'X-API-TOKEN': accessToken
-        }
+        headers: { 'X-API-TOKEN': accessToken }
       })
-      if (!res.ok) throw new Error('Falha ao baixar fatura')
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        if (body.pdfUrl) {
+          // redirecionamento para URL externa
+          window.open(body.pdfUrl, '_blank')
+          return
+        }
+        throw new Error(body.error || 'Falha ao baixar fatura')
+      }
+
+      // Resposta é PDF direto
       const blob = await res.blob()
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -100,6 +105,7 @@ const InvoicesPage = () => {
     } catch (err: any) {
       setError(err.message || 'Erro ao baixar fatura')
     }
+
   }
 
   async function handleView(invoice: Invoice) {

@@ -89,12 +89,13 @@ services:
     privileged: true     
     volumes:
       - ./Back-End:/app
+      - Invoices:/app/Invoices
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     ports:
-      - "5920:5920"
+      - "5910:5910"
     command: >
-      sh -c "uvicorn api:asgi_app --host 0.0.0.0 --port 5920"
+      sh -c "uvicorn api:asgi_app --host 0.0.0.0 --port 5910"
     environment:
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5432/meubanco
@@ -119,3 +120,4 @@ volumes:
   logger_data:
   redis_data:
   npm-modules:
+  Invoices:
