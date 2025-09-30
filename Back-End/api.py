@@ -58,6 +58,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'keys.env'))
 INVOICES_DIR = os.path.join(os.path.dirname(__file__), 'Invoices')
 os.makedirs(INVOICES_DIR, exist_ok=True)
 ADMIN_API_KEY = "apikey-Api-Landingpage-ZBQ2x5m_ae8Ubke9cI664PeCkerEp6EMHDyeriFFjq8"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 host = os.getenv('SMTP_HOST')
 port = int(os.getenv('SMTP_PORT', 587))
 SMTP_USER = os.getenv('SMTP_USER')
@@ -1327,7 +1328,7 @@ def prai():
 
     numeric_user_id = user.id
     model = "gpt-5-nano"
-    GITHUB_TOKEN, OPENAI_API_KEY, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
+    GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
 
     threading.Thread(target=process_pull_request, args=(
                                                     app,

@@ -6,6 +6,7 @@ ProductionFiles/keys.env
 ProductionFiles/.env
 Legacy/Keys/InternalDocs/
 Back-End/Keys/
+Back-End/Invoices/
 Legacy/LocalProject/
 node_modules/
 Tests/
