@@ -5,8 +5,8 @@ import requests
 import json
 import logging
 from dotenv import load_dotenv
-
-
+import stripe
+from decimal import Decimal
 from bson.json_util import dumps
 from datetime import datetime, timedelta, timezone
 from flask import g, Flask, Response, request, jsonify, send_file
@@ -18,6 +18,7 @@ from flask_limiter.util import get_remote_address
 
 from Models.postgreSQL import *
 from Modules.Resolvers.pr_process import process_pull_request
+from Modules.Resolvers.generate_invoice_pdf import generate_invoice_pdf
 from Modules.Resolvers.user_identifier import auth_user, require_user_token, resolve_user_identifier
 from Modules.Geters.systemsettings import *
 from Modules.Geters.user_by_access_token import get_user_by_access_token
@@ -34,16 +35,39 @@ from Modules.Geters.logs import get_recent_logs
 
 from Modules.Savers.log_system_health import log_system_health
 from Modules.Savers.log_action import log_action
+from Modules.Resolvers.send_email import SendEmail
+from Modules.Geters.user_by_email import get_user_by_email
 
+
+diretorio_script = os.path.dirname(os.path.abspath(__file__)) 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+os.makedirs(os.path.join(diretorio_script, 'Logs'), exist_ok=True)
+file_handler = logging.FileHandler(os.path.join(diretorio_script, 'Logs', 'api.log'))
+file_handler.setFormatter(formatter)
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
 
 os.chdir(os.path.join(os.path.dirname(__file__)))
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'keys.env'))
 
 
-INVOICES_DIR = os.path.join(os.path.dirname(__file__), 'invoices')
+INVOICES_DIR = os.path.join(os.path.dirname(__file__), 'Invoices')
 os.makedirs(INVOICES_DIR, exist_ok=True)
-
-
+ADMIN_API_KEY = "apikey-Api-Landingpage-ZBQ2x5m_ae8Ubke9cI664PeCkerEp6EMHDyeriFFjq8"
+host = os.getenv('SMTP_HOST')
+port = int(os.getenv('SMTP_PORT', 587))
+SMTP_USER = os.getenv('SMTP_USER')
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
+use_tls = os.getenv('SMTP_USE_TLS', 'true').lower() == 'true'
+createcheckout = os.getenv("createcheckout")
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+success_url = os.getenv("success_url")
+cancel_url = os.getenv("cancel_url")
 
 app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
@@ -67,11 +91,8 @@ limiter = Limiter(
 
 
 if os.getenv("FLASK_ENV") == "development":
-    CORS(app, resources={
-        r"/api/*": {
-            "origins": os.getenv('FRONTEND_ORIGINS', '*').split(',')
-        }
-    })
+    CORS(app, origins=os.getenv("FRONTEND_ORIGINS", "*").split(","))
+
 db.init_app(app)
 
 @app.route('/')
@@ -184,7 +205,9 @@ def register():
 # @require_user_token(optional=True)
 def login():
     try:
-        user, access_token_to_return, status = auth_user(logs_collection, app)
+        email = request.args.get('email')
+        password = request.args.get('password')
+        user, access_token_to_return, status = auth_user(logs_collection, app, email, password)
 
         if status == "invalid" or not user:
             return jsonify({"error": "Credenciais inválidas"}), 401
@@ -1322,6 +1345,220 @@ def prai():
         'pr_number': pr_number,
         'triggered_by': numeric_user_id
     }), 202
+
+
+
+
+
+
+
+@app.route("/api/billing/checkout", methods=["POST"])
+def create_checkout():
+    data = request.get_json()
+    try:
+       
+        plan = data["plan"]
+        billingCycle = data["billingCycle"]
+        if billingCycle == "monthly":
+            if plan == "Premium":
+                SUBSCRIPTION_PRICE_ID = os.getenv("STRIPE_SUBSCRIPTION_PRICE_ID_Premium")
+            elif plan == "Pro":
+                SUBSCRIPTION_PRICE_ID = os.getenv("STRIPE_SUBSCRIPTION_PRICE_ID_Pro")
+        
+        elif billingCycle == "annual":
+            if plan == "Premium":
+                SUBSCRIPTION_PRICE_ID = os.getenv("STRIPE_SUBSCRIPTION_PRICE_ID_Premium_anual")
+            elif plan == "Pro":
+                SUBSCRIPTION_PRICE_ID = os.getenv("STRIPE_SUBSCRIPTION_PRICE_ID_Pro_anual")
+
+        session = stripe.checkout.Session.create(
+            line_items=[{
+                "price": SUBSCRIPTION_PRICE_ID,  
+                "quantity": 1
+            }],
+            mode="subscription",
+            payment_method_types=["card"],
+            success_url=success_url, 
+            cancel_url=cancel_url,  
+            metadata={"email": data["email"],
+                      "password": data["password"],
+                      "SUBSCRIPTION_PLAN": data["plan"],
+                    },
+        )
+        print("Sessão criada:", session.id)
+        return jsonify({"sessionId": session.id})
+    except Exception as e:
+        print("Erro ao criar a sessão de checkout:", e)
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/proxy-checkout', methods=['POST'])
+def proxy_checkout():
+    try:
+        data = request.get_json()
+        headers = {
+            "Content-Type": "application/json",
+            "Api-Landingpage-API-KEY": ADMIN_API_KEY
+        }
+        response = requests.post(createcheckout, json=data, headers=headers)
+        return jsonify(response.json()), response.status_code
+    except Exception as e:
+        logger.info(f"Erro no servidor {e}")
+        return jsonify({"error": f"Erro no servidor {e}"}), 500
+
+# -------------------------------------------------------------------
+# Endpoint Webhook Stripe
+@app.route("/webhook", methods=["POST"])
+def stripe_webhook():
+    """
+    Endpoint para tratar os webhooks enviados pela Stripe.
+    """
+    payload = request.data
+    sig_header = request.headers.get("Stripe-Signature")
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
+    except ValueError as e:
+        return jsonify({"message": "Invalid payload"}), 400
+    except stripe.error.SignatureVerificationError as e:
+        return jsonify({"message": "Invalid signature"}), 400
+
+    # Processa o evento conforme o seu tipo
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+
+        email_metadata = session["metadata"].get("email")
+        password_metadata = session["metadata"].get("password")
+        SUBSCRIPTION_PLAN = session["metadata"].get("SUBSCRIPTION_PLAN")
+            
+        user = get_user_by_email(email_metadata)
+        if not user: 
+            new_user = User(email=email_metadata)
+            new_user.set_password(password_metadata)
+            acess_token = new_user.create_access_token_for_user(TOKEN_DEFAULT_EXPIRES_DAYS)
+            db.session.add(new_user)
+            db.session.commit()
+            log_action(logs_collection, 'user_registered', {'message': "Usuário criado com sucesso"})
+            numeric_user_id = user.id
+        else:
+            numeric_user_id = user.id
+                
+        if session.get("payment_status") == "paid":
+
+            log_action(logs_collection, 
+                'payment_system',
+                {'message': f"Pagamento por cartão com sucesso: {SUBSCRIPTION_PLAN} {email_metadata}"},
+                user=numeric_user_id
+                )
+
+            plans = get_plans_data()
+            payload  =  plans[SUBSCRIPTION_PLAN]
+            user.limit_monthly_tokens = payload.get('limit_monthly_tokens')
+            user.tokens_used = 0
+            user.plan_name = SUBSCRIPTION_PLAN
+            user.expires_at  = datetime.utcnow() + timedelta(days=30)
+            user.revoked_at = None
+            invoice = Invoice(
+                user_id=numeric_user_id,
+                number=f"INV-{int(datetime.utcnow().timestamp())}",  # um número único simples
+                date=datetime.utcnow(),
+                amount=Decimal(payload.get('price', 0.0)), 
+                currency='USD',
+                status='paid',
+                plan_name=SUBSCRIPTION_PLAN,
+                lines=json.dumps([{"description": "PR-AI Subscription paid", "qty": 1, "price": payload.get('price', 0.0)}])
+            )
+            db.session.add(invoice)
+            db.session.commit()
+                        
+            pdf_path = generate_invoice_pdf(invoice, output_dir=INVOICES_DIR)
+            invoice.pdf_path = pdf_path
+            db.session.commit()
+
+            SendEmail(
+                user_email_origin=email_metadata,
+                html_attach_flag=True,
+                email_type="Sucess Upgrated Account",
+                SMTP_ADM=SMTP_USER,
+                SMTP_PASSWORD=SMTP_PASSWORD,
+                SMTP_HOST=host,
+                SMTP_PORT=port,
+                use_tls=use_tls,
+                erro_project="",
+                title_origin="",
+                new_scheduled_time="",
+                planname=SUBSCRIPTION_PLAN
+            )
+
+
+        elif session.get("payment_status") == "unpaid" and session.get("payment_intent"):
+            payment_intent = stripe.PaymentIntent.retrieve(session["payment_intent"])
+            hosted_voucher_url = (
+                payment_intent.next_action
+                and payment_intent.next_action.get("boleto_display_details", {})
+                .get("hosted_voucher_url")
+            )
+            if hosted_voucher_url:
+                user_email = session.get("customer_details", {}).get("email")
+                print("Gerou o boleto e o link é", hosted_voucher_url)
+                log_action(logs_collection, 
+                    'payment_system',
+                    {'message': f"Gerou o boleto e o link é {hosted_voucher_url}"},
+                    user=numeric_user_id
+                    )
+            
+
+
+    elif event["type"] == "checkout.session.expired":
+        session = event["data"]["object"]
+        if session.get("payment_status") == "unpaid":
+            teste_id = session["metadata"].get("testeId")
+            print("Checkout expirado", teste_id)
+            log_action(logs_collection, 
+                'payment_system',
+                {'message': f"Checkout expirado {teste_id}"},
+                )
+            
+    elif event["type"] == "checkout.session.async_payment_succeeded":
+        session = event["data"]["object"]
+        if session.get("payment_status") == "paid":
+            teste_id = session["metadata"].get("testeId")
+            print("Pagamento boleto confirmado", teste_id)
+            log_action(logs_collection, 
+                'payment_system',
+                {'message': f"Pagamento boleto confirmado {teste_id}"},
+                )
+            
+    elif event["type"] == "checkout.session.async_payment_failed":
+        session = event["data"]["object"]
+        if session.get("payment_status") == "unpaid":
+            teste_id = session["metadata"].get("testeId")
+            print("Pagamento boleto falhou", teste_id)
+            log_action(logs_collection, 
+                'payment_system',
+                {'message': f"Pagamento boleto falhou {teste_id}"},
+                )
+            
+    elif event["type"] == "customer.subscription.deleted":
+        print("Cliente cancelou o plano")
+        log_action(logs_collection, 
+            'payment_system',
+            {'message': f"Cliente cancelou o plano"},
+            )
+        
+    return jsonify({"result": event, "ok": True})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Endpoints nao desenvolvidos e Pendentes

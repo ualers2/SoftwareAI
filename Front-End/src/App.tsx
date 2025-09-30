@@ -18,6 +18,15 @@ import BillingPage from "./pages/Billing";
 import InvoicesPage from "./pages/Invoices"; 
 import Index from "./pages/Landingpage";
 
+import SignupCheckout from "./pages/SignupCheckout";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
+import CheckoutError from "./pages/CheckoutError";
+
+
+
+
+
+
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -48,8 +57,12 @@ const AppRoutes = () => {
         <Routes>
           
           <Route path="/" element={<Index />} />
-
           <Route path="/login" element={<Login />} />
+
+          <Route path="/checkout" element={<SignupCheckout />} />
+          <Route path="/checkout/sucess" element={<CheckoutSuccess />} />
+          <Route path="/checkout/cancel" element={<CheckoutError />} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}
