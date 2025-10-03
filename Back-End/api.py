@@ -5,7 +5,7 @@ import requests
 import json
 import logging
 from dotenv import load_dotenv
-
+import asyncio
 import stripe
 from decimal import Decimal
 from bson.json_util import dumps
@@ -1334,13 +1334,13 @@ def diff_context():
     model = "gpt-5-nano"
     GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
 
-    commit_message, total_input, total_cached, total_output, total_reasoning, total_usage = GenerateCommitMessageAgent(
+    commit_message, total_input, total_cached, total_output, total_reasoning, total_usage = asyncio.run(GenerateCommitMessageAgent(
                             OPENAI_API_KEY,
                             numeric_user_id, 
                             diff, 
                             files, 
                     
-                            )
+                            ))
 
     return jsonify({
         'commit_message': f'{commit_message}',

@@ -19,7 +19,6 @@ export const ConfigPanel = () => {
   const email = "freitasalexandre810@gmail.com"
   const password = "teste"
 
-  // Carrega config do backend
   useEffect(() => {
     const fetchSettings = async () => {
       try {
@@ -38,7 +37,7 @@ export const ConfigPanel = () => {
         setLocalConfig({
           api_key: data.openaiApiKey || "",
           api_endpoint: data.webhookUrl || "",
-          ai_model: "gpt-5-mini", // default se backend não retorna
+          ai_model: "gpt-5-mini", 
           lines_threshold: 50,
           files_threshold: 5,
           time_threshold: 60,

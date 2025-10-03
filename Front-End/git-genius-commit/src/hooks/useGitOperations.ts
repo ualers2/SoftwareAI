@@ -11,7 +11,6 @@ const INITIAL_STATUS: GitStatus = {
   is_monitoring: false,
 };
 
-// Declaração Global para o TypeScript
 declare global {
   interface Window {
     electronAPI: {

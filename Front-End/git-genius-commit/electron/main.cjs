@@ -173,7 +173,7 @@ async function analyzeAndCommit(repoPath, config, mainWindow) {
     const diff = await getGitDiff(repoPath);
 
     mainWindow.webContents.send("git:analyzing", { status });
-    const response = await fetch(`${backend}/api/prai/gen`, {
+    const response = await fetch(`${backend}/api/prai/diff_context`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -191,7 +191,7 @@ async function analyzeAndCommit(repoPath, config, mainWindow) {
     }
 
     const result = await response.json();
-    const commitMessage = `${result.subject}\n\n${result.body}`;
+    const commitMessage = `${result.commit_message}`;
 
     mainWindow.webContents.send("git:commitGenerated", {
       commit_message: commitMessage,

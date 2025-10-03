@@ -72,9 +72,7 @@ const Index = () => {
   const handleRepoSelect = (path: string) => {
     setRepoPath(path);
     toast.success("Repository selected");
-    // Faz o primeiro fetch do status e do estado de monitoring
     fetchAndCombineStatus(path); 
-    // Tenta buscar o diff imediatamente
     fetchDiff(path);
   };
   
@@ -84,7 +82,7 @@ const Index = () => {
     toast.success("Configuration saved");
   };
 
-  // 3. Função para análise manual (chamada pelo CommitPreview)
+  // 3. Função para análise manual
   const handleAnalyze = async () => {
     if (!repoPath) {
       toast.error("Please select a repository first.");
