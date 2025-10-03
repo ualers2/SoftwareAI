@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from functools import wraps
 from flask import g, Flask, Response, request, jsonify
 import logging
-
 from Modules.Savers.log_action import log_action
 from Modules.Geters.user_by_access_token import get_user_by_access_token
 from Models.mongoDB import ( 
@@ -58,18 +57,15 @@ def resolve_user_identifier(identifier):
     if not identifier:
         return None
 
-    # Se já for int
     try:
         uid = int(identifier)
         return User.query.get(uid)
     except (ValueError, TypeError):
         pass
 
-    # se parecer email
     if isinstance(identifier, str) and "@" in identifier:
         return User.query.filter_by(email=identifier).first()
 
-    # fallback: tenta buscar por email ignorando espaços
     return User.query.filter_by(email=str(identifier).strip()).first()
 
 def auth_user(logs_collection, app, email='', password=''):

@@ -18,8 +18,8 @@ bcrypt==4.1.2
 
 reportlab
 tiktoken
-
-
+anthropic
+watchdog
 celery
 redis
 google-api-python-client

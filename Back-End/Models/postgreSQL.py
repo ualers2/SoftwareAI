@@ -88,9 +88,11 @@ class SystemSettings(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    installation_id = db.Column(db.BigInteger, nullable=True)  
     github_token = db.Column(db.Text, nullable=True)
     github_secret = db.Column(db.Text, nullable=True)
     repository_name = db.Column(db.String(255), nullable=True)
+    
     openai_api_key = db.Column(db.Text, nullable=True)
     webhook_url = db.Column(db.String(500), nullable=True)
     auto_process_prs = db.Column(db.Boolean, default=True)

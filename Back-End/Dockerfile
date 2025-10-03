@@ -1,6 +1,5 @@
 FROM python:3.12-slim-bullseye
 
-# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
@@ -14,7 +13,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
-# Instalar Docker CLI
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     curl \
@@ -34,12 +32,9 @@ RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 
-
-# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     git 
     
-# Instala o GitHub CLI
 RUN apt update && apt install -y curl git && \
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
     dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
@@ -48,16 +43,11 @@ RUN apt update && apt install -y curl git && \
     tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     apt update && apt install -y gh
 
-# Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar e instalar dependências Python
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-# No host ou Dockerfile do ambiente de CI
 RUN apt-get update && apt-get install -y docker-compose-plugin
-# ou instalar a versão “standalone”:
 RUN apt-get install -y docker-compose
-# Copiar os arquivos do projeto
 COPY . /app

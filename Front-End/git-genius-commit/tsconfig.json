@@ -1,0 +1,23 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
+    "types": ["node", "./electron.d.ts"]
+
+  }
+}

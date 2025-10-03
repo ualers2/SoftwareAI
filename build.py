@@ -10,5 +10,5 @@ def executar_comando(comando):
     subprocess.run(comando, shell=True)
 
 
-executar_comando("docker-compose up --build -d pipeline-api")
+executar_comando("docker-compose up --build -d frontend-pipeline")
 

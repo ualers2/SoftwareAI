@@ -3,11 +3,8 @@ import logging
 from flask import Flask, request, abort
 from dotenv import load_dotenv
 import threading
-
 from Modules.Resolvers.pr_process import process_pull_request
 from Modules.Resolvers.verify_signature import verify_signature
-
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -16,7 +13,6 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
-
 load_dotenv(os.path.join(os.path.dirname(__file__), "keys.env"))
 app = Flask(__name__)
 GITHUB_SECRET = os.getenv('GITHUB_SECRET', '')
@@ -53,8 +49,6 @@ def webhookgenpr():
 
     logger.info("Evento ignorado.")
     return 'Evento ignorado', 200
-
-
-if __name__ == '__main__':
-    logger.info("Inicialized !!!!!!")
-    app.run(host='0.0.0.0', port=5071)
+# if __name__ == '__main__':
+#     logger.info("Inicialized !!!!!!")
+#     app.run(host='0.0.0.0', port=5071)
