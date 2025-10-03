@@ -1284,8 +1284,7 @@ def reprocess_pr(pr_number):
         'triggered_by': numeric_user_id
     }), 202
 
-@app.route('/api/prai/gen', methods=['POST'])
- 
+@app.route('/api/prai/gen', methods=['POST']) 
 def prai():
     data = request.get_json()
     repository = data.get("repository")
@@ -1318,6 +1317,39 @@ def prai():
     }), 202
 
 
+
+
+@app.route('/api/prai/diff_context', methods=['POST']) 
+def diff_context():
+    data = request.get_json()
+    repository = data.get("repository")
+    pr_number = data.get("pr_number")
+
+    user, _, status = auth_user( logs_collection, app)
+
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+    model = "gpt-5-nano"
+    GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
+
+    threading.Thread(target=process_pull_request, args=(
+                                                    app,
+                                                    numeric_user_id, 
+                                                    GITHUB_TOKEN, 
+                                                    OPENAI_API_KEY, 
+                                                    logs_collection,
+                                                    pr_number,
+                                                    repository, 
+                                                    model, 
+                                                    )).start()
+
+    return jsonify({
+        'message': 'Processing started',
+        'pr_number': pr_number,
+        'triggered_by': numeric_user_id
+    }), 202
 
 
 
