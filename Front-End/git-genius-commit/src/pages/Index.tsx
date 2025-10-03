@@ -147,10 +147,6 @@ const Index = () => {
               onRefresh={() => repoPath && refreshStatus(repoPath)} 
             />
 
-            <ConfigPanel
-              config={config}
-              onSave={handleConfigSave}
-            />
           </div>
 
           {/* Right Column - Diff & Commit */}
@@ -169,6 +165,12 @@ const Index = () => {
               onAnalyze={handleAnalyze} // NOVO: Conecta o botão de análise manual
               isLoading={isCommitting || isAnalyzing} // Considera ambos os estados de loading
             />
+
+            <ConfigPanel
+              config={config}
+              onSave={handleConfigSave}
+            />
+
           </div>
         </div>
       </main>
