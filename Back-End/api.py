@@ -42,7 +42,7 @@ from Modules.Resolvers.send_email import SendEmail
 from Modules.Geters.user_by_email import get_user_by_email
 from Modules.Geters.plans_data import get_plans_data
 from Modules.Resolvers.verify_signature import verify_signature
-
+from Agents.GitContextLayer.ai import GenerateCommitMessageAgent
 
 diretorio_script = os.path.dirname(os.path.abspath(__file__)) 
 logger = logging.getLogger(__name__)
@@ -1334,13 +1334,13 @@ def diff_context():
     model = "gpt-5-nano"
     GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
 
-    threading.Thread(target=GenerateCommitMessageAgent, args=(
-                                                    OPENAI_API_KEY,
-                                                    numeric_user_id, 
-                                                    diff, 
-                                                    files, 
-                                            
-                                                    )).start()
+    commit_message, total_input, total_cached, total_output, total_reasoning, total_usage = GenerateCommitMessageAgent(
+                            OPENAI_API_KEY,
+                            numeric_user_id, 
+                            diff, 
+                            files, 
+                    
+                            )
 
     return jsonify({
         'message': 'Processing started',
