@@ -4,13 +4,22 @@ const path = require("path");
 const { spawn } = require("child_process");
 // adicione no topo do arquivo, logo após imports
 let mainWindow = null;
-
+let nodeCrypto = null;
+try {
+  nodeCrypto = require('crypto');
+} catch (e) {
+  nodeCrypto = null;
+}
 // Estado global do monitoramento
 const monitoringState = {
   isMonitoring: false,
   lastActivityTime: Date.now(),
   checkInterval: null,
   currentRepoPath: null,
+  inFlight: false,               // evita chamadas concorrentes
+  lastPayloadHash: null,         // hash do último diff+files enviado
+  lastAnalysisTimestamp: 0,      // quando foi a ultima análise
+  throttle_ms: 60 * 1000,        // evita re-enviar mesmo payload por 60s (configurável)
   config: {
     lines_threshold: 10,
     files_threshold: 1,
@@ -25,6 +34,44 @@ const monitoringState = {
 
 const backend = 'http://localhost:5910'
 const accessToken = "t7gwqwkNVXRFkto97ISidO96y68CSyRMGgwcwy_Qgr0"
+
+/**
+ * computeHash - retorna um hash hex (sha256 preferencialmente) para a string dada.
+ * Tenta: Node crypto -> Web Crypto (subtle) -> fallback FNV-1a.
+ * Retorna Promise<string>.
+ */
+async function computeHash(str) {
+  // 1) Node createHash
+  if (nodeCrypto && typeof nodeCrypto.createHash === 'function') {
+    try {
+      return nodeCrypto.createHash('sha256').update(str).digest('hex');
+    } catch (e) {
+      console.warn("[hash] node createHash failed, falling back:", e && e.message);
+    }
+  }
+
+  // 2) Web Crypto (async)
+  if (typeof globalThis !== "undefined" && globalThis.crypto && crypto.subtle && typeof crypto.subtle.digest === 'function') {
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) {
+      console.warn("[hash] web subtle.digest failed, falling back:", e && e.message);
+    }
+  }
+
+  // 3) Fallback determinístico (FNV-1a) — não criptográfico, mas suficiente para dedupe
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  // retorna hex com padding
+  return (h >>> 0).toString(16).padStart(8, '0');
+}
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -212,50 +259,81 @@ async function shouldTrigger(repoPath, config) {
   return { shouldTrigger: true, status };
 }
 
-// Envia para API e processa commit (Lógica de Monitoramento)
 async function analyzeAndCommit(repoPath, config, mainWindow) {
-  try {
-    const status = await getGitStatus(repoPath);
-    const diff = await getGitDiff(repoPath);
+  // Proteção: evita concorrência
+  if (monitoringState.inFlight) {
+    console.log("[monitor] Analysis already in-flight — skipping new analyzeAndCommit call");
+    return;
+  }
 
-    mainWindow.webContents.send("git:analyzing", { status });
-    const response = await fetch(`${backend}/api/prai/diff_context`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'X-API-TOKEN': `${accessToken}`,
-      },
-      body: JSON.stringify({
-        diff: diff,
-        files: status.modified_files,
-        model: config.ai_model || "gpt-5-nano",
-      }),
-    });
+  // marca que estamos rodando
+  monitoringState.inFlight = true;
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status} - ${response.statusText}`);
-    }
+  try {
+    const status = await getGitStatus(repoPath);
+    const diff = await getGitDiff(repoPath);
 
-    const result = await response.json();
-    const commitMessage = `${result.commit_message}`;
+    // calcula hash do payload (diff + lista de arquivos) para deduplicação
+    const payload = { diff, files: status.modified_files };
+    const payloadHash = await computeHash(JSON.stringify(payload));
+    
+    // se o mesmo payload foi enviado recentemente, respeita throttle_ms
+    const now = Date.now();
+    if (monitoringState.lastPayloadHash === payloadHash &&
+        (now - monitoringState.lastAnalysisTimestamp) < monitoringState.throttle_ms) {
+      console.log("[monitor] Duplicate payload within throttle window — skipping analysis");
+      return;
+    }
 
-    mainWindow.webContents.send("git:commitGenerated", {
-      commit_message: commitMessage,
-      status: "READY",
-    });
+    // indica ao frontend que estamos analisando
+    mainWindow?.webContents.send("git:analyzing", { status });
 
-    if (config.auto_commit !== false) {
-      await executeCommit(repoPath, commitMessage, config.auto_push);
-      mainWindow.webContents.send("git:committed", { success: true });
-    }
+    // chama endpoint remoto
+    const response = await fetch(`${backend}/api/prai/diff_context`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-TOKEN": `${accessToken}`,
+      },
+      body: JSON.stringify({
+        diff: diff,
+        files: status.modified_files,
+        model: config.ai_model || "gpt-5-nano",
+      }),
+    });
 
-    monitoringState.lastActivityTime = Date.now();
-  } catch (error) {
-    console.error("Error analyzing and committing:", error.message);
-    mainWindow.webContents.send("git:error", {
-      error: error.message,
-    });
-  }
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} - ${response.statusText}`);
+    }
+
+    const result = await response.json();
+    const commitMessage = `${result.commit_message}`;
+
+    // envia mensagem gerada ao frontend
+    mainWindow?.webContents.send("git:commitGenerated", {
+      commit_message: commitMessage,
+      status: "READY",
+    });
+
+    // realiza commit automático se configurado
+    if (config.auto_commit !== false) {
+      await executeCommit(repoPath, commitMessage, config.auto_push);
+      mainWindow?.webContents.send("git:committed", { success: true });
+    }
+
+    // atualiza registro de payload/análise
+    monitoringState.lastPayloadHash = payloadHash;
+    monitoringState.lastAnalysisTimestamp = Date.now();
+    monitoringState.lastActivityTime = Date.now();
+  } catch (error) {
+    console.error("Error analyzing and committing:", error.message || error);
+    mainWindow?.webContents.send("git:error", {
+      error: error.message || String(error),
+    });
+  } finally {
+    // desbloqueia para próximas análises (sempre)
+    monitoringState.inFlight = false;
+  }
 }
 
 
@@ -273,32 +351,35 @@ function startMonitoring(repoPath, config, mainWindow) {
   // Verifica imediatamente se há mudanças pendentes
   shouldTrigger(repoPath, config)
     .then(({ shouldTrigger: trigger, status }) => {
-      // usa optional chaining para evitar crash caso mainWindow ainda não esteja definido
       mainWindow?.webContents.send("git:statusUpdate", status);
 
       if (trigger) {
-        analyzeAndCommit(repoPath, config, mainWindow);
+        if (!monitoringState.inFlight) {
+          analyzeAndCommit(repoPath, config, mainWindow);
+        } else {
+          console.log("[monitor] initial trigger but analysis already in-flight");
+        }
       }
     })
-    .catch(error => {
-      // Trata erro no status inicial (ex: não é repo git)
-      mainWindow?.webContents.send("git:error", { error: error.message });
-      stopMonitoring();
-    });
 
   // Inicia verificação periódica
   monitoringState.checkInterval = setInterval(async () => {
     try {
-      // renomeia o campo desestruturado para evitar conflito com a função shouldTrigger
+      // evita novas verificações se já estivermos analisando
+      if (monitoringState.inFlight) {
+        console.log("[monitor] skipping periodic check because analysis is in-flight");
+        return;
+      }
+
       const { shouldTrigger: trigger, status } = await shouldTrigger(repoPath, config);
 
       mainWindow?.webContents.send("git:statusUpdate", status);
 
       if (trigger) {
-        analyzeAndCommit(repoPath, config, mainWindow);
+        // dupla proteção: checa inFlight e dedupe internamente em analyzeAndCommit também
+        await analyzeAndCommit(repoPath, config, mainWindow);
       }
     } catch (error) {
-      // Envia erro e para o monitoring se falhar periodicamente
       mainWindow?.webContents.send("git:error", { error: error.message });
       stopMonitoring();
     }

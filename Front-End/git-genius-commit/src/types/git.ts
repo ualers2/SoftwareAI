@@ -37,8 +37,3 @@ export interface GitStatus {
   last_check: Date;
   is_monitoring: boolean;
 }
-
-
-
-
-

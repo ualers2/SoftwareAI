@@ -1324,7 +1324,6 @@ def diff_context():
     data = request.get_json()
     diff = data.get("diff")
     files = data.get("files")
-
     user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:

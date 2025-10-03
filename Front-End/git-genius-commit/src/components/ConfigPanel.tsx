@@ -42,6 +42,7 @@ export const ConfigPanel = () => {
           files_threshold: 5,
           time_threshold: 60,
           auto_push: data.autoProcessPRs || false,
+          auto_commit: true,
           require_tests: data.enableLogging || false,
         });
       } catch (err) {
