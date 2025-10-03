@@ -10,12 +10,12 @@ import { useGitOperations } from "@/hooks/useGitOperations";
 import { toast } from "sonner";
 import { GitBranch } from "lucide-react";
 
-// Definição de configuração padrão
 const DEFAULT_CONFIG: GitConfig = {
   lines_threshold: 10,
   files_threshold: 1,
   time_threshold: 30,
   auto_push: false,
+  auto_commit: true,
   require_tests: false,
   api_key: "",
   ai_model: "gpt-5-nano",

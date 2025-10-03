@@ -1334,14 +1334,15 @@ def diff_context():
     model = "gpt-5-nano"
     GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
 
-    commit_message, total_input, total_cached, total_output, total_reasoning, total_usage = asyncio.run(GenerateCommitMessageAgent(
+    commit_output, total_input, total_cached, total_output, total_reasoning, total_usage = asyncio.run(GenerateCommitMessageAgent(
                             OPENAI_API_KEY,
                             numeric_user_id, 
                             diff, 
                             files, 
                     
                             ))
-
+    commit_message = f"{commit_output.subject}\n\n{commit_output.body}"
+    
     return jsonify({
         'commit_message': f'{commit_message}',
         'tokens': {

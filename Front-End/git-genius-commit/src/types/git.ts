@@ -4,6 +4,7 @@ export interface GitConfig {
   files_threshold: number;
   time_threshold: number; 
   auto_push: boolean;
+  auto_commit: boolean;
   require_tests: boolean;
   api_endpoint: string;
   api_key: string;

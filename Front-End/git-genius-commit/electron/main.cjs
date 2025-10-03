@@ -2,6 +2,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("path");
 const { spawn } = require("child_process");
+// adicione no topo do arquivo, logo após imports
+let mainWindow = null;
 
 // Estado global do monitoramento
 const monitoringState = {
@@ -46,34 +48,52 @@ function createWindow() {
 }
 
 function runGitCommand(repoPath, ...args) {
-  return new Promise((resolve, reject) => {
-    const git = spawn("git", ["-C", repoPath, ...args]);
-    let stdout = "";
-    let stderr = "";
+  return new Promise((resolve, reject) => {
+    console.log(`[git] running: git ${args.join(' ')} -C ${repoPath}`);
+    const git = spawn("git", ["-C", repoPath, ...args], { windowsHide: true });
+    let stdout = "";
+    let stderr = "";
 
-    git.stdout.on("data", (data) => {
-      stdout += data.toString();
-    });
+    git.stdout.on("data", (data) => { stdout += data.toString(); });
+    git.stderr.on("data", (data) => { stderr += data.toString(); });
 
-    git.stderr.on("data", (data) => {
-      stderr += data.toString();
-    });
+    git.on("error", (err) => {
+      // erro em spawn (ex: git não encontrado)
+      reject(new Error(`Failed to spawn git: ${err.message}`));
+    });
 
-    git.on("close", (code) => {
-      if (code === 0) {
-        resolve(stdout.trim());
-      } else {
-        // Verifica se é um erro comum de "não é repo git"
-        const gitError = stderr || `Git command failed with code ${code}`;
-        if (gitError.includes('not a git repository')) {
-          reject(new Error('The selected path is not a Git repository.'));
-        } else {
-          reject(new Error(gitError));
-        }
-      }
-    });
-  });
+    git.on("close", (code) => {
+      if (code === 0) {
+        resolve(stdout.trim());
+      } else {
+        // anexa stdout+stderr para debug
+        const msg = stderr.trim() || stdout.trim() || `Git command failed with code ${code}`;
+        reject(new Error(msg));
+      }
+    });
+  });
 }
+async function ensureGitUserConfigured(repoPath) {
+  try {
+    const name = (await runGitCommand(repoPath, "config", "--get", "user.name")).trim();
+    const email = (await runGitCommand(repoPath, "config", "--get", "user.email")).trim();
+    if (name && email) return { ok: true };
+
+    // Se faltar qualquer um, tenta definir localmente (não sobrescreve global).
+    const fallbackName = process.env.GIT_AUTHOR_NAME || "Git Context Layer";
+    const fallbackEmail = process.env.GIT_AUTHOR_EMAIL || "no-reply@git-context.local";
+
+    if (!name) await runGitCommand(repoPath, "config", "user.name", fallbackName);
+    if (!email) await runGitCommand(repoPath, "config", "user.email", fallbackEmail);
+
+    console.warn(`[git] set local user.name/user.email => ${fallbackName} <${fallbackEmail}>`);
+    return { ok: true, set: true };
+  } catch (err) {
+    // se falhar ao checar, apenas retorna false para o chamador lidar
+    return { ok: false, error: err.message || String(err) };
+  }
+}
+
 
 // Analisa o status do Git
 async function getGitStatus(repoPath) {
@@ -125,20 +145,46 @@ async function getGitDiff(repoPath) {
 
 // Executa commit
 async function executeCommit(repoPath, message, autoPush = false) {
-  try {
-    await runGitCommand(repoPath, "add", ".");
-    await runGitCommand(repoPath, "commit", "-m", message);
+  try {
+    // 0) garante que há mudanças
+    const status = await getGitStatus(repoPath);
+    if (!status.has_changes) {
+      throw new Error("No changes to commit.");
+    }
 
-    if (autoPush) {
-      await runGitCommand(repoPath, "push");
-    }
+    // 1) adiciona tudo
+    await runGitCommand(repoPath, "add", ".");
 
-    return { success: true };
-  } catch (error) {
-    console.error("Error executing commit:", error.message);
-    throw error;
-  }
+    // 2) tenta commit; se falhar por user config, tenta fixar e re-commit uma vez
+    try {
+      await runGitCommand(repoPath, "commit", "-m", message);
+    } catch (commitErr) {
+      const errMsg = commitErr.message || String(commitErr);
+      // detecta erro clássico do Git sobre identidade do usuário
+      if (errMsg.includes("Please tell me who you are") || errMsg.includes("user.name")) {
+        const ensure = await ensureGitUserConfigured(repoPath);
+        if (ensure.ok) {
+          // tenta novo commit uma vez
+          await runGitCommand(repoPath, "commit", "-m", message);
+        } else {
+          throw new Error(`Commit failed and couldn't configure git user: ${ensure.error || 'unknown'}`);
+        }
+      } else {
+        // mantém erro original para debug
+        throw commitErr;
+      }
+    }
+
+    if (autoPush) {
+      await runGitCommand(repoPath, "push");
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Error executing commit:", error.message || error);
+    throw error;
+  }
 }
+
 
 // Verifica se deve disparar análise (Lógica de Monitoramento)
 async function shouldTrigger(repoPath, config) {

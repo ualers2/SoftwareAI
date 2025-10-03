@@ -1,4 +1,4 @@
-// electron/preload.cjs (apenas garanta a exportação)
+// electron/preload.cjs 
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
