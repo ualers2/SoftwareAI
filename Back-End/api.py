@@ -1322,8 +1322,8 @@ def prai():
 @app.route('/api/prai/diff_context', methods=['POST']) 
 def diff_context():
     data = request.get_json()
-    repository = data.get("repository")
-    pr_number = data.get("pr_number")
+    diff = data.get("diff")
+    files = data.get("files")
 
     user, _, status = auth_user( logs_collection, app)
 
@@ -1334,20 +1334,17 @@ def diff_context():
     model = "gpt-5-nano"
     GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
 
-    threading.Thread(target=process_pull_request, args=(
-                                                    app,
+    threading.Thread(target=GenerateCommitMessageAgent, args=(
+                                                    OPENAI_API_KEY,
                                                     numeric_user_id, 
-                                                    GITHUB_TOKEN, 
-                                                    OPENAI_API_KEY, 
-                                                    logs_collection,
-                                                    pr_number,
-                                                    repository, 
-                                                    model, 
+                                                    diff, 
+                                                    files, 
+                                            
                                                     )).start()
 
     return jsonify({
         'message': 'Processing started',
-        'pr_number': pr_number,
+        'files': files,
         'triggered_by': numeric_user_id
     }), 202
 
