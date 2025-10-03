@@ -1343,8 +1343,14 @@ def diff_context():
                             )
 
     return jsonify({
-        'message': 'Processing started',
-        'files': files,
+        'commit_message': f'{commit_message}',
+        'tokens': {
+            'total_input': total_input,
+            'total_cached': total_cached,
+            'total_output': total_output,
+            'total_reasoning': total_reasoning,
+            'total_usage': total_usage,
+        },
         'triggered_by': numeric_user_id
     }), 202
 
