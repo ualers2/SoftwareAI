@@ -15,6 +15,7 @@ declare global {
   interface Window {
     electronAPI: {
       git: {
+        
         getStatus: (repoPath: string) => Promise<Omit<GitStatus, 'last_check' | 'is_monitoring'>>;
         getMonitoringState: () => Promise<{ is_monitoring: boolean }>;
         toggleMonitoring: (repoPath: string, config: GitConfig) => Promise<{ is_monitoring: boolean }>;
@@ -27,6 +28,9 @@ declare global {
         commit: (repoPath: string, message: string, autoPush: boolean) => Promise<{ success: boolean }>;
         getDiff: (repoPath: string) => Promise<string>; // Adicionado para uso no Index.tsx
       };
+      sendToken: (token: string) => void; 
+      sendEmail: (email: string) => void; 
+      sendPassword: (password: string) => void; 
       selectFolder: () => Promise<string | null>;
     };
   }

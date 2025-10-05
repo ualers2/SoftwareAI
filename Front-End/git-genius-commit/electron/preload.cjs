@@ -3,7 +3,9 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
   selectFolder: () => ipcRenderer.invoke("dialog:selectFolder"),
-
+  sendToken: (token) => ipcRenderer.send("set-token", token),
+  sendEmail: (email) => ipcRenderer.send("set-email", email),
+  sendPassword: (password) => ipcRenderer.send("set-password", password),
   git: {
     getStatus: (repoPath) => ipcRenderer.invoke("git:getStatus", repoPath),
     getMonitoringState: () => ipcRenderer.invoke("git:getMonitoringState"),

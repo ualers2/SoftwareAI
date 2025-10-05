@@ -10,18 +10,15 @@ def generate_invoice_pdf(invoice, output_dir="../../Invoices"):
     c = canvas.Canvas(pdf_path, pagesize=A4)
     width, height = A4
 
-    # Cabeçalho
     c.setFont("Helvetica-Bold", 16)
     c.drawString(50, height - 50, "INVOICE")
 
-    # Informações do usuário
     c.setFont("Helvetica", 12)
     c.drawString(50, height - 100, f"Invoice Number: {invoice.number}")
     c.drawString(50, height - 120, f"Date: {invoice.date.strftime('%Y-%m-%d')}")
     c.drawString(50, height - 140, f"User ID: {invoice.user_id}")
     c.drawString(50, height - 160, f"Plan: {invoice.plan_name}")
 
-    # Itens
     c.drawString(50, height - 200, "Items:")
     y = height - 220
     lines = json.loads(invoice.lines) if invoice.lines else []
@@ -29,7 +26,6 @@ def generate_invoice_pdf(invoice, output_dir="../../Invoices"):
         c.drawString(60, y, f"{line['description']} x {line['qty']} - ${line['price']:.2f}")
         y -= 20
 
-    # Total
     c.drawString(50, y - 20, f"Total Amount: ${float(invoice.amount):.2f} {invoice.currency}")
 
     c.showPage()

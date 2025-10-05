@@ -10,21 +10,9 @@ import { useGitOperations } from "@/hooks/useGitOperations";
 import { toast } from "sonner";
 import { GitBranch } from "lucide-react";
 
-const DEFAULT_CONFIG: GitConfig = {
-  lines_threshold: 10,
-  files_threshold: 1,
-  time_threshold: 30,
-  auto_push: false,
-  auto_commit: true,
-  require_tests: false,
-  api_key: "",
-  ai_model: "gpt-5-nano",
-  api_endpoint: "https://your-vps.com/analyze_and_commit",
-};
-
 const Index = () => {
   const [repoPath, setRepoPath] = useState<string>("");
-  const [config, setConfig] = useState<GitConfig>(DEFAULT_CONFIG);
+  const [config, setConfig] = useState<GitConfig>();
   const [gitDiff, setGitDiff] = useState<string>(""); // Estado para armazenar o diff
 
   const {
@@ -32,15 +20,13 @@ const Index = () => {
     commitMessage,
     isAnalyzing,
     isCommitting,
-    // Funções essenciais do hook
     toggleMonitoring, 
     refreshStatus,
-    analyzeChanges, // AGORA ESTÁ SENDO USADO
+    analyzeChanges, 
     executeCommit,
     fetchAndCombineStatus,
   } = useGitOperations();
 
-  // Função utilitária para buscar o diff completo
   const fetchDiff = useCallback(async (path: string) => {
     if (!path) {
       setGitDiff("");

@@ -2,84 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Perssua-inspired Design System - Minimal, clean, pure black background */
+/* AI Frontend Design System - Tech/AI themed with gradients and modern aesthetics */
 
 @layer base {
   :root {
-    /* Pure black background like Perssua */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* Core Background & Text */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    /* Subtle cards with minimal contrast */
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
+    /* Cards & Surfaces */
+    --card: 240 10% 7%;
+    --card-foreground: 0 0% 98%;
 
     /* Popovers */
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 240 10% 7%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Minimalist Primary (Pure White) */
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
+    /* AI-themed Primary (Electric Blue) */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 217 91% 70%;
 
-    /* Subtle Secondary (Dark Gray) */
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary (Tech Purple) */
+    --secondary: 263 85% 65%;
+    --secondary-foreground: 0 0% 98%;
 
-    /* Muted elements */
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 60%;
+    /* Muted (Dark Gray) */
+    --muted: 240 5% 15%;
+    --muted-foreground: 240 5% 65%;
 
-    /* Minimal Accent */
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent (Neon Green) */
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 98%;
 
-    /* Status Colors - Subtle */
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    /* Status Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 0%;
+    --warning-foreground: 0 0% 98%;
     --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    --success-foreground: 0 0% 98%;
 
-    /* Form Elements - Minimal borders */
-    --border: 0 0% 15%;
-    --input: 0 0% 8%;
-    --ring: 0 0% 100%;
+    /* Form Elements */
+    --border: 240 5% 20%;
+    --input: 240 5% 15%;
+    --ring: 217 91% 60%;
 
-    /* Larger border radius for modern look */
-    --radius: 1rem;
+    /* Border Radius */
+    --radius: 0.75rem;
 
     /* Sidebar */
-    --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 0 0% 100%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 0 0% 100%;
+    --sidebar-background: 240 10% 5%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 5% 15%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 240 5% 20%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* AI-specific Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(263 85% 65%));
+    --gradient-accent: linear-gradient(135deg, hsl(142 76% 36%), hsl(217 91% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 10% 3.9%), hsl(240 10% 7%));
+    --gradient-glow: radial-gradient(circle at center, hsl(217 91% 60% / 0.1), transparent 70%);
+
+    /* Shadows with AI glow effects */
+    --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.3);
+    --shadow-accent: 0 0 30px hsl(142 76% 36% / 0.2);
+    --shadow-card: 0 4px 24px hsl(240 10% 3.9% / 0.4);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .light {
-    /* Light mode - keeping it minimal and clean */
+    /* Light mode overrides */
     --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 0%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
-    --accent: 0 0% 90%;
-    --accent-foreground: 0 0% 0%;
-    --border: 0 0% 90%;
-    --input: 0 0% 96%;
-    --ring: 0 0% 0%;
+    --popover-foreground: 240 10% 3.9%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 100%), hsl(240 4.8% 95.9%));
   }
 }
 
@@ -89,13 +99,6 @@
   }
 
   body {
-    @apply bg-background text-foreground font-light;
-    font-feature-settings: "liga" 1, "calt" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-normal tracking-tight;
+    @apply bg-background text-foreground;
   }
 }

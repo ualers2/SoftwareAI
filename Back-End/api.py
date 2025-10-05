@@ -42,7 +42,7 @@ from Modules.Resolvers.send_email import SendEmail
 from Modules.Geters.user_by_email import get_user_by_email
 from Modules.Geters.plans_data import get_plans_data
 from Modules.Resolvers.verify_signature import verify_signature
-from Agents.GitContextLayer.ai import GenerateCommitMessageAgent
+from Modules.Resolvers.git_contex_layer_process import process_git_context_layer
 
 diretorio_script = os.path.dirname(os.path.abspath(__file__)) 
 logger = logging.getLogger(__name__)
@@ -399,13 +399,22 @@ def get_settings():
         
         response_data = {
             'githubToken': settings.github_token,
+            'GITHUB_TOKEN': settings.github_token,
             'githubSecret': settings.github_secret,
             'repositoryName': settings.repository_name or '',
             'openaiApiKey': settings.openai_api_key,
             'webhookUrl': settings.webhook_url or '',
             'autoProcessPRs': settings.auto_process_prs,
             'enableLogging': settings.enable_logging,
-            'logLevel': settings.log_level or 'INFO'
+            'logLevel': settings.log_level or 'INFO',
+
+            'throttleMs': settings.throttle_ms or 60000,
+            'linesThreshold': settings.lines_threshold or 10,
+            'filesThreshold': settings.files_threshold or 1,
+            'timeThreshold': settings.time_threshold or 30,
+            'autoPush': settings.auto_push,
+            'AutoCreatePr': settings.auto_create_pr if settings.auto_create_pr is not None else False,
+            'commitLanguage': settings.commit_language
         }
         
         log_action(logs_collection, 'settings_accessed', {
@@ -452,6 +461,16 @@ def update_settings():
         settings.auto_process_prs = data.get('autoProcessPRs')
         settings.enable_logging = data.get('enableLogging')
         settings.log_level = data.get('logLevel')
+                
+        settings.throttle_ms = data.get('throttleMs', settings.throttle_ms)
+        settings.lines_threshold = data.get('linesThreshold', settings.lines_threshold)
+        settings.files_threshold = data.get('filesThreshold', settings.files_threshold)
+        settings.time_threshold = data.get('timeThreshold', settings.time_threshold)
+        settings.auto_process_prs = data.get('autoProcessPRs', settings.auto_process_prs)
+        settings.auto_push = data.get('autoPush', settings.auto_push)
+        settings.auto_create_pr = data.get('AutoCreatePr', settings.auto_create_pr)
+        settings.github_token = data.get('GITHUB_TOKEN', settings.github_token)
+        settings.commit_language = data.get('commit_language', settings.commit_language)
         
         settings.updated_at = datetime.utcnow()
         db.session.commit()
@@ -706,6 +725,108 @@ def export_logs():
         mimetype="text/plain",
         headers={"Content-Disposition": f"attachment; filename=logs-{numeric_user_id}.txt"},
     )
+
+@app.route('/api/commit-messages', methods=['GET'])
+def get_commit_messages():
+    """Listar commits processados com filtros e busca"""
+    
+    page = request.args.get("page", 1)
+    search_term = request.args.get("searchTerm", None)
+    limit = int(request.args.get("limit", 50))
+
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+
+    try:
+        query = CommitMessage.query.filter_by(user_id=numeric_user_id)
+
+        if search_term:
+            query = query.filter(
+                db.or_(
+                    CommitMessage.message.ilike(f'%{search_term}%'),
+                    CommitMessage.commit_hash.ilike(f'%{search_term}%'),
+                    CommitMessage.processed_by.ilike(f'%{search_term}%')
+                )
+            )
+
+        commits = query.order_by(CommitMessage.processed_at.desc()).paginate(
+            page=page, per_page=limit, error_out=False
+        )
+
+        formatted_commits = []
+        for c in commits.items:
+            formatted_commits.append({
+                "id": str(c.id),
+                "title": c.title,
+                "hash": c.commit_hash,
+                "message": c.message,
+                "status": c.status,
+                "processedAt": c.processed_at.isoformat() if c.processed_at else None,
+                "originalDiff": c.original_diff if c.original_diff else None,  
+                "author": c.author,
+                "aiGeneratedMessage": c.ai_generated_message,
+                "total_tokens": c.total_tokens,
+                "errorMessage": c.error_message if c.status == "error" else None,
+                "linkedPR": c.pr_linked_id
+            })
+
+        log_action(logs_collection, "commits_listed", {
+            "search_term": search_term,
+            "page": page,
+            "limit": limit,
+            "total_found": commits.total
+        }, user=numeric_user_id)
+
+        return jsonify(formatted_commits)
+
+    except Exception as e:
+        log_action(logs_collection, "commits_list_error", {"error": str(e)}, user=numeric_user_id, level="error")
+        return jsonify({"error": "Failed to fetch commits"}), 500
+    
+@app.route('/api/commit-messages/<commit_id>', methods=['GET'])
+def get_commit_message_details(commit_id):
+    """Obter detalhes completos de um commit específico"""
+
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+
+    try:
+        commit = CommitMessage.query.filter_by(id=commit_id, user_id=numeric_user_id).first_or_404()
+
+        commit_details = {
+            "id": str(commit.id),
+            "title": commit.title,
+            "hash": commit.commit_hash,
+            "message": commit.message,
+            "status": commit.status,
+            "originalDiff": commit.original_diff if commit.original_diff else None,
+            "processedAt": commit.processed_at.isoformat() if commit.processed_at else None,
+            "author": commit.author,
+            "aiGeneratedMessage": commit.ai_generated_message,
+            "total_tokens": commit.total_tokens,
+            "errorMessage": None if commit.status != "error" else f"Erro ao processar commit {commit.commit_hash}",
+            "linkedPR": commit.pr_linked_id
+        }
+
+        log_action(logs_collection, "commit_details_accessed", {
+            "commit_id": commit_id,
+            "commit_hash": commit.commit_hash
+        }, user=numeric_user_id)
+
+        return jsonify(commit_details)
+
+    except Exception as e:
+        log_action(logs_collection, "commit_details_error", {
+            "commit_id": commit_id,
+            "error": str(e)
+        }, user=numeric_user_id, level="error")
+        return jsonify({"error": "Failed to fetch commit details"}), 500
 
 @app.route('/api/pull-requests', methods=['GET'])
 def get_pull_requests():
@@ -1289,7 +1410,7 @@ def prai():
     data = request.get_json()
     repository = data.get("repository")
     pr_number = data.get("pr_number")
-
+    merge = data.get("merge")
     user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
@@ -1307,7 +1428,8 @@ def prai():
                                                     logs_collection,
                                                     pr_number,
                                                     repository, 
-                                                    model, 
+                                                    model,
+                                                    merge, 
                                                     )).start()
 
     return jsonify({
@@ -1324,6 +1446,8 @@ def diff_context():
     data = request.get_json()
     diff = data.get("diff")
     files = data.get("files")
+    commit_hash = data.get("hash") 
+    commit_language =  data.get("language") 
     user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
@@ -1332,25 +1456,21 @@ def diff_context():
     numeric_user_id = user.id
     model = "gpt-5-nano"
     GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
-
-    commit_output, total_input, total_cached, total_output, total_reasoning, total_usage = asyncio.run(GenerateCommitMessageAgent(
+  
+    commit_message = process_git_context_layer(
+                            app,
+                            numeric_user_id,
                             OPENAI_API_KEY,
-                            numeric_user_id, 
-                            diff, 
-                            files, 
-                    
-                            ))
-    commit_message = f"{commit_output.subject}\n\n{commit_output.body}"
-    
+                            logs_collection,
+                            commit_hash, 
+                            diff,
+                            files,
+                            repository=REPOSITORY_NAME, 
+                            commit_language=commit_language,
+                            model="gpt-5-nano",
+                        )
     return jsonify({
         'commit_message': f'{commit_message}',
-        'tokens': {
-            'total_input': total_input,
-            'total_cached': total_cached,
-            'total_output': total_output,
-            'total_reasoning': total_reasoning,
-            'total_usage': total_usage,
-        },
         'triggered_by': numeric_user_id
     }), 202
 

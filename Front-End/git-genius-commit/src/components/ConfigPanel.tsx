@@ -15,9 +15,9 @@ export const ConfigPanel = () => {
 
   const backend = import.meta.env.VITE_BACK_END || ''
 
-  const accessToken = "t7gwqwkNVXRFkto97ISidO96y68CSyRMGgwcwy_Qgr0"
-  const email = "freitasalexandre810@gmail.com"
-  const password = "teste"
+  const accessToken = localStorage.getItem('access_token') 
+  const email = localStorage.getItem('user_email') 
+  const password = localStorage.getItem('user_senha') 
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -35,15 +35,16 @@ export const ConfigPanel = () => {
         console.log("Config recebida:", data);
 
         setLocalConfig({
-          api_key: data.openaiApiKey || "",
-          api_endpoint: data.webhookUrl || "",
-          ai_model: "gpt-5-mini", 
-          lines_threshold: 50,
-          files_threshold: 5,
-          time_threshold: 60,
-          auto_push: data.autoProcessPRs || false,
+          ai_model: data.ai_model ?? 'gpt-5-nano',
+          lines_threshold: data.linesThreshold ?? 50,
+          files_threshold: data.filesThreshold ?? 5,
+          time_threshold: data.timeThreshold ?? 60,
+          throttle_ms: data.throttleMs ?? 60000,
+          auto_push: data.autoPush ?? false,
           auto_commit: true,
-          require_tests: data.enableLogging || false,
+          auto_create_pr: data.AutoCreatePr ?? false,
+          GITHUB_TOKEN: data.GITHUB_TOKEN,
+          commitLanguage: data.commitLanguage ?? 'en',
         });
       } catch (err) {
         console.error(err);
@@ -66,17 +67,20 @@ export const ConfigPanel = () => {
           "X-API-TOKEN": accessToken,
         },
         body: JSON.stringify({
-          githubToken: "", // se precisar mandar, pode mapear
-          githubSecret: "",
-          repositoryName: "",
-          openaiApiKey: localConfig.api_key,
-          webhookUrl: localConfig.api_endpoint,
-          autoProcessPRs: localConfig.auto_push,
-          enableLogging: localConfig.require_tests,
-          logLevel: "INFO",
+
+          ai_model: localConfig.ai_model,
+          autoPush: localConfig.auto_push,
+          AutoCreatePr: localConfig.auto_create_pr,
+          linesThreshold: localConfig.lines_threshold,
+          filesThreshold: localConfig.files_threshold,
+          timeThreshold: localConfig.time_threshold,
+          throttleMs: localConfig.throttle_ms,
+          GITHUB_TOKEN: localConfig.GITHUB_TOKEN,
+          commit_language: localConfig.commitLanguage,
         }),
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Erro ao salvar configurações");
       console.log("Config salva:", data);
     } catch (err) {
@@ -101,17 +105,17 @@ export const ConfigPanel = () => {
 
       <div className="space-y-6">
         <div className="space-y-3">
-          <Label htmlFor="api-key" className="text-sm font-medium">API Key</Label>
+          <Label htmlFor="api-key" className="text-sm font-medium">GitHub API Key</Label>
           <Input
             id="api-key"
             type="password"
-            value={localConfig.api_key}
-            onChange={(e) => setLocalConfig({ ...localConfig, api_key: e.target.value })}
+            value={localConfig.GITHUB_TOKEN}
+            onChange={(e) => setLocalConfig({ ...localConfig, GITHUB_TOKEN: e.target.value })}
             className="font-mono text-sm bg-input border-border"
           />
         </div>
 
-        <div className="space-y-3">
+        {/* <div className="space-y-3">
           <Label htmlFor="api-endpoint" className="text-sm font-medium">API Endpoint</Label>
           <Input
             id="api-endpoint"
@@ -120,8 +124,23 @@ export const ConfigPanel = () => {
             onChange={(e) => setLocalConfig({ ...localConfig, api_endpoint: e.target.value })}
             className="font-mono text-sm bg-input border-border"
           />
-        </div>
+        </div> */}
 
+        <div className="space-y-3">
+          <Label htmlFor="ai-model" className="text-sm font-medium">Language</Label>
+          <Select 
+            value={localConfig.commitLanguage}
+            onValueChange={(value) => setLocalConfig({ ...localConfig, commitLanguage: value })}
+          >
+            <SelectTrigger className="bg-input border-border">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="pt">Português</SelectItem>
+              <SelectItem value="en">English</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <div className="space-y-3">
           <Label htmlFor="ai-model" className="text-sm font-medium">AI Model</Label>
           <Select 
@@ -169,6 +188,17 @@ export const ConfigPanel = () => {
               onChange={(e) => setLocalConfig({ ...localConfig, time_threshold: parseInt(e.target.value) })}
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="time">Throttle (ms)</Label>
+            <Input
+              id="time"
+              type="number"
+              value={localConfig.throttle_ms}
+              onChange={(e) => setLocalConfig({ ...localConfig, throttle_ms: parseInt(e.target.value) })}
+            />
+          </div>
+
+
         </div>
 
         {/* Switches */}
@@ -182,11 +212,11 @@ export const ConfigPanel = () => {
         </div>
 
         <div className="flex items-center justify-between p-4 rounded-lg bg-muted/50 border border-border">
-          <Label htmlFor="require-tests">Require Tests</Label>
+          <Label htmlFor="require-tests">Auto Create Pr</Label>
           <Switch
             id="require-tests"
-            checked={localConfig.require_tests}
-            onCheckedChange={(checked) => setLocalConfig({ ...localConfig, require_tests: checked })}
+            checked={localConfig.auto_create_pr}
+            onCheckedChange={(checked) => setLocalConfig({ ...localConfig, auto_create_pr: checked })}
           />
         </div>
 

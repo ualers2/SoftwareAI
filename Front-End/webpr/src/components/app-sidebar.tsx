@@ -42,6 +42,13 @@ const navigationItems = [
     icon: GitPullRequest,
     description: "Monitoramento de PRs"
   },
+  {   
+    title: "Commits", 
+    url: "/commits", 
+    icon: GitPullRequest,
+    description: "Monitoramento de Commits"
+  },
+  
   { 
     title: "Workflows", 
     url: "/workflows", 

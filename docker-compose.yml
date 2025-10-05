@@ -61,7 +61,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend-pipeline
     volumes:
-      - "./Front-End/webpr:/app"
+      # - "./Front-End/webpr:/app"
       - npm-modules:/app/node_modules
     working_dir: /app
     environment:
@@ -88,7 +88,7 @@ services:
     working_dir: /app  
     privileged: true     
     volumes:
-      - ./Back-End:/app
+      # - ./Back-End:/app
       - Invoices:/app/Invoices
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always

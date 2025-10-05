@@ -5,10 +5,17 @@ export interface GitConfig {
   time_threshold: number; 
   auto_push: boolean;
   auto_commit: boolean;
-  require_tests: boolean;
-  api_endpoint: string;
-  api_key: string;
+  auto_create_pr: boolean;
+  throttle_ms: number; 
+  GITHUB_TOKEN: string;
   ai_model?: string;
+  commitLanguage?: string;
+}
+
+export interface TokenStatus {
+  tokensUsed: number;
+  tokenLimit: number;
+  tokenPercentUsed: number;
 }
 
 export interface CommitMessage {

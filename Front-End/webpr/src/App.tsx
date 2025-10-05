@@ -22,8 +22,7 @@ import SignupCheckout from "./pages/SignupCheckout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import CheckoutError from "./pages/CheckoutError";
 
-
-
+import CommitMessages from "./pages/CommitMessages";
 
 
 
@@ -43,6 +42,8 @@ const AppRoutes = () => {
             <Route path="/home" element={<Dashboard />} />
             <Route path="/workflows" element={<Workflows />} />
             <Route path="/prs" element={<PullRequests />} />
+            <Route path="/commits" element={<CommitMessages />} />
+
             <Route path="/logs" element={<Logs />} />
             <Route path="/controls" element={<Controls />} />
             <Route path="/settings" element={<Settings />} />

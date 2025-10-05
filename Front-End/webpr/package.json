@@ -8,12 +8,10 @@
     "dev:web": "vite",
     "dev:electron": "cross-env NODE_ENV=development electron .",
     "dev": "concurrently -k -n web,electron -c cyan,magenta \"npm run dev:web\" \"wait-on http://localhost:4343 && npm run dev:electron\"",
-    
     "build:web": "vite build",
     "build:web:dev": "vite build --mode development",
     "build:electron": "electron-builder --publish never",
     "dist": "npm run build:web && npm run build:electron",
-
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -76,7 +74,7 @@
     "@eslint/js": "^9.9.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
-    "@types/react": "^18.3.24",
+    "@types/react": "^18.3.25",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
