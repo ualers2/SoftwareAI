@@ -5,11 +5,14 @@ import requests
 import json
 import logging
 from dotenv import load_dotenv
+import asyncio
 import stripe
 from decimal import Decimal
 from bson.json_util import dumps
 from datetime import datetime, timedelta, timezone
-from flask import g, Flask, Response, request, jsonify, send_file
+import hmac
+import hashlib
+from flask import g, Flask, Response, request, jsonify, send_file, abort, redirect
 from flask_cors import CORS
 from asgiref.wsgi import WsgiToAsgi
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -37,7 +40,9 @@ from Modules.Savers.log_system_health import log_system_health
 from Modules.Savers.log_action import log_action
 from Modules.Resolvers.send_email import SendEmail
 from Modules.Geters.user_by_email import get_user_by_email
-
+from Modules.Geters.plans_data import get_plans_data
+from Modules.Resolvers.verify_signature import verify_signature
+from Modules.Resolvers.git_contex_layer_process import process_git_context_layer
 
 diretorio_script = os.path.dirname(os.path.abspath(__file__)) 
 logger = logging.getLogger(__name__)
@@ -70,13 +75,19 @@ WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 success_url = os.getenv("success_url")
 cancel_url = os.getenv("cancel_url")
 
+APP_ID = os.getenv("GITHUB_APP_ID")
+PRIVATE_KEY_PATH = os.getenv("GITHUB_PRIVATE_KEY_PATH") 
+GITHUB_WEBHOOK_SECRET = os.getenv("GITHUB_WEBHOOK_SECRET") 
+# PRIVATE_KEY_CONTENT = load_private_key(PRIVATE_KEY_PATH) 
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+
 app = Flask(__name__)
 asgi_app = WsgiToAsgi(app)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-here')
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-string')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
-# Configuração PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
     'DATABASE_URL', 
     'postgresql://postgres:postgres@meu_postgres2:5412/meubanco'
@@ -92,9 +103,11 @@ limiter = Limiter(
 
 
 if os.getenv("FLASK_ENV") == "development":
-    CORS(app, origins=os.getenv("FRONTEND_ORIGINS", "*").split(","))
+    CORS(app, origins=os.getenv("FRONTEND_ORIGINS", "*").split(","), supports_credentials=True)
 
 db.init_app(app)
+
+
 
 @app.route('/')
 def index():
@@ -104,44 +117,6 @@ def index():
         "database": "PostgreSQL + MongoDB",
         "status": "running"
     })
-    
-def get_plans_data():
-    return {
-        "Free": {
-            'price': 0,
-            'limit_monthly_tokens': 300000,
-            'features': [
-                'PR basic automation',
-                '5 - 10 PRs/mo',
-                'Logs basic'
-            ],
-            'payment_link': ''
-        },
-        "Premium": {
-            'price': 15,
-            'limit_monthly_tokens': 3000000,
-            'features': [
-                'PR Premium automation',
-                '20 - 40 PRs/mo',
-                'Logs advanced',
-                'API access'
-            ],
-            'payment_link': ''
-        },
-        "Pro": {
-            'price': 29,
-            'limit_monthly_tokens': 10000000,
-            'features': [
-                'Everything from Premium',
-                '60 - 90 PRs/mo',
-                'Git Context Layer',
-                'Auto-Commit Intelligence',
-                'Smart Threshold Detection',
-                'Context-Aware Messages'
-            ],
-            'payment_link': ''
-        }
-    }
 
 @app.route('/api/public/plans-features', methods=['GET'])
 @limiter.limit("5 per minute")
@@ -230,7 +205,6 @@ def login():
         return jsonify({"error": "Erro no login"}), 500
 
 @app.route('/api/health', methods=['GET'])
-#@require_user_token(optional=False) 
 def health_check():
     """
     Verifica a saúde do sistema.
@@ -339,7 +313,6 @@ def health_check():
         return jsonify({"error": "Erro ao executar health_check", "detail": str(e)}), 500
 
 @app.route('/api/rate-limits', methods=['GET'])
-#@require_user_token(optional=False) 
 def get_rate_limits():
     """Obter informações de rate limits"""
     
@@ -400,13 +373,13 @@ def get_rate_limits():
     return jsonify(rate_limits)
 
 @app.route('/api/settings', methods=['GET'])
-#@require_user_token(optional=False) 
 def get_settings():
     """Recuperar configurações do sistema (com valores mascarados)"""
-    
+    email = request.args.get("email")  
+    password = request.args.get("password")  
     
 
-    user, _, status = auth_user( logs_collection, app)
+    user, _, status = auth_user( logs_collection, app, email, password)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -426,13 +399,22 @@ def get_settings():
         
         response_data = {
             'githubToken': settings.github_token,
+            'GITHUB_TOKEN': settings.github_token,
             'githubSecret': settings.github_secret,
             'repositoryName': settings.repository_name or '',
             'openaiApiKey': settings.openai_api_key,
             'webhookUrl': settings.webhook_url or '',
             'autoProcessPRs': settings.auto_process_prs,
             'enableLogging': settings.enable_logging,
-            'logLevel': settings.log_level or 'INFO'
+            'logLevel': settings.log_level or 'INFO',
+
+            'throttleMs': settings.throttle_ms or 60000,
+            'linesThreshold': settings.lines_threshold or 10,
+            'filesThreshold': settings.files_threshold or 1,
+            'timeThreshold': settings.time_threshold or 30,
+            'autoPush': settings.auto_push,
+            'AutoCreatePr': settings.auto_create_pr if settings.auto_create_pr is not None else False,
+            'commitLanguage': settings.commit_language
         }
         
         log_action(logs_collection, 'settings_accessed', {
@@ -448,12 +430,14 @@ def get_settings():
         return jsonify({'error': 'Failed to fetch settings'}), 500
 
 @app.route('/api/settings', methods=['PUT'])
-#@require_user_token(optional=False) 
 def update_settings():
     """Atualizar configurações do sistema"""
     data = request.get_json()
+    email = data.get("email")  
+    password = data.get("password")  
+    
 
-    user, _, status = auth_user( logs_collection, app)
+    user, _, status = auth_user( logs_collection, app, email, password)
 
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -477,6 +461,16 @@ def update_settings():
         settings.auto_process_prs = data.get('autoProcessPRs')
         settings.enable_logging = data.get('enableLogging')
         settings.log_level = data.get('logLevel')
+                
+        settings.throttle_ms = data.get('throttleMs', settings.throttle_ms)
+        settings.lines_threshold = data.get('linesThreshold', settings.lines_threshold)
+        settings.files_threshold = data.get('filesThreshold', settings.files_threshold)
+        settings.time_threshold = data.get('timeThreshold', settings.time_threshold)
+        settings.auto_process_prs = data.get('autoProcessPRs', settings.auto_process_prs)
+        settings.auto_push = data.get('autoPush', settings.auto_push)
+        settings.auto_create_pr = data.get('AutoCreatePr', settings.auto_create_pr)
+        settings.github_token = data.get('GITHUB_TOKEN', settings.github_token)
+        settings.commit_language = data.get('commit_language', settings.commit_language)
         
         settings.updated_at = datetime.utcnow()
         db.session.commit()
@@ -499,7 +493,6 @@ def update_settings():
         return jsonify({'error': 'Failed to update settings'}), 500
 
 @app.route('/api/test-connection/<service>', methods=['GET'])
-#@require_user_token(optional=False) 
 def test_connection(service):
     """Testar conexão com serviços externos"""
 
@@ -625,7 +618,6 @@ def test_connection(service):
         }), 500
 
 @app.route("/api/logs", methods=["GET"])
-#@require_user_token(optional=False) 
 def get_logs():
     
     
@@ -675,7 +667,6 @@ def get_logs():
     return jsonify(adapted_logs)
 
 @app.route("/api/logs/export", methods=["GET"])
-#@require_user_token(optional=False) 
 def export_logs():
     """
     Exporta logs filtrados em formato .txt
@@ -735,8 +726,109 @@ def export_logs():
         headers={"Content-Disposition": f"attachment; filename=logs-{numeric_user_id}.txt"},
     )
 
+@app.route('/api/commit-messages', methods=['GET'])
+def get_commit_messages():
+    """Listar commits processados com filtros e busca"""
+    
+    page = request.args.get("page", 1)
+    search_term = request.args.get("searchTerm", None)
+    limit = int(request.args.get("limit", 50))
+
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+
+    try:
+        query = CommitMessage.query.filter_by(user_id=numeric_user_id)
+
+        if search_term:
+            query = query.filter(
+                db.or_(
+                    CommitMessage.message.ilike(f'%{search_term}%'),
+                    CommitMessage.commit_hash.ilike(f'%{search_term}%'),
+                    CommitMessage.processed_by.ilike(f'%{search_term}%')
+                )
+            )
+
+        commits = query.order_by(CommitMessage.processed_at.desc()).paginate(
+            page=page, per_page=limit, error_out=False
+        )
+
+        formatted_commits = []
+        for c in commits.items:
+            formatted_commits.append({
+                "id": str(c.id),
+                "title": c.title,
+                "hash": c.commit_hash,
+                "message": c.message,
+                "status": c.status,
+                "processedAt": c.processed_at.isoformat() if c.processed_at else None,
+                "originalDiff": c.original_diff if c.original_diff else None,  
+                "author": c.author,
+                "aiGeneratedMessage": c.ai_generated_message,
+                "total_tokens": c.total_tokens,
+                "errorMessage": c.error_message if c.status == "error" else None,
+                "linkedPR": c.pr_linked_id
+            })
+
+        log_action(logs_collection, "commits_listed", {
+            "search_term": search_term,
+            "page": page,
+            "limit": limit,
+            "total_found": commits.total
+        }, user=numeric_user_id)
+
+        return jsonify(formatted_commits)
+
+    except Exception as e:
+        log_action(logs_collection, "commits_list_error", {"error": str(e)}, user=numeric_user_id, level="error")
+        return jsonify({"error": "Failed to fetch commits"}), 500
+    
+@app.route('/api/commit-messages/<commit_id>', methods=['GET'])
+def get_commit_message_details(commit_id):
+    """Obter detalhes completos de um commit específico"""
+
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+
+    try:
+        commit = CommitMessage.query.filter_by(id=commit_id, user_id=numeric_user_id).first_or_404()
+
+        commit_details = {
+            "id": str(commit.id),
+            "title": commit.title,
+            "hash": commit.commit_hash,
+            "message": commit.message,
+            "status": commit.status,
+            "originalDiff": commit.original_diff if commit.original_diff else None,
+            "processedAt": commit.processed_at.isoformat() if commit.processed_at else None,
+            "author": commit.author,
+            "aiGeneratedMessage": commit.ai_generated_message,
+            "total_tokens": commit.total_tokens,
+            "errorMessage": None if commit.status != "error" else f"Erro ao processar commit {commit.commit_hash}",
+            "linkedPR": commit.pr_linked_id
+        }
+
+        log_action(logs_collection, "commit_details_accessed", {
+            "commit_id": commit_id,
+            "commit_hash": commit.commit_hash
+        }, user=numeric_user_id)
+
+        return jsonify(commit_details)
+
+    except Exception as e:
+        log_action(logs_collection, "commit_details_error", {
+            "commit_id": commit_id,
+            "error": str(e)
+        }, user=numeric_user_id, level="error")
+        return jsonify({"error": "Failed to fetch commit details"}), 500
+
 @app.route('/api/pull-requests', methods=['GET'])
-#@require_user_token(optional=False) 
 def get_pull_requests():
     """Listar PRs processados com filtros e busca"""
     
@@ -810,7 +902,6 @@ def get_pull_requests():
         return jsonify({'error': 'Failed to fetch pull requests'}), 500
 
 @app.route('/api/pull-requests/<pr_id>', methods=['GET'])
-#@require_user_token(optional=False) 
 def get_pull_request_details(pr_id):
     """Obter detalhes completos de um PR específico"""
     
@@ -919,7 +1010,7 @@ def parse_to_aware(dt):
     return None
 
 @app.route('/api/dashboard-data', methods=['GET'])
-# #@require_user_token(optional=False) 
+#  
 def get_dashboard_data():
     """Obter dados agregados para o dashboard (correção focada: apenas aqui)."""
 
@@ -1061,7 +1152,7 @@ def get_dashboard_data():
 
 
 @app.route('/api/workflows', methods=['GET'])
-#@require_user_token(optional=False)
+
 def list_workflows():
     """
     Lista workflows (arquivos .yml/.yaml) a partir de WORKFLOWS_PATH (env) ou ./workflows.
@@ -1119,7 +1210,7 @@ def list_workflows():
         return jsonify({'error': 'Failed to list workflows', 'detail': str(e)}), 500
 
 @app.route('/api/myaccount', methods=['GET'])
-#@require_user_token(optional=False)
+
 def my_account():
     """
     Retorna informações da conta do usuário autenticado.
@@ -1152,7 +1243,7 @@ def my_account():
 
 
 @app.route('/api/invoices', methods=['GET'])
-#@require_user_token(optional=False)
+
 def list_invoices():
     """
     Listar faturas paginadas.
@@ -1198,7 +1289,7 @@ def list_invoices():
 
 
 @app.route('/api/invoices/<int:invoice_id>', methods=['GET'])
-#@require_user_token(optional=False)
+
 def get_invoice_detail(invoice_id):
     """
     Detalhe da fatura (inclui linhas / itens).
@@ -1227,7 +1318,7 @@ def get_invoice_detail(invoice_id):
 
 
 @app.route('/api/invoices/<int:invoice_id>/download', methods=['GET'])
-#@require_user_token(optional=False)
+
 def download_invoice(invoice_id):
     """
     Download do PDF da fatura.
@@ -1279,7 +1370,7 @@ def download_invoice(invoice_id):
 
 
 @app.route('/api/reprocess-pr/<int:pr_number>', methods=['POST'])
-#@require_user_token(optional=False) 
+ 
 def reprocess_pr(pr_number):
     """Reprocessar um Pull Request específico"""
     data = request.get_json()
@@ -1314,13 +1405,12 @@ def reprocess_pr(pr_number):
         'triggered_by': numeric_user_id
     }), 202
 
-@app.route('/api/prai/gen', methods=['POST'])
-#@require_user_token(optional=False) 
+@app.route('/api/prai/gen', methods=['POST']) 
 def prai():
     data = request.get_json()
     repository = data.get("repository")
     pr_number = data.get("pr_number")
-
+    merge = data.get("merge")
     user, _, status = auth_user( logs_collection, app)
 
     if status != "success" or not user:
@@ -1338,7 +1428,8 @@ def prai():
                                                     logs_collection,
                                                     pr_number,
                                                     repository, 
-                                                    model, 
+                                                    model,
+                                                    merge, 
                                                     )).start()
 
     return jsonify({
@@ -1348,6 +1439,40 @@ def prai():
     }), 202
 
 
+
+
+@app.route('/api/prai/diff_context', methods=['POST']) 
+def diff_context():
+    data = request.get_json()
+    diff = data.get("diff")
+    files = data.get("files")
+    commit_hash = data.get("hash") 
+    commit_language =  data.get("language") 
+    user, _, status = auth_user( logs_collection, app)
+
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    numeric_user_id = user.id
+    model = "gpt-5-nano"
+    GITHUB_TOKEN, _, GITHUB_SECRET, REPOSITORY_NAME = get_tokens(numeric_user_id, log_action, logs_collection, SystemSettings, db)
+  
+    commit_message = process_git_context_layer(
+                            app,
+                            numeric_user_id,
+                            OPENAI_API_KEY,
+                            logs_collection,
+                            commit_hash, 
+                            diff,
+                            files,
+                            repository=REPOSITORY_NAME, 
+                            commit_language=commit_language,
+                            model="gpt-5-nano",
+                        )
+    return jsonify({
+        'commit_message': f'{commit_message}',
+        'triggered_by': numeric_user_id
+    }), 202
 
 
 
@@ -1406,8 +1531,6 @@ def proxy_checkout():
         logger.info(f"Erro no servidor {e}")
         return jsonify({"error": f"Erro no servidor {e}"}), 500
 
-# -------------------------------------------------------------------
-# Endpoint Webhook Stripe
 @app.route("/webhook", methods=["POST"])
 def stripe_webhook():
     """
@@ -1551,173 +1674,220 @@ def stripe_webhook():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-# Endpoints nao desenvolvidos e Pendentes
-
-def deploy_containers_internal(triggered_by=None, source='manual'):
-    """Lógica interna para deploy"""
-    deployment_record = None
+@app.route('/api/github/callback', methods=['GET'])
+def github_app_callback():
+    """
+    Callback após instalação/autorização do GitHub App.
+    - Se receber installation_id e houver user_token (query param ou header), associa a instalação ao usuário.
+    - Se receber 'code' (fluxo OAuth), troca por access_token e tenta associar ao usuário pelo e-mail retornado.
+    """
     try:
-        # Criar registro de deployment
-        deployment_record = Deployment(
-            triggered_by=triggered_by,
-            source=source,
-            status='in_progress'
-        )
-        db.session.add(deployment_record)
-        db.session.commit()
-        
-        log_action('deploy_started', {
-            'deployment_id': deployment_record.id,
-            'triggered_by': triggered_by,
-            'source': source
-        }, user=triggered_by)
-        
-        # Aqui você colocaria sua lógica de deploy
-        # Por exemplo: build de containers, deploy para Kubernetes, etc.
-        
-        # Simular deploy
-        import time
-        time.sleep(5)
-        
-        # Atualizar status
-        deployment_record.status = 'completed'
-        deployment_record.completed_at = datetime.utcnow()
-        db.session.commit()
-        
-        log_action('deploy_completed', {
-            'deployment_id': deployment_record.id
-        }, user=triggered_by)
-        
+        installation_id = request.args.get('installation_id')
+        setup_action = request.args.get('setup_action')
+        code = request.args.get('code')
+        user_token = request.args.get('X-API-TOKEN')
+        if installation_id:
+            user = None
+            if user_token:
+                user = get_user_by_access_token(user_token)
+            if user:
+                settings = SystemSettings.query.filter_by(user_id=user.id).first()
+                if not settings:
+                    settings = SystemSettings(user_id=user.id)
+                    db.session.add(settings)
+                settings.installation_id = int(installation_id)
+                settings.updated_at = datetime.utcnow()
+                db.session.commit()
+
+                log_action(logs_collection, 'github_installation_linked', {
+                    'message': f'installation {installation_id} linked to user {user.id}',
+                    'installation_id': installation_id,
+                    'setup_action': setup_action
+                }, user=user.id)
+
+                return jsonify({
+                    "status": "success",
+                    "message": f"Instalação do GitHub (installation_id={installation_id}) vinculada ao usuário.",
+                    "installation_id": installation_id
+                }), 200
+            else:
+                log_action(logs_collection, 'github_installation_unbound', {
+                    'message': f"Installation {installation_id} received but no user token provided.",
+                    'installation_id': installation_id,
+                    'setup_action': setup_action
+                }, level='warning')
+
+                return jsonify({
+                    "status": "success",
+                    "message": f"GitHub App instalado (installation_id={installation_id}). Vincule a instalação no painel do usuário para ativar integrações.",
+                    "installation_id": installation_id
+                }), 200
+
+        if code:
+            if not GITHUB_CLIENT_ID or not GITHUB_CLIENT_SECRET:
+                return jsonify({"status": "error", "message": "GITHUB_CLIENT_ID/GITHUB_CLIENT_SECRET não configurados"}), 500
+            token_resp = requests.post(
+                "https://github.com/login/oauth/access_token",
+                headers={"Accept": "application/json"},
+                json={"client_id": GITHUB_CLIENT_ID, "client_secret": GITHUB_CLIENT_SECRET, "code": code},
+                timeout=10
+            )
+            if token_resp.status_code != 200:
+                logger.error("Erro ao trocar code por token: %s", token_resp.text)
+                return jsonify({"status": "error", "message": "Erro ao obter access_token do GitHub"}), 500
+
+            token_data = token_resp.json()
+            access_token = token_data.get("access_token")
+            if not access_token:
+                return jsonify({"status": "error", "message": "access_token não recebido do GitHub"}), 500
+
+            user_resp = requests.get("https://api.github.com/user", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
+            if user_resp.status_code != 200:
+                logger.error("Erro ao buscar usuário GitHub: %s", user_resp.text)
+                return jsonify({"status": "error", "message": "Não foi possível obter dados do usuário no GitHub"}), 500
+
+            gh_user = user_resp.json()
+            gh_email = gh_user.get("email")
+
+            if not gh_email:
+                emails_resp = requests.get("https://api.github.com/user/emails", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
+                if emails_resp.status_code == 200:
+                    emails = emails_resp.json()
+                    primary = next((e for e in emails if e.get("primary") and e.get("verified")), None)
+                    if primary:
+                        gh_email = primary.get("email")
+
+            if gh_email:
+                local_user = get_user_by_email(gh_email)
+                if local_user:
+                    settings = SystemSettings.query.filter_by(user_id=local_user.id).first()
+                    if not settings:
+                        settings = SystemSettings(user_id=local_user.id)
+                        db.session.add(settings)
+                    settings.github_token = access_token
+                    settings.updated_at = datetime.utcnow()
+                    db.session.commit()
+                    log_action(logs_collection, 'github_oauth_linked', {
+                        'message': f'GitHub OAuth linked for user {local_user.id}',
+                        'github_login': gh_user.get("login"),
+                        'email': gh_email
+                    }, user=local_user.id)
+                    return jsonify({"status": "success", "message": "Conta GitHub vinculada ao usuário local."}), 200
+
+            return jsonify({
+                "status": "success",
+                "message": "Token GitHub recebido. Vincule manualmente no painel do usuário se necessário.",
+                "github_access_token": access_token
+            }), 200
+
+        return jsonify({"status": "error", "message": "Callback inválido. Forneça installation_id ou code."}), 400
+
     except Exception as e:
-        if deployment_record:
-            deployment_record.status = 'failed'
-            deployment_record.completed_at = datetime.utcnow()
-            deployment_record.error_message = str(e)
-            db.session.commit()
-        
-        log_action('deploy_failed', {
-            'deployment_id': deployment_record.id if deployment_record else None,
-            'error': str(e)
-        }, user=triggered_by, level='error')
+        logger.exception("Erro em github_app_callback: %s", e)
+        log_action(logs_collection, 'github_callback_error', {'error': str(e)}, level='error')
+        return jsonify({"status": "error", "message": "Erro interno no callback do GitHub", "detail": str(e)}), 500
 
-@app.route('/api/force-deploy', methods=['POST'])
-def force_deploy():
-    """Disparar deploy forçado"""
-    current_user = get_jwt_identity()
-    
-    # Verificar se usuário é admin (opcional)
-    # user = User.query.filter_by(username=current_user).first()
-    # if not user or not user.is_admin:
-    #     return jsonify({'error': 'Admin privileges required'}), 403
-    
-    data = request.get_json() or {}
-    source = data.get('source', 'manual_trigger')
-    
-    # Iniciar deploy em thread separada
-    thread = threading.Thread(
-        target=deploy_containers_internal,
-        args=(current_user, source)
-    )
-    thread.daemon = True
-    thread.start()
-    
-    return jsonify({
-        'message': 'Deploy initiated',
-        'triggered_by': current_user,
-        'source': source
-    }), 202
 
-def process_webhook_internal(payload, triggered_by=None):
-    """Lógica interna para processar webhook"""
+@app.route("/webhook/github", methods=["POST"])
+def github_webhook():
     try:
-        log_action('custom_webhook_received', {
-            'payload_keys': list(payload.keys()) if isinstance(payload, dict) else 'non-dict',
-            'triggered_by': triggered_by
-        }, user=triggered_by)
-        
-        # Aqui você colocaria sua lógica de processamento de webhook
-        # Similar à sua função webhookgenpr ou webhook existente
-        
-        # Simular processamento
-        import time
-        time.sleep(1)
-        
-        log_action('custom_webhook_processed', {
-            'triggered_by': triggered_by
-        }, user=triggered_by)
-        
+        signature_header = request.headers.get("X-Hub-Signature-256") or ""
+        if not signature_header or not verify_signature(request.data, signature_header, GITHUB_WEBHOOK_SECRET):
+            logger.warning("Assinatura inválida do webhook do GitHub")
+            abort(400, "Assinatura inválida")
+
+        event = request.headers.get("X-GitHub-Event", "ping")
+        payload = request.get_json(force=True, silent=True) or {}
+
+        if event == "ping":
+            return jsonify({"msg": "pong"}), 200
+
+        user_token = request.headers.get("X-API-TOKEN") or request.args.get("X-API-TOKEN")
+        user = None
+        if user_token:
+            try:
+                user = get_user_by_access_token(user_token)
+            except Exception:
+                user = None
+
+        if event == "installation":
+            action = payload.get("action")
+            installation = payload.get("installation", {})
+            installation_id = installation.get("id")
+            account = installation.get("account", {}).get("login")
+
+            if not installation_id:
+                logger.warning("Evento de instalação sem installation.id")
+                return "", 204
+
+            if action == "created":
+                if user:
+                    settings = SystemSettings.query.filter_by(user_id=user.id).first()
+                    if not settings:
+                        settings = SystemSettings(user_id=user.id)
+                        db.session.add(settings)
+                    settings.installation_id = int(installation_id)
+                    settings.updated_at = datetime.utcnow()
+                    db.session.commit()
+
+                    log_action(logs_collection, 'github_installation_created', {
+                        'message': f'installation {installation_id} associated to user {user.id}',
+                        'installation_id': installation_id,
+                        'account': account
+                    }, user=user.id)
+                    logger.info("Installation %s associated to user %s", installation_id, user.id)
+                else:
+                    log_action(logs_collection, 'github_installation_created_unbound', {
+                        'message': f'installation {installation_id} received with no associated user',
+                        'installation_id': installation_id,
+                        'account': account
+                    }, level='warning')
+                    logger.info("Installation %s received but not bound to any user", installation_id)
+
+            elif action == "deleted":
+                settings = SystemSettings.query.filter_by(installation_id=installation_id).first()
+                if settings:
+                    settings.installation_id = None
+                    settings.updated_at = datetime.utcnow()
+                    db.session.commit()
+                    log_action(logs_collection, 'github_installation_deleted', {
+                        'message': f'installation {installation_id} removed',
+                        'installation_id': installation_id,
+                        'account': account
+                    })
+                    logger.info("Installation %s removed from settings", installation_id)
+                else:
+                    logger.info("Received installation.deleted for %s but no settings found", installation_id)
+
+            return "", 204
+
+        if event == "pull_request":
+            action = payload.get("action")
+            if action in ("opened", "synchronize", "reopened"):
+                try:
+                    threading.Thread(target=process_pull_request, args=(payload,)).start()
+                    log_action(logs_collection, 'pull_request_received', {
+                        'message': 'Pull request event queued for processing',
+                        'action': action,
+                        'pr': (payload.get("pull_request") or {}).get("number")
+                    }, user=(user.id if user else None))
+                except Exception as e:
+                    logger.exception("Erro ao enfileirar processamento de PR: %s", e)
+                    log_action(logs_collection, 'pull_request_processing_error', {'error': str(e)}, level='error')
+            return "", 204
+
+        log_action(logs_collection, 'github_webhook_received', {
+            'event': event,
+            'payload_summary': {'keys': list(payload.keys())[:10]}
+        }, user=(user.id if user else None))
+
+        return "", 204
+
     except Exception as e:
-        log_action('custom_webhook_error', {
-            'error': str(e),
-            'triggered_by': triggered_by
-        }, user=triggered_by, level='error')
-        raise
+        logger.exception("Erro no webhook do GitHub: %s", e)
+        log_action(logs_collection, 'github_webhook_error', {'error': str(e)}, level='error')
+        return "", 500
 
-@app.route('/api/send-custom-webhook', methods=['POST'])
-def send_custom_webhook():
-    """Enviar webhook customizado"""
-    current_user = get_jwt_identity()
-    
-    try:
-        payload = request.get_json()
-        if not payload:
-            return jsonify({'error': 'JSON payload required'}), 400
-        
-        # Processar webhook em thread separada
-        thread = threading.Thread(
-            target=process_webhook_internal,
-            args=(payload, current_user)
-        )
-        thread.daemon = True
-        thread.start()
-        
-        return jsonify({
-            'message': 'Webhook processed',
-            'triggered_by': current_user
-        }), 200
-        
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
-
-
-@app.route('/api/deployments', methods=['GET'])
-def get_deployments():
-    """Listar deployments"""
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 20, type=int)
-    
-    deployments = Deployment.query.order_by(Deployment.created_at.desc()).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
-    
-    return jsonify({
-        'deployments': [{
-            'id': dep.id,
-            'status': dep.status,
-            'triggered_by': dep.triggered_by,
-            'source': dep.source,
-            'created_at': dep.created_at.isoformat(),
-            'completed_at': dep.completed_at.isoformat() if dep.completed_at else None,
-            'error_message': dep.error_message
-        } for dep in deployments.items],
-        'pagination': {
-            'page': page,
-            'per_page': per_page,
-            'total': deployments.total,
-            'pages': deployments.pages
-        }
-    })
 
 def initialize_database():
     """Inicializar banco de dados"""
@@ -1725,9 +1895,3 @@ def initialize_database():
         db.create_all()
 
 initialize_database()
-
-# if __name__ == '__main__':
-#     debug_mode = os.getenv('FLASK_DEBUG', 'true').lower() == 'true'
-#     port = int(os.getenv('PORT', 5920))
-    
-#     app.run(debug=debug_mode, host='0.0.0.0', port=port)

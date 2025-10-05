@@ -1,5 +1,4 @@
 # Back-End\Modules\Geters\pr_diff.py
-
 import requests
 from datetime import datetime, timedelta
 
@@ -11,7 +10,6 @@ def fetch_pr_diff_via_api(pr_api_url: str, token: str) -> str:
     }
     response = requests.get(pr_api_url, headers=headers, timeout=120)
     response.raise_for_status()
-    
     files = response.json()
     diff_parts = []
     for f in files:

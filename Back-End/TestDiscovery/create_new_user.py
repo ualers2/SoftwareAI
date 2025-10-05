@@ -1,6 +1,6 @@
 import requests
 
-API_URL = "https://api.softwareai.site/api/register" 
+API_URL = "http://localhost:5910/api/register" 
 
 def criar_conta(email: str, senha: str, expires_days: int = None):
     payload = {

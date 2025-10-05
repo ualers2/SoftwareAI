@@ -141,7 +141,7 @@ def process_pull_request(
 
 
             update_pr_body(GITHUB_TOKEN, f"https://api.github.com/repos/{repository}/pulls/{pr_number}", title, generated_pr_content)
-            if merge:
+            if merge == "True" or merge == "true" or merge == True:
                 merge_pull_request(GITHUB_TOKEN, repository, pr_number)
 
             preview = generated_pr_content[:39]

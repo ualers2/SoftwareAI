@@ -57,8 +57,6 @@ def get_audit_trail(entity=None, limit=50):
         .limit(limit)
     )
 
-
-
 def get_system_health_recent(limit=50):
     """
     Recupera registros recentes de health_check.

@@ -20,6 +20,7 @@ jobs:
             -H "X-API-TOKEN: ${{ secrets.PRAI_API_TOKEN }}" \
             -d "{
               \"repository\": \"${{ github.repository }}\",
-              \"pr_number\": \"${{ github.event.pull_request.number }}\"
+              \"pr_number\": \"${{ github.event.pull_request.number }}\",
+              \"merge\": \"False\"
             }" \
             https://api.softwareai.site/api/prai/gen

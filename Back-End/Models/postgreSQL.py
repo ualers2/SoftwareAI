@@ -40,6 +40,27 @@ class User(db.Model):
             self.expires_at = datetime.utcnow() + timedelta(days=int(expires_days))
         self.revoked_at = None
         return token
+    
+class CommitMessage(db.Model):
+    __tablename__ = 'commit_messages'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    title = db.Column(db.String(255), nullable=True)
+    author = db.Column(db.String(255), nullable=True)
+    commit_hash = db.Column(db.String(40), unique=True, nullable=False)  # hash do commit
+    message = db.Column(db.Text, nullable=True)  # mensagem do commit
+    ai_generated_message = db.Column(db.Text, nullable=True)  # caso a mensagem seja gerada por IA
+    original_diff = db.Column(db.Text, nullable=True) 
+    total_tokens = db.Column(db.Integer, nullable=True)  # tokens usados pela IA
+    status = db.Column(db.String(50), default='pending')  # pending, processing, completed, error
+    pr_linked_id = db.Column(db.Integer, db.ForeignKey('pull_requests.id'), nullable=True)  # link para PR, se houver
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    processed_at = db.Column(db.DateTime, nullable=True)
+    processed_by = db.Column(db.String(80))
+    error_message = db.Column(db.String(255), nullable=True)
+    
+    pull_request = db.relationship("PullRequest", backref=db.backref("commit_messages", lazy=True))
 
 class PullRequest(db.Model):
     __tablename__ = 'pull_requests'
@@ -88,12 +109,24 @@ class SystemSettings(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    installation_id = db.Column(db.BigInteger, nullable=True)  
     github_token = db.Column(db.Text, nullable=True)
     github_secret = db.Column(db.Text, nullable=True)
     repository_name = db.Column(db.String(255), nullable=True)
+
+    throttle_ms = db.Column(db.Integer, nullable=True)
+    lines_threshold = db.Column(db.Integer, nullable=True)
+    files_threshold = db.Column(db.Integer, nullable=True)
+    time_threshold = db.Column(db.Integer, nullable=True)
+    auto_push = db.Column(db.Boolean, default=False)
+    auto_create_pr = db.Column(db.Boolean, default=False)
+    commit_language = db.Column(db.String(255), nullable=True)
+
+    auto_process_prs = db.Column(db.Boolean, default=True)
+
+
     openai_api_key = db.Column(db.Text, nullable=True)
     webhook_url = db.Column(db.String(500), nullable=True)
-    auto_process_prs = db.Column(db.Boolean, default=True)
     enable_logging = db.Column(db.Boolean, default=True)
     log_level = db.Column(db.String(50), default='INFO')
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
