@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/layout";
 
 const queryClient = new QueryClient();
 
@@ -18,11 +19,13 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       {isAuthenticated ? (
-        <Routes>
-          <Route path="/home" element={<Index />} />
-          <Route path="/" element={<Login />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/home" element={<Index />} />
+            <Route path="/" element={<Login />} />
+            {/* <Route path="*" element={<NotFound />} /> */}
+          </Routes>
+        </Layout>
       ) : (
         <Routes>
           <Route path="/" element={<Login />} />
