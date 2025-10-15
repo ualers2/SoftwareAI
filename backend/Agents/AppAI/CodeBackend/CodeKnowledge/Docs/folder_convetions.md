@@ -1,0 +1,83 @@
+```
+nomedoprojeto\
+├── Readme.md
+├── docker-compose.yml
+└── .github\
+    └── workflows\
+        ├── deploy.yml
+└── Front-End\
+    └── vite.config.ts
+    └── tsconfig.node.json
+    └── tsconfig.json
+    └── tsconfig.app.json
+    └── tailwind.config.ts
+    └── postcss.config.js
+    └── package.json
+    └── Dockerfile
+    └── package-lock.json
+    └── index.html
+    └── eslint.config.js
+    └── components.json
+    └── .env
+    └── public\
+    └── src\
+      └── components\
+          ├── ...
+      └── constants\
+          ├── ...
+      └── contexts\
+          ├── ...
+      └── hooks\
+          ├── ...
+      └── lib\
+          ├── ...
+      └── pages\
+          ├── Login.tsx
+          ├── ...
+      └── App.css
+      └── App.tsx
+      └── index.css
+      └── main.tsx
+      └── vite-env.d.ts
+      
+└── Back-End\
+    ├── requirements.txt
+    ├── Dockerfile
+    ├── api.py
+    └── Keys\
+        ├── keys.env
+    └── Models\
+        └── mongoDB\
+            ├── audit.py
+            ├── logs.py
+        └── postgreSQL\
+            ├── user.py
+            ├── ...
+    └── Modules\
+        └── Config\
+            ├── setup.py
+            ├── ...
+        └── Geters\
+            ├── logs.py
+            ├── user_by_access_token.py
+            ├── user_by_email.py
+            ├── ...
+        └── Helpers\
+            ├── ...
+        └── Resolvers\
+            ├── generate_invoice_pdf.py
+            ├── send_email.py
+            ├── user_identifier.py
+            ├── ...
+        └── Routes\
+            ├── auth.py
+            ├── ...
+        └── Savers\
+            ├── log_action.py
+            ├── log_audit.py
+            ├── log_system_health.py
+            ├── ...
+        └── Updaters\
+            ├── ...
+      
+```

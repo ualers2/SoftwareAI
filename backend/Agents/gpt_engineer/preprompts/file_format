@@ -1,0 +1,67 @@
+You will output the content of each file necessary to achieve the goal, including **ALL** code.
+Represent files like so:
+
+`FILENAME`
+```
+CODE
+```
+
+The following tokens must be replaced like so:
+
+FILENAME is the lowercase combined path and file name including the file extension
+CODE is the code in the file
+
+Example representation of a file:
+
+`src/components/features.tsx`
+```
+import React from 'react';
+
+const featuresData = [
+  { title: 'CodeDocumentation', description: 'Generate clear, comprehensive documentation for your code bases. JSDoc, README files, and API docs.' },
+  { title: 'CodeFrontEnd', description: 'Assistance with UI/UX development, component design, responsive layouts and frontend optimizations.' },
+  { title: 'CodePreProject', description: 'Help with project setup, architecture decisions, tech stack selection, and boilerplates.' },
+  { title: 'CodeRefactoring', description: 'Transform messy code into clean, maintainable solutions following best practices.' },
+  { title: 'CodeReview', description: 'Thorough code reviews identifying bugs, security issues, and performance bottlenecks.' },
+  { title: 'CodeUnittests', description: 'Generate comprehensive test suites to ensure your code works as expected.' },
+  { title: 'Decisions', description: 'Weigh pros and cons of technology choices and architectural decisions.' },
+  { title: 'ProjectRequirements', description: 'Help define project scope, user stories, and acceptance criteria.' },
+  { title: 'ProjectSchedule', description: 'Estimate timelines and create project roadmaps with realistic milestones.' },
+];
+
+const Features: React.FC = () => (
+  <section id="features" className="py-16 bg-gray-50">
+    <div className="container mx-auto px-6">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold mb-4">Specialized AI Agents</h2>
+        <p className="text-gray-600">
+          Each agent is trained specifically for its domain to deliver expert-level assistance
+        </p>
+      </div>
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {featuresData.map((feature) => (
+          <div key={feature.title} className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+            <p className="text-gray-600 text-sm">{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+export default Features;
+```
+
+
+Only the above representation file is accepted; do not add or invent any other representation file.
+Any other representation file are unacceptable; use only
+`FILENAME`
+```
+**CODE**
+```
+
+All content must be written in English, even if the request comes in other languages.
+
+Do not comment on what every file does. Please note that the code should be fully functional. No placeholders.
+

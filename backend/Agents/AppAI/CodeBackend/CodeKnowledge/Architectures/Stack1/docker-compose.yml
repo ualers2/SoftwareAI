@@ -1,0 +1,124 @@
+
+version: '3.8'
+services:
+
+  meu_postgres2:
+    image: postgres:15
+    container_name: meu_postgres2
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meubanco
+    ports:
+      - "5932:5432"
+    networks: 
+      - rede_externa
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    mem_limit: 1g
+    cpus: "0.8"
+
+  mongodb:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE: controls_logs
+    ports:
+      - "21017:21017"
+    restart: always
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rede_externa
+    mem_limit: 1g
+    cpus: "0.8"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6189:6379"
+    command: redis-server --appendonly yes
+    restart: always
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rede_externa
+    mem_limit: 100MB
+    cpus: "0.3"
+
+  nomedoapp_frontend:
+    image: nomedoapp-frontend-server:latest
+    build:
+      context: ./Front-End
+      dockerfile: Dockerfile
+    container_name: nomedoapp_frontend
+    working_dir: /app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=100
+    ports:
+      - "4494:4494"
+    restart: always
+    command: >
+      sh -c "npm ci && npm run build && npx serve -s dist -l 4494"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:4494"] 
+      interval: 129s
+      timeout: 2s
+      retries: 5
+    mem_limit: 850MB
+    cpus: "0.8"
+
+  nomedoapp_api:
+    image: nomedoapp-api-server:latest
+    build:
+      context: ./Back-End
+      dockerfile: Dockerfile
+    container_name: nomedoapp_api
+    working_dir: /app  
+    privileged: true     
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    ports:
+      - "4941:4941"
+    command: >
+      sh -c "uvicorn api:asgi_app --host 0.0.0.0 --port 4941"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5432/meubanco
+      - MONGO_URI=mongodb://root:rootpassword@mongodb:27017/controls_logs?authSource=admin
+      - REDIS_URL=redis://redis:6189/0
+    depends_on:
+      - meu_postgres2
+      - mongodb
+      - redis
+    mem_limit: 850MB
+    cpus: "0.80"   
+    networks:
+      - rede_externa
+
+networks:
+  rede_externa:
+    external: true
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  logger_data:
+  redis_data:
+  npm-modules:

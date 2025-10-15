@@ -1,0 +1,21 @@
+--- a/main.py
++++ b/main.py
+@@ -5,11 +5,12 @@
+ 
+ def initialize_app(config):
+     """Inicializa as configurações básicas do aplicativo."""
++    logging.info(f"Configurações carregadas: {config}")
+     logging.info("Aplicação iniciada.")
+     # TODO: Implementar carregamento de rotas e banco de dados
+     if not config.get('DEBUG', False):
+         logging.info("Modo de produção ativo.")
+ 
+ def run_server():
+     """Simula o loop principal do servidor."""
+     config = {'DEBUG': True}
+     initialize_app(config)
+-    print("Servidor rodando...")
++    logging.info("Servidor pronto e rodando.")
+ 
+ if __name__ == "__main__":
+     run_server()

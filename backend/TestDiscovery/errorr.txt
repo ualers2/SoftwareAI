@@ -1,0 +1,9 @@
+[plugin:vite:react-babel] E:\Users\Media Cuts DeV\Downloads\WorkEnv\SoftwareAI\Back-End\example8\src\components\appointments\AppointmentList.jsx: Identifier 'user' has already been declared. (11:11)
+  14 |
+E:/Users/Media Cuts DeV/Downloads/WorkEnv/SoftwareAI/Back-End/example8/src/components/appointments/AppointmentList.jsx:11:11
+9  |    const { user } = useAuth();
+10 |     const { appointments, loading } = useAppointments();
+11 |     const { user } = useAuth();
+   |                       ^
+12 |  
+13 |     if (loading || !user) return <LoadingSkeleton lines={5} />;
