@@ -76,6 +76,40 @@ jobs:
           docker compose up --build -d --no-deps softwareai_frontend softwareai_api
         "
 
+  build-frontend:
+    name: "🔨 Build Frontend (Vite + React)"
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    outputs:
+      dist-path: ${{ steps.build.outputs.dist-path }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Setup Node.js"
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: "Install dependencies"
+        working-directory: frontend/electron
+        run: npm ci
+
+      - name: "Build Vite"
+        working-directory: frontend/electron
+        id: build
+        run: |
+          npm run build
+          echo "dist-path=$(pwd)/dist" >> $GITHUB_OUTPUT
+
+      - name: "Upload dist as artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-dist
+          path: frontend/electron/dist
+
   build-electron:
     name: "⚡ Build Electron App"
     runs-on: windows-latest
