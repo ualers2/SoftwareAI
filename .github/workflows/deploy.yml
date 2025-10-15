@@ -11,7 +11,7 @@ env:
   NODE_VERSION: '22.x'
 
 jobs:
-  build-and-deploy:
+  deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
@@ -76,7 +76,7 @@ jobs:
           docker compose up --build -d --no-deps softwareai_frontend softwareai_api
         "
 
-  build-frontend:
+  build-frontend-electron:
     name: "🔨 Build Frontend (Vite + React)"
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
@@ -113,7 +113,7 @@ jobs:
   build-electron:
     name: "⚡ Build Electron App"
     runs-on: windows-latest
-    needs: build-and-deploy
+    needs: build-frontend-electron
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
