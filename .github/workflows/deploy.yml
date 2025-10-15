@@ -85,6 +85,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
+
+      - name: Set working directory
+        run: cd frontend/electron
+
       - name: Install Modules
         run: npm install
       - name: Install Electron
@@ -95,7 +99,7 @@ jobs:
           name: vite-dist
           path: dist
       - name: Copy frontend/electron to Electron
-        shell: bash           # ⬅️ use Bash em vez de pwsh
+        shell: bash       
         run: |
           mkdir -p public
           cp -r dist/* public/
