@@ -33,7 +33,6 @@ const GCL = () => {
       return;
     }
     try {
-      // Nota: Esta função de IPC precisa ser adicionada ao seu useGitOperations.ts e preload.cjs, se ainda não estiver lá!
       const diff = await window.electronAPI.git.getDiff(path); 
       setGitDiff(diff);
     } catch (error) {
