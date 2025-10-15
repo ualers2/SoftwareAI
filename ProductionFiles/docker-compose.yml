@@ -80,8 +80,8 @@ services:
       interval: 129s
       timeout: 2s
       retries: 5
-    mem_limit: 850MB
-    cpus: "0.8"
+    mem_limit: 950MB
+    cpus: "1.2"
 
   softwareai_api:
     image: softwareai-api-server:latest
