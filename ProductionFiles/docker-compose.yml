@@ -62,7 +62,7 @@ services:
   softwareai_frontend:
     image: softwareai-frontend-server:latest
     build:
-      context: ./Front-End/webpr
+      context: ./frontend/webpr
       dockerfile: Dockerfile
     container_name: softwareai_frontend
     working_dir: /app
@@ -86,7 +86,7 @@ services:
   softwareai_api:
     image: softwareai-api-server:latest
     build:
-      context: ./Back-End
+      context: ./backend
       dockerfile: Dockerfile
     container_name: softwareai_api
     working_dir: /app  
