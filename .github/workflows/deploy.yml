@@ -101,7 +101,7 @@ jobs:
         working-directory: frontend/electron
         id: build
         run: |
-          npm run build
+          npm run build:web
           echo "dist-path=$(pwd)/dist" >> $GITHUB_OUTPUT
 
       - name: "Upload dist as artifact"
