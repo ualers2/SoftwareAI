@@ -140,11 +140,13 @@ jobs:
       - name: Build Electron App
         working-directory: frontend/electron
         run: npx electron-builder --win --publish never
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload Electron artifact
+        uses: actions/upload-artifact@v4
         with:
           name: electron-app
-          path: dist/*.exe    # ◀️ captura o instalador Windows
-
+          path: frontend/electron/dist/*.exe
+          
   release:
     name: "🚀 Create GitHub Release"
     runs-on: ubuntu-latest
