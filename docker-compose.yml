@@ -57,11 +57,11 @@ services:
   frontend-pipeline:
     image: frontend-pipeline-server:latest
     build:
-      context: ./Front-End/webpr
+      context: ./frontend/web
       dockerfile: Dockerfile
     container_name: frontend-pipeline
     volumes:
-      # - "./Front-End/webpr:/app"
+      - "./frontend/web:/app"
       - npm-modules:/app/node_modules
     working_dir: /app
     environment:
@@ -71,7 +71,7 @@ services:
       - "4684:4684"
     restart: always
     command: >
-      sh -c "npm run dev:web -- --port 4684"
+      sh -c "npm run dev -- --port 4684"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:4684"] 
       interval: 129s
@@ -82,13 +82,13 @@ services:
 
   pipeline-api:
     build:
-      context: ./Back-End
+      context: ./backend
       dockerfile: Dockerfile
     container_name: pipeline-api
     working_dir: /app  
     privileged: true     
     volumes:
-      # - ./Back-End:/app
+      - ./backend:/app
       - Invoices:/app/Invoices
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
@@ -100,7 +100,7 @@ services:
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5432/meubanco
       - MONGO_URI=mongodb://root:rootpassword@mongodb:27017/controls_logs?authSource=admin
-      - REDIS_URL=redis://redis:6389/0
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       - meu_postgres2
       - mongodb
@@ -110,9 +110,62 @@ services:
     networks:
       - rede_externa
 
+
+  chatkit-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chatkit-api
+    working_dir: /app  
+    privileged: true     
+    volumes:
+      - ./backend:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    ports:
+      - "5919:5919"
+    command: >
+      sh -c "uvicorn apichatkit:app --host 0.0.0.0 --port 5919"
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@meu_postgres2:5432/meubanco
+      - MONGO_URI=mongodb://root:rootpassword@mongodb:27017/controls_logs?authSource=admin
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - meu_postgres2
+      - mongodb
+      - redis
+    mem_limit: 800MB
+    cpus: "2.25"   
+    networks:
+      - rede_externa
+
+  celery_app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: celery_app_backend
+    restart: always
+    command: celery -A celery_app.celery_app worker --beat --loglevel=info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      redis:
+        condition: service_healthy
+      meu_postgres2:
+        condition: service_started
+      mongodb:
+        condition: service_started
+    working_dir: /app
+    networks:
+      - rede_externa
+
+
+
 networks:
   rede_externa:
-    external: true
+    external: false
+
 
 volumes:
   postgres_data:
