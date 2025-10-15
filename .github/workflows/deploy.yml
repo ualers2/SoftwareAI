@@ -86,24 +86,25 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Set working directory
-        run: cd frontend/electron
-
       - name: Install Modules
+        working-directory: frontend/electron
         run: npm install
       - name: Install Electron
+        working-directory: frontend/electron
         run: npm install --save-dev electron@latest
       - name: Download frontend/electron build
         uses: actions/download-artifact@v4
         with:
           name: vite-dist
-          path: dist
+          path: frontend/electron/dist
       - name: Copy frontend/electron to Electron
+        working-directory: frontend/electron
         shell: bash       
         run: |
           mkdir -p public
           cp -r dist/* public/
       - name: Build Electron App
+        working-directory: frontend/electron
         run: npx electron-builder --win --publish never
       - uses: actions/upload-artifact@v4
         with:
