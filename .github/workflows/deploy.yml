@@ -38,7 +38,7 @@ jobs:
         rsync -avz --delete ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/home/administrator/deploys/softwareai \
           --exclude node_modules \
           --exclude .git \
-          --exclude frontend/web/node_modules
+          --exclude frontend/web/node_modules \
           --exclude electron/web/node_modules
 
     - name: Make dir on VPS
