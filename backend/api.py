@@ -1795,219 +1795,219 @@ def stripe_webhook():
 
 
 
-@app.route('/api/github/callback', methods=['GET'])
-def github_app_callback():
-    """
-    Callback após instalação/autorização do GitHub App.
-    - Se receber installation_id e houver user_token (query param ou header), associa a instalação ao usuário.
-    - Se receber 'code' (fluxo OAuth), troca por access_token e tenta associar ao usuário pelo e-mail retornado.
-    """
-    try:
-        installation_id = request.args.get('installation_id')
-        setup_action = request.args.get('setup_action')
-        code = request.args.get('code')
-        user_token = request.args.get('X-API-TOKEN')
-        if installation_id:
-            user = None
-            if user_token:
-                user = get_user_by_access_token(user_token)
-            if user:
-                settings = SystemSettings.query.filter_by(user_id=user.id).first()
-                if not settings:
-                    settings = SystemSettings(user_id=user.id)
-                    db.session.add(settings)
-                settings.installation_id = int(installation_id)
-                settings.updated_at = datetime.utcnow()
-                db.session.commit()
+# @app.route('/api/github/callback', methods=['GET'])
+# def github_app_callback():
+#     """
+#     Callback após instalação/autorização do GitHub App.
+#     - Se receber installation_id e houver user_token (query param ou header), associa a instalação ao usuário.
+#     - Se receber 'code' (fluxo OAuth), troca por access_token e tenta associar ao usuário pelo e-mail retornado.
+#     """
+#     try:
+#         installation_id = request.args.get('installation_id')
+#         setup_action = request.args.get('setup_action')
+#         code = request.args.get('code')
+#         user_token = request.args.get('X-API-TOKEN')
+#         if installation_id:
+#             user = None
+#             if user_token:
+#                 user = get_user_by_access_token(user_token)
+#             if user:
+#                 settings = SystemSettings.query.filter_by(user_id=user.id).first()
+#                 if not settings:
+#                     settings = SystemSettings(user_id=user.id)
+#                     db.session.add(settings)
+#                 settings.installation_id = int(installation_id)
+#                 settings.updated_at = datetime.utcnow()
+#                 db.session.commit()
 
-                log_action(logs_collection, 'github_installation_linked', {
-                    'message': f'installation {installation_id} linked to user {user.id}',
-                    'installation_id': installation_id,
-                    'setup_action': setup_action
-                }, user=user.id)
+#                 log_action(logs_collection, 'github_installation_linked', {
+#                     'message': f'installation {installation_id} linked to user {user.id}',
+#                     'installation_id': installation_id,
+#                     'setup_action': setup_action
+#                 }, user=user.id)
 
-                return jsonify({
-                    "status": "success",
-                    "message": f"Instalação do GitHub (installation_id={installation_id}) vinculada ao usuário.",
-                    "installation_id": installation_id
-                }), 200
-            else:
-                log_action(logs_collection, 'github_installation_unbound', {
-                    'message': f"Installation {installation_id} received but no user token provided.",
-                    'installation_id': installation_id,
-                    'setup_action': setup_action
-                }, level='warning')
+#                 return jsonify({
+#                     "status": "success",
+#                     "message": f"Instalação do GitHub (installation_id={installation_id}) vinculada ao usuário.",
+#                     "installation_id": installation_id
+#                 }), 200
+#             else:
+#                 log_action(logs_collection, 'github_installation_unbound', {
+#                     'message': f"Installation {installation_id} received but no user token provided.",
+#                     'installation_id': installation_id,
+#                     'setup_action': setup_action
+#                 }, level='warning')
 
-                return jsonify({
-                    "status": "success",
-                    "message": f"GitHub App instalado (installation_id={installation_id}). Vincule a instalação no painel do usuário para ativar integrações.",
-                    "installation_id": installation_id
-                }), 200
+#                 return jsonify({
+#                     "status": "success",
+#                     "message": f"GitHub App instalado (installation_id={installation_id}). Vincule a instalação no painel do usuário para ativar integrações.",
+#                     "installation_id": installation_id
+#                 }), 200
 
-        if code:
-            if not GITHUB_CLIENT_ID or not GITHUB_CLIENT_SECRET:
-                return jsonify({"status": "error", "message": "GITHUB_CLIENT_ID/GITHUB_CLIENT_SECRET não configurados"}), 500
-            token_resp = requests.post(
-                "https://github.com/login/oauth/access_token",
-                headers={"Accept": "application/json"},
-                json={"client_id": GITHUB_CLIENT_ID, "client_secret": GITHUB_CLIENT_SECRET, "code": code},
-                timeout=10
-            )
-            if token_resp.status_code != 200:
-                logger.error("Erro ao trocar code por token: %s", token_resp.text)
-                return jsonify({"status": "error", "message": "Erro ao obter access_token do GitHub"}), 500
+#         if code:
+#             if not GITHUB_CLIENT_ID or not GITHUB_CLIENT_SECRET:
+#                 return jsonify({"status": "error", "message": "GITHUB_CLIENT_ID/GITHUB_CLIENT_SECRET não configurados"}), 500
+#             token_resp = requests.post(
+#                 "https://github.com/login/oauth/access_token",
+#                 headers={"Accept": "application/json"},
+#                 json={"client_id": GITHUB_CLIENT_ID, "client_secret": GITHUB_CLIENT_SECRET, "code": code},
+#                 timeout=10
+#             )
+#             if token_resp.status_code != 200:
+#                 logger.error("Erro ao trocar code por token: %s", token_resp.text)
+#                 return jsonify({"status": "error", "message": "Erro ao obter access_token do GitHub"}), 500
 
-            token_data = token_resp.json()
-            access_token = token_data.get("access_token")
-            if not access_token:
-                return jsonify({"status": "error", "message": "access_token não recebido do GitHub"}), 500
+#             token_data = token_resp.json()
+#             access_token = token_data.get("access_token")
+#             if not access_token:
+#                 return jsonify({"status": "error", "message": "access_token não recebido do GitHub"}), 500
 
-            user_resp = requests.get("https://api.github.com/user", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
-            if user_resp.status_code != 200:
-                logger.error("Erro ao buscar usuário GitHub: %s", user_resp.text)
-                return jsonify({"status": "error", "message": "Não foi possível obter dados do usuário no GitHub"}), 500
+#             user_resp = requests.get("https://api.github.com/user", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
+#             if user_resp.status_code != 200:
+#                 logger.error("Erro ao buscar usuário GitHub: %s", user_resp.text)
+#                 return jsonify({"status": "error", "message": "Não foi possível obter dados do usuário no GitHub"}), 500
 
-            gh_user = user_resp.json()
-            gh_email = gh_user.get("email")
+#             gh_user = user_resp.json()
+#             gh_email = gh_user.get("email")
 
-            if not gh_email:
-                emails_resp = requests.get("https://api.github.com/user/emails", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
-                if emails_resp.status_code == 200:
-                    emails = emails_resp.json()
-                    primary = next((e for e in emails if e.get("primary") and e.get("verified")), None)
-                    if primary:
-                        gh_email = primary.get("email")
+#             if not gh_email:
+#                 emails_resp = requests.get("https://api.github.com/user/emails", headers={"Authorization": f"Bearer {access_token}", "Accept": "application/vnd.github+json"}, timeout=10)
+#                 if emails_resp.status_code == 200:
+#                     emails = emails_resp.json()
+#                     primary = next((e for e in emails if e.get("primary") and e.get("verified")), None)
+#                     if primary:
+#                         gh_email = primary.get("email")
 
-            if gh_email:
-                local_user = get_user_by_email(gh_email)
-                if local_user:
-                    settings = SystemSettings.query.filter_by(user_id=local_user.id).first()
-                    if not settings:
-                        settings = SystemSettings(user_id=local_user.id)
-                        db.session.add(settings)
-                    settings.github_token = access_token
-                    settings.updated_at = datetime.utcnow()
-                    db.session.commit()
-                    log_action(logs_collection, 'github_oauth_linked', {
-                        'message': f'GitHub OAuth linked for user {local_user.id}',
-                        'github_login': gh_user.get("login"),
-                        'email': gh_email
-                    }, user=local_user.id)
-                    return jsonify({"status": "success", "message": "Conta GitHub vinculada ao usuário local."}), 200
+#             if gh_email:
+#                 local_user = get_user_by_email(gh_email)
+#                 if local_user:
+#                     settings = SystemSettings.query.filter_by(user_id=local_user.id).first()
+#                     if not settings:
+#                         settings = SystemSettings(user_id=local_user.id)
+#                         db.session.add(settings)
+#                     settings.github_token = access_token
+#                     settings.updated_at = datetime.utcnow()
+#                     db.session.commit()
+#                     log_action(logs_collection, 'github_oauth_linked', {
+#                         'message': f'GitHub OAuth linked for user {local_user.id}',
+#                         'github_login': gh_user.get("login"),
+#                         'email': gh_email
+#                     }, user=local_user.id)
+#                     return jsonify({"status": "success", "message": "Conta GitHub vinculada ao usuário local."}), 200
 
-            return jsonify({
-                "status": "success",
-                "message": "Token GitHub recebido. Vincule manualmente no painel do usuário se necessário.",
-                "github_access_token": access_token
-            }), 200
+#             return jsonify({
+#                 "status": "success",
+#                 "message": "Token GitHub recebido. Vincule manualmente no painel do usuário se necessário.",
+#                 "github_access_token": access_token
+#             }), 200
 
-        return jsonify({"status": "error", "message": "Callback inválido. Forneça installation_id ou code."}), 400
+#         return jsonify({"status": "error", "message": "Callback inválido. Forneça installation_id ou code."}), 400
 
-    except Exception as e:
-        logger.exception("Erro em github_app_callback: %s", e)
-        log_action(logs_collection, 'github_callback_error', {'error': str(e)}, level='error')
-        return jsonify({"status": "error", "message": "Erro interno no callback do GitHub", "detail": str(e)}), 500
+#     except Exception as e:
+#         logger.exception("Erro em github_app_callback: %s", e)
+#         log_action(logs_collection, 'github_callback_error', {'error': str(e)}, level='error')
+#         return jsonify({"status": "error", "message": "Erro interno no callback do GitHub", "detail": str(e)}), 500
 
 
-@app.route("/webhook/github", methods=["POST"])
-def github_webhook():
-    try:
-        signature_header = request.headers.get("X-Hub-Signature-256") or ""
-        if not signature_header or not verify_signature(request.data, signature_header, GITHUB_WEBHOOK_SECRET):
-            logger.warning("Assinatura inválida do webhook do GitHub")
-            abort(400, "Assinatura inválida")
+# @app.route("/webhook/github", methods=["POST"])
+# def github_webhook():
+#     try:
+#         signature_header = request.headers.get("X-Hub-Signature-256") or ""
+#         if not signature_header or not verify_signature(request.data, signature_header, GITHUB_WEBHOOK_SECRET):
+#             logger.warning("Assinatura inválida do webhook do GitHub")
+#             abort(400, "Assinatura inválida")
 
-        event = request.headers.get("X-GitHub-Event", "ping")
-        payload = request.get_json(force=True, silent=True) or {}
+#         event = request.headers.get("X-GitHub-Event", "ping")
+#         payload = request.get_json(force=True, silent=True) or {}
 
-        if event == "ping":
-            return jsonify({"msg": "pong"}), 200
+#         if event == "ping":
+#             return jsonify({"msg": "pong"}), 200
 
-        user_token = request.headers.get("X-API-TOKEN") or request.args.get("X-API-TOKEN")
-        user = None
-        if user_token:
-            try:
-                user = get_user_by_access_token(user_token)
-            except Exception:
-                user = None
+#         user_token = request.headers.get("X-API-TOKEN") or request.args.get("X-API-TOKEN")
+#         user = None
+#         if user_token:
+#             try:
+#                 user = get_user_by_access_token(user_token)
+#             except Exception:
+#                 user = None
 
-        if event == "installation":
-            action = payload.get("action")
-            installation = payload.get("installation", {})
-            installation_id = installation.get("id")
-            account = installation.get("account", {}).get("login")
+#         if event == "installation":
+#             action = payload.get("action")
+#             installation = payload.get("installation", {})
+#             installation_id = installation.get("id")
+#             account = installation.get("account", {}).get("login")
 
-            if not installation_id:
-                logger.warning("Evento de instalação sem installation.id")
-                return "", 204
+#             if not installation_id:
+#                 logger.warning("Evento de instalação sem installation.id")
+#                 return "", 204
 
-            if action == "created":
-                if user:
-                    settings = SystemSettings.query.filter_by(user_id=user.id).first()
-                    if not settings:
-                        settings = SystemSettings(user_id=user.id)
-                        db.session.add(settings)
-                    settings.installation_id = int(installation_id)
-                    settings.updated_at = datetime.utcnow()
-                    db.session.commit()
+#             if action == "created":
+#                 if user:
+#                     settings = SystemSettings.query.filter_by(user_id=user.id).first()
+#                     if not settings:
+#                         settings = SystemSettings(user_id=user.id)
+#                         db.session.add(settings)
+#                     settings.installation_id = int(installation_id)
+#                     settings.updated_at = datetime.utcnow()
+#                     db.session.commit()
 
-                    log_action(logs_collection, 'github_installation_created', {
-                        'message': f'installation {installation_id} associated to user {user.id}',
-                        'installation_id': installation_id,
-                        'account': account
-                    }, user=user.id)
-                    logger.info("Installation %s associated to user %s", installation_id, user.id)
-                else:
-                    log_action(logs_collection, 'github_installation_created_unbound', {
-                        'message': f'installation {installation_id} received with no associated user',
-                        'installation_id': installation_id,
-                        'account': account
-                    }, level='warning')
-                    logger.info("Installation %s received but not bound to any user", installation_id)
+#                     log_action(logs_collection, 'github_installation_created', {
+#                         'message': f'installation {installation_id} associated to user {user.id}',
+#                         'installation_id': installation_id,
+#                         'account': account
+#                     }, user=user.id)
+#                     logger.info("Installation %s associated to user %s", installation_id, user.id)
+#                 else:
+#                     log_action(logs_collection, 'github_installation_created_unbound', {
+#                         'message': f'installation {installation_id} received with no associated user',
+#                         'installation_id': installation_id,
+#                         'account': account
+#                     }, level='warning')
+#                     logger.info("Installation %s received but not bound to any user", installation_id)
 
-            elif action == "deleted":
-                settings = SystemSettings.query.filter_by(installation_id=installation_id).first()
-                if settings:
-                    settings.installation_id = None
-                    settings.updated_at = datetime.utcnow()
-                    db.session.commit()
-                    log_action(logs_collection, 'github_installation_deleted', {
-                        'message': f'installation {installation_id} removed',
-                        'installation_id': installation_id,
-                        'account': account
-                    })
-                    logger.info("Installation %s removed from settings", installation_id)
-                else:
-                    logger.info("Received installation.deleted for %s but no settings found", installation_id)
+#             elif action == "deleted":
+#                 settings = SystemSettings.query.filter_by(installation_id=installation_id).first()
+#                 if settings:
+#                     settings.installation_id = None
+#                     settings.updated_at = datetime.utcnow()
+#                     db.session.commit()
+#                     log_action(logs_collection, 'github_installation_deleted', {
+#                         'message': f'installation {installation_id} removed',
+#                         'installation_id': installation_id,
+#                         'account': account
+#                     })
+#                     logger.info("Installation %s removed from settings", installation_id)
+#                 else:
+#                     logger.info("Received installation.deleted for %s but no settings found", installation_id)
 
-            return "", 204
+#             return "", 204
 
-        if event == "pull_request":
-            action = payload.get("action")
-            if action in ("opened", "synchronize", "reopened"):
-                try:
-                    threading.Thread(target=process_pull_request, args=(payload,)).start()
-                    log_action(logs_collection, 'pull_request_received', {
-                        'message': 'Pull request event queued for processing',
-                        'action': action,
-                        'pr': (payload.get("pull_request") or {}).get("number")
-                    }, user=(user.id if user else None))
-                except Exception as e:
-                    logger.exception("Erro ao enfileirar processamento de PR: %s", e)
-                    log_action(logs_collection, 'pull_request_processing_error', {'error': str(e)}, level='error')
-            return "", 204
+#         if event == "pull_request":
+#             action = payload.get("action")
+#             if action in ("opened", "synchronize", "reopened"):
+#                 try:
+#                     threading.Thread(target=process_pull_request, args=(payload,)).start()
+#                     log_action(logs_collection, 'pull_request_received', {
+#                         'message': 'Pull request event queued for processing',
+#                         'action': action,
+#                         'pr': (payload.get("pull_request") or {}).get("number")
+#                     }, user=(user.id if user else None))
+#                 except Exception as e:
+#                     logger.exception("Erro ao enfileirar processamento de PR: %s", e)
+#                     log_action(logs_collection, 'pull_request_processing_error', {'error': str(e)}, level='error')
+#             return "", 204
 
-        log_action(logs_collection, 'github_webhook_received', {
-            'event': event,
-            'payload_summary': {'keys': list(payload.keys())[:10]}
-        }, user=(user.id if user else None))
+#         log_action(logs_collection, 'github_webhook_received', {
+#             'event': event,
+#             'payload_summary': {'keys': list(payload.keys())[:10]}
+#         }, user=(user.id if user else None))
 
-        return "", 204
+#         return "", 204
 
-    except Exception as e:
-        logger.exception("Erro no webhook do GitHub: %s", e)
-        log_action(logs_collection, 'github_webhook_error', {'error': str(e)}, level='error')
-        return "", 500
+#     except Exception as e:
+#         logger.exception("Erro no webhook do GitHub: %s", e)
+#         log_action(logs_collection, 'github_webhook_error', {'error': str(e)}, level='error')
+#         return "", 500
 
 
 def initialize_database():

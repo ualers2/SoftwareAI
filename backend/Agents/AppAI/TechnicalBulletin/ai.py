@@ -9,7 +9,6 @@ import logging
 
 from api import app
 from Models.postgressSQL import db, User, Message, Config, AlfredFile, AgentStatus
-from Modules.FileServer.download_ import download_
 from Modules.Agents.EgetMetadataAgent import *
 from Modules.Functions.autosave import autosave
 from Modules.Functions.TicketProblem import *
