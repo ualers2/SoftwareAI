@@ -27,6 +27,3 @@ def criar_conta(email: str, senha: str, expires_days: int = None):
 # Exemplo de uso
 if __name__ == "__main__":
     criar_conta("teste@example.com", "minhasenha123", expires_days=30)
-# git checkout main
-# git pull origin main
-# git checkout -b new-feature
