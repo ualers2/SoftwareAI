@@ -88,7 +88,12 @@ def process_dynamic_queue():
 
                 if task.category == "desenvolvimento":
                     result = run_backend_agent.apply_async(
-                        args=(task.id, task.user_id, task.user_content, task.commit_language),
+                        args=(
+                            task.id,
+                            task.user_id, 
+                            task.user_content, 
+                            task.commit_language
+                        ),
                         eta=eta_dt
                     )
                     print(f"Tarefa #{task.id} enviada com sucesso.")

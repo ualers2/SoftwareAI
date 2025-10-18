@@ -29,19 +29,28 @@ def ler_conteudos_arquivos(caminhos_arquivos):
 
 class FunctionData(TypedDict):
     path_project: str
+    show_contents: bool
 
 @function_tool
 def autolistlocalproject(data: FunctionData):
     try:
         data_FINAL = data["data"]
         path_project = data_FINAL["path_project"]
+        show_contents = data_FINAL["show_contents"]
     except Exception as eroo1:
         print(eroo1)
         path_project = data["path_project"]
+        show_contents = data["show_contents"]
     caminhos_arquivos = listar_arquivos(path_project)
     conteudos_arquivos = ler_conteudos_arquivos(caminhos_arquivos)
-    data = {
-        "paths": caminhos_arquivos,
-        "contents": conteudos_arquivos,
-    }
+    if show_contents == False:
+        data = {
+            "paths": caminhos_arquivos,
+        }
+    else:
+            
+        data = {
+            "paths": caminhos_arquivos,
+            "contents": conteudos_arquivos,
+        }
     return data

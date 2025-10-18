@@ -8,6 +8,7 @@ from sqlalchemy import Numeric
 from enum import Enum as PyEnum
 from sqlalchemy import Text
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import JSON
 
 TOKEN_DEFAULT_EXPIRES_DAYS = 30
 
@@ -51,23 +52,58 @@ class TaskStatus(PyEnum):
     DONE = "done"
     FAILED = "failed"
 
+class TaskLog(db.Model):
+    __tablename__ = "task_logs"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task_id = db.Column(db.Integer, db.ForeignKey("backend_tasks.id"), nullable=False)
+    type = db.Column(db.String(32), default="info")  # info, success, warning, error
+    message = db.Column(db.Text, nullable=False)
+    task_metadata = db.Column(JSON, nullable=True)  # Qualquer dado extra, opcional
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+
+class ApprovedProject(db.Model):
+    __tablename__ = "approved_projects"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task_id = db.Column(db.Integer, db.ForeignKey("backend_tasks.id"), nullable=False)
+    agent_id = db.Column(db.Integer, nullable=False)
+    approved_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    amount_paid = db.Column(db.Float, nullable=False)
+    bonus_paid = db.Column(db.Float, default=0.0)
+    status = db.Column(db.String(32), default="completed")  # completed, pending, failed
+
+
 class BackendTask(db.Model):
     __tablename__ = "backend_tasks"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    user_content = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String(128), default="desenvolvimento")
-    commit_language = db.Column(db.String(128), default="pt")
-    priority = db.Column(db.Integer, default=1)
+    
     status = db.Column(db.String(128), default=TaskStatus.PENDING)
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     completed_at = db.Column(db.DateTime(timezone=True), default=func.now())
 
+    commit_language = db.Column(db.String(128), default="pt")
+
+    title = db.Column(db.Text, nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    category = db.Column(db.String(128), default="desenvolvimento")
+    price = db.Column(db.String(128), nullable=True)
+    priority = db.Column(db.Integer, default=1)
+    technologies = db.Column(db.String(128), nullable=True)
+    deadline = db.Column(db.String(128), nullable=True)
+    early_bonus = db.Column(db.String(128), nullable=True)
     estimated_hours = db.Column(db.String(128), nullable=True)
+    progress = db.Column(db.Integer, default=0)
+    allocated_agent = db.Column(db.String(128), nullable=True)
+    project_files = db.Column(JSON, nullable=True, default=list)
+
+
     total_tokens = db.Column(db.String(128), nullable=True)
     result = db.Column(db.Text, nullable=True)
     eta_str =  db.Column(db.String(328), nullable=True)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class CommitMessage(db.Model):
     __tablename__ = 'commit_messages'
