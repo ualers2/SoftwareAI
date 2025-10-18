@@ -23,16 +23,17 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), 'Keys', 'keys.en
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 from Agents.AppAI.CodeBackend.ai import CodeBackEndAgent
 
-title = ""
-description = ""
-category = ""
-price = ""
-technologies = ""
-early_bonus = ""
-deadline = ""
+tipo_app = "automação"
+title = "Automação de Backup de Arquivos para Nuvem"
+description = "Criar uma aplicação em Python que monitore uma pasta local e faça backup automático de arquivos novos ou modificados para um serviço de nuvem (como Google Drive ou Dropbox). O sistema deve gerar logs das transferências, enviar notificações por e-mail em caso de erro, e permitir configuração de periodicidade e pastas monitoradas. Deve ser fácil de instalar e executar em segundo plano."
+category = "automação e manutenção de sistemas"
+price = "650"
+technologies = "python, watchdog, smtplib, google-api-python-client"
+early_bonus = "50"
+deadline = "2025-10-19 18:12:00"
 user_id = 1
-tipo_app = "automacao"
 local_to_save = os.path.join(os.path.dirname(__file__), 'WorkEnv')
+model = "gpt-5-nano"
 
 total_usage, saved_files = asyncio.run(CodeBackEndAgent(
         OPENAI_API_KEY,
@@ -45,6 +46,7 @@ total_usage, saved_files = asyncio.run(CodeBackEndAgent(
         technologies,
         early_bonus,
         deadline,
+        model=model,
         local_to_save = local_to_save
     ))
 print(f"saved_files {saved_files}")
