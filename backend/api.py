@@ -3,7 +3,10 @@ import os
 import threading
 import requests
 import json
+import pytz
 import logging
+import re
+from sqlalchemy import or_
 from dotenv import load_dotenv
 import asyncio
 import stripe
@@ -43,7 +46,7 @@ from Modules.Geters.user_by_email import get_user_by_email
 from Modules.Geters.plans_data import get_plans_data
 from Modules.Resolvers.verify_signature import verify_signature
 from Modules.Resolvers.git_contex_layer_process import process_git_context_layer
-from Modules.Savers.create_task import create_task 
+# from Modules.Savers.create_task import create_task 
 
 diretorio_script = os.path.dirname(os.path.abspath(__file__)) 
 logger = logging.getLogger(__name__)
@@ -1471,35 +1474,67 @@ def add_task():
     """
     Endpoint para criar uma tarefa na fila process_dynamic_queue
     """
+
     data = request.get_json()
     if not data:
         return jsonify({"error": "Nenhum dado fornecido"}), 400
+    
+    email = data.get("email")
+    password = data.get("password")
+    user, _, status = auth_user(logs_collection, 
+                                app, 
+                                email=email, 
+                                password=password
+                            )
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
-    user_id = data.get('user_id')
-    content = data.get('content')
-    EMPLOYER_CATEGORY = data.get('category')
+    tz = pytz.timezone("America/Sao_Paulo")
     priority = data.get('priority', 1)
-    hours = data.get('hours', "1.0")
     lang = data.get('lang', "pt")
-    eta_str = data.get('eta')  # Espera string ISO
 
-    if not user_id or not content:
-        return jsonify({"error": "Campos 'user_id' e 'content' são obrigatórios"}), 400
-
+    numeric_user_id = user.id
+    title = data.get('title')
+    description = data.get('description')
+    category = data.get('category')
+    price = data.get('price')
+    technologies = data.get('technologies')
+    deadline = data.get('deadline')
+    early_bonus = data.get('early_bonus')
+    eta_str = data.get('deadline')
     try:
-
-
-        task_id = create_task(user_id, content, priority, hours, lang, eta_str, EMPLOYER_CATEGORY)
-        
-        
-        return jsonify({"task_id": task_id, "status": "created"}), 201
+        task = BackendTask(
+            user_id=numeric_user_id,
+            title=title,
+            description=description,
+            category=category,
+            price=price,
+            priority=priority,
+            technologies=technologies,
+            deadline=deadline,
+            early_bonus=early_bonus,
+            commit_language=lang,
+            status=TaskStatus.PENDING.value,
+            created_at=datetime.now(tz),
+            eta_str=eta_str
+        )
+        db.session.add(task)
+        db.session.commit()
+        print(f"Tarefa criada: {task.id}")
+        return jsonify({"task_id": task.id, "status": "created"}), 201
     except Exception as e:
+        print(f"error Tarefa : {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/tasks/list', methods=['GET'])
 def list_tasks():
-    """Listar tarefas criadas pelo usuário, com filtros e paginação"""
-    user, _, status = auth_user(logs_collection, app)
+    email = request.args.get("email")
+    password = request.args.get("password")
+    user, _, status = auth_user(logs_collection, 
+                                app, 
+                                email=email, 
+                                password=password
+                            )
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
 
@@ -1513,7 +1548,9 @@ def list_tasks():
         query = BackendTask.query.filter_by(user_id=numeric_user_id)
 
         if search_term:
-            query = query.filter(BackendTask.user_content.ilike(f'%{search_term}%'))
+            like = f"%{search_term}%"
+            query = query.filter(or_(BackendTask.title.ilike(like), BackendTask.description.ilike(like)))
+
         if status_filter:
             query = query.filter(BackendTask.status == status_filter)
 
@@ -1521,19 +1558,66 @@ def list_tasks():
             page=page, per_page=limit, error_out=False
         )
 
+        def parse_price(p):
+            if not p:
+                return None
+            nums = re.findall(r"[0-9]+(?:[.,][0-9]+)?", p.replace(',', '.'))
+            if not nums:
+                return None
+            try:
+                val = float(nums[0])
+                if val.is_integer():
+                    return int(val)
+                return val
+            except:
+                return None
+
+        def map_status(s):
+            if not s:
+                return "pending"
+            s = s.lower()
+            if s in ("running",):
+                return "in_progress"
+            if s in ("sheduled", "scheduled"):
+                return "scheduled"
+            if s == "done":
+                return "done"
+            if s == "failed":
+                return "failed"
+            return s
+
         formatted_tasks = []
         for task in tasks_paginated.items:
+            techs = []
+            if task.technologies:
+                techs = [t.strip() for t in re.split(r"[;,]", task.technologies) if t.strip()]
+            deadline_iso = None
+            if task.deadline:
+                try:
+                    deadline_iso = datetime.fromisoformat(task.deadline).isoformat()
+                except:
+                    try:
+                        parsed = datetime.strptime(task.deadline, "%Y-%m-%d")
+                        deadline_iso = parsed.isoformat()
+                    except:
+                        deadline_iso = task.deadline
             formatted_tasks.append({
-                'id': str(task.id),
-                'content': task.user_content,
-                'priority': task.priority,
-                'status': task.status,
-                'createdAt': task.created_at.isoformat(),
-                'completedAt': task.completed_at.isoformat() if task.completed_at else None,
-                'eta_str': task.eta_str if task.eta_str else None, 
-                'estimatedCapacity': task.estimated_hours,
-                'total_tokens': task.total_tokens,
-                'commitLanguage': task.commit_language
+                "id": str(task.id),
+                "title": task.title or "",
+                "description": task.description or "",
+                "status": map_status(task.status),
+                "createdAt": task.created_at.isoformat() if task.created_at else None,
+                "completedAt": task.completed_at.isoformat() if task.completed_at else None,
+                "eta_str": task.eta_str or None,
+                "estimatedHours": task.estimated_hours or None,
+                "total_tokens": task.total_tokens or None,
+                "commitLanguage": task.commit_language or None,
+                "price": parse_price(task.price),
+                "priority": task.priority,
+                "technologies": techs,
+                "deadline": deadline_iso,
+                "progress": task.progress or 0,
+                "agentName": task.allocated_agent or None
             })
 
         log_action(logs_collection, 'tasks_listed', {
@@ -1544,7 +1628,12 @@ def list_tasks():
             'total_found': tasks_paginated.total
         }, user=numeric_user_id)
 
-        return jsonify(formatted_tasks)
+        return jsonify({
+            "tasks": formatted_tasks,
+            "total": tasks_paginated.total,
+            "page": tasks_paginated.page,
+            "per_page": tasks_paginated.per_page
+        })
 
     except Exception as e:
         log_action(logs_collection, 'tasks_list_error', {'error': str(e)}, user=numeric_user_id, level='error')
@@ -1552,7 +1641,6 @@ def list_tasks():
 
 @app.route('/api/tasks/details/<task_id>', methods=['GET'])
 def get_task_details(task_id):
-    """Obter detalhes de uma tarefa específica"""
     user, _, status = auth_user(logs_collection, app)
     if status != "success" or not user:
         return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
@@ -1562,36 +1650,170 @@ def get_task_details(task_id):
     try:
         task = BackendTask.query.filter_by(id=task_id, user_id=numeric_user_id).first_or_404()
 
+        def parse_price(p):
+            if not p:
+                return None
+            nums = re.findall(r"[0-9]+(?:[.,][0-9]+)?", p.replace(',', '.'))
+            if not nums:
+                return None
+            try:
+                val = float(nums[0])
+                return int(val) if val.is_integer() else val
+            except:
+                return None
+
+        def map_status(s):
+            if not s:
+                return "pending"
+            s = s.lower()
+            return {
+                "running": "in_progress",
+                "sheduled": "scheduled",
+                "scheduled": "scheduled",
+                "done": "done",
+                "failed": "failed"
+            }.get(s, s)
+
+        techs = [t.strip() for t in re.split(r"[;,]", task.technologies or "") if t.strip()]
+
+        try:
+            deadline_iso = datetime.fromisoformat(task.deadline).isoformat()
+        except:
+            try:
+                deadline_iso = datetime.strptime(task.deadline, "%Y-%m-%d").isoformat()
+            except:
+                deadline_iso = task.deadline
+
+        project_files = []
+        if isinstance(task.project_files, list):
+            for f in task.project_files:
+                if isinstance(f, dict):
+                    project_files.append({
+                        "name": f.get("name", "arquivo_desconhecido"),
+                        "language": f.get("language", "txt"),
+                        "lines": f.get("lines") if isinstance(f.get("lines"), int) else 0,
+                        "status": "completed" if f.get("status") in ["completed", "done"] else "in_progress"
+                    })
+
         task_details = {
-            'id': str(task.id),
-            'content': task.user_content,
-            'priority': task.priority,
-            'status': task.status,
-            'createdAt': task.created_at.isoformat(),
-            'completedAt': task.completed_at.isoformat() if task.completed_at else None,
-            'eta_str': task.eta_str if task.eta_str else None, 
-            'estimatedHours': task.estimated_hours,
-            'total_tokens': task.total_tokens,
-            'commitLanguage': task.commit_language,
-            'result': task.result if hasattr(task, 'result') else None  # caso você armazene resultado
+            "id": str(task.id),
+            "title": task.title or "",
+            "description": task.description or "",
+            "status": map_status(task.status),
+            "createdAt": task.created_at.isoformat() if task.created_at else None,
+            "completedAt": task.completed_at.isoformat() if task.completed_at else None,
+            "eta_str": task.eta_str or None,
+            "estimatedHours": task.estimated_hours or None,
+            "total_tokens": task.total_tokens or None,
+            "commitLanguage": task.commit_language or None,
+            "price": parse_price(task.price),
+            "priority": task.priority,
+            "technologies": techs,
+            "deadline": deadline_iso,
+            "progress": task.progress or 0,
+            "agentName": task.allocated_agent or None,
+            "earlyBonus": parse_price(task.early_bonus),
+            "category": task.category or None,
+            "result": task.result or None,
+            "project_files": project_files
         }
 
-        log_action(logs_collection, 'task_details_accessed', {
-            'task_id': task_id
-        }, user=numeric_user_id)
+        # Buscar logs do projeto
+        logs = TaskLog.query.filter_by(task_id=task.id).order_by(TaskLog.created_at.asc()).all()
+        logs_json = [
+            {
+                "id": str(log.id),
+                "type": log.type,
+                "message": log.message,
+                "timestamp": log.created_at.isoformat(),
+                "metadata": log.task_metadata or {}
+            }
+            for log in logs
+        ]
+        task_details["logs"] = logs_json
 
-        return jsonify(task_details)
+        log_action(logs_collection, 'task_details_accessed', {'task_id': task_id}, user=numeric_user_id)
+        return jsonify(task_details), 200
 
     except Exception as e:
         logger.info(f"task_details_error {str(e)}")
-        log_action(logs_collection, 'task_details_error', {'task_id': task_id, 'error': str(e)}, user=numeric_user_id, level='error')
+        log_action(
+            logs_collection,
+            'task_details_error',
+            {'task_id': task_id, 'error': str(e)},
+            user=numeric_user_id,
+            level='error'
+        )
         return jsonify({'error': 'Falha ao buscar detalhes da tarefa'}), 500
-    
+
+@app.route('/api/projects/approve', methods=['POST'])
+def approve_project():
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Nenhum dado fornecido"}), 400
+
+    task_id = data.get("task_id")
+    bonus = float(data.get("bonus", 0))
+
+    try:
+        task = BackendTask.query.filter_by(id=task_id).first_or_404()
+        if task.status.lower() != "done":
+            return jsonify({"error": "Tarefa ainda não concluída"}), 400
+
+        # registrar aprovação
+        approved = ApprovedProject(
+            task_id=task.id,
+            agent_id=task.user_id,
+            amount_paid=float(task.price) if task.price else 0,
+            bonus_paid=bonus,
+            status="completed"
+        )
+        db.session.add(approved)
+        db.session.commit()
+
+        log_action(logs_collection, "project_approved", {"task_id": task.id, "amount": task.price, "bonus": bonus}, user=user.id)
+
+        return jsonify({"status": "approved", "task_id": task.id}), 200
+
+    except Exception as e:
+        log_action(logs_collection, "project_approval_error", {"error": str(e)}, user=user.id, level="error")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/projects/approved', methods=['GET'])
+def list_approved_projects():
+    user, _, status = auth_user(logs_collection, app)
+    if status != "success" or not user:
+        return jsonify({"error": "Usuário não autenticado ou inválido"}), 401
+
+    try:
+        # Buscar todas as tarefas do usuário
+        user_tasks = BackendTask.query.filter_by(user_id=user.id).order_by(BackendTask.created_at.desc()).all()
+        approved_map = {ap.task_id: ap for ap in ApprovedProject.query.filter(ApprovedProject.task_id.in_([t.id for t in user_tasks])).all()}
+
+        projects_list = []
+        for task in user_tasks:
+            approved = approved_map.get(task.id)
+            projects_list.append({
+                "task_id": task.id,
+                "title": task.title,
+                "agent_id": approved.agent_id if approved else None,
+                "amount_paid": task.price or 0,
+                "bonus_paid": approved.bonus_paid if approved else 0,
+                "approved_at": approved.approved_at.isoformat() if approved else None,
+                "status": "completed" if approved else "pending"
+            })
 
 
+        log_action(logs_collection, "approved_projects_listed", {"total": len(projects_list)}, user=user.id)
+        return jsonify({"approved_projects": projects_list, "total": len(projects_list)}), 200
 
-
-
+    except Exception as e:
+        log_action(logs_collection, "approved_projects_error", {"error": str(e)}, user=user.id, level="error")
+        return jsonify({"error": str(e)}), 500
 
 
 

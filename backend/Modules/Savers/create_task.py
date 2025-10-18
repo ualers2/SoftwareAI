@@ -3,7 +3,14 @@ from Models.postgreSQL import BackendTask, TaskStatus
 from datetime import datetime
 import pytz
 
-def create_task(user_id, content, priority=1, hours="1.2", lang="pt", eta_str='', EMPLOYER_CATEGORY=''):
+def create_task(user_id, 
+                content, 
+                priority=1, 
+                hours="1.2", 
+                lang="pt", 
+                eta_str='',
+                EMPLOYER_CATEGORY=''
+            ):
     """
     Cria uma tarefa no banco Flask-SQLAlchemy.
     """
